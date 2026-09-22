@@ -1,13 +1,10 @@
 import type { Metadata, Viewport } from "next"
-import { Inter, Sora, Space_Grotesk } from "next/font/google"
+import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
-import { AnimatedBackground } from "@/components/animated-background"
-import { ClientShell } from "@/components/client-shell"
 import { Footer } from "@/components/footer"
 import { JsonLd } from "@/components/json-ld"
 import { Navbar } from "@/components/navbar"
-import { WhatsAppButton } from "@/components/whatsapp-button"
 import { getRequestLocale } from "@/lib/request-locale"
 import { rootMetadataCopy, siteConfig } from "@/lib/site-config"
 import "./globals.css"
@@ -15,18 +12,6 @@ import "./globals.css"
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "swap",
-})
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-})
-
-const sora = Sora({
-  subsets: ["latin"],
-  variable: "--font-hero-accent",
   display: "swap",
 })
 
@@ -91,7 +76,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0f",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
 }
@@ -106,8 +91,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className="bg-background">
-      <body className={`${inter.variable} ${spaceGrotesk.variable} ${sora.variable} font-sans antialiased`}>
-        <ClientShell />
+      <body className={`${inter.variable} studio-theme font-sans antialiased`}>
         <JsonLd locale={locale} />
         <a
           href="#main-content"
@@ -115,13 +99,11 @@ export default async function RootLayout({
         >
           {skipLinkLabel}
         </a>
-        <AnimatedBackground />
         <Navbar locale={locale} />
         <main id="main-content" className="relative">
           {children}
         </main>
         <Footer locale={locale} />
-        <WhatsAppButton locale={locale} />
         {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>

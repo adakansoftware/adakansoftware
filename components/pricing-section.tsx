@@ -1,10 +1,5 @@
-"use client"
-
-import { useRef } from "react"
 import Link from "next/link"
-import { ArrowUpRight, Check } from "lucide-react"
-import { motion, useInView, useReducedMotion } from "framer-motion"
-
+import { ArrowRight, Check } from "lucide-react"
 import { withLocale, type Locale } from "@/lib/i18n"
 
 const pricing = {
@@ -35,10 +30,6 @@ const pricing = {
 } satisfies Record<Locale, { eyebrow: string; title: string; gradient: string; description: string; cta: string; items: Array<{ name: string; price: string; note: string; features: string[]; featured?: boolean }> }>
 
 export function PricingSection({ locale }: { locale: Locale }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: "-80px" })
-  const reducedMotion = useReducedMotion()
   const copy = pricing[locale]
-
-  return <section id="pricing" className="relative overflow-hidden py-20 md:py-32"><div className="pointer-events-none absolute inset-0 grid-pattern opacity-10" /><div ref={ref} className="section-shell"><div className="section-frame px-5 py-8 sm:px-7 lg:px-10 lg:py-10"><motion.div initial={reducedMotion ? false : { opacity: 0, y: 24 }} animate={reducedMotion || inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }} transition={{ duration: reducedMotion ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }} className="max-w-2xl"><p className="section-kicker">{copy.eyebrow}</p><h2 className="mt-5 text-4xl font-bold tracking-tight md:text-6xl">{copy.title}<br /><span className="text-gradient">{copy.gradient}</span></h2><p className="mt-5 max-w-xl text-muted-foreground">{copy.description}</p></motion.div><div className="mt-10 grid gap-5 lg:grid-cols-3">{copy.items.map((item, index) => <motion.article key={item.name} initial={reducedMotion ? false : { opacity: 0, y: 24 }} animate={reducedMotion || inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }} transition={{ duration: reducedMotion ? 0 : 0.55, delay: reducedMotion ? 0 : 0.12 + index * 0.08, ease: [0.22, 1, 0.36, 1] }} className={`premium-border relative rounded-2xl border p-6 ${item.featured ? "border-accent/55 bg-card/55" : "border-border/50 bg-card/25"}`}><p className="text-sm text-muted-foreground">{item.note}</p><h3 className="mt-3 text-xl font-bold">{item.name}</h3><p className="mt-7 text-4xl font-bold">{item.price}<span className="ml-2 text-sm font-normal text-muted-foreground">{locale === "tr" ? "başlangıç" : "starting at"}</span></p><ul className="mt-7 space-y-3 border-t border-border/50 pt-6">{item.features.map((feature) => <li key={feature} className="flex items-center gap-3 text-sm text-muted-foreground"><Check className="h-4 w-4 text-accent" />{feature}</li>)}</ul><Link href={withLocale("/contact", locale)} className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-accent">{copy.cta}<ArrowUpRight className="h-4 w-4" /></Link></motion.article>)}</div></div></div></section>
+  return <section id="pricing" className="studio-section studio-soft"><div className="studio-container"><h2>{locale === "tr" ? "Kapsamı belli. Başlangıcı net." : "Clear scope. A clear starting point."}</h2><p className="studio-section-description">{locale === "tr" ? "Projenize uygun başlangıç paketleri. Son fiyatı kapsamla birlikte belirleriz." : "Starting packages for your project. We agree the final price once the scope is defined."}</p><div className="studio-pricing">{copy.items.map(item => <article key={item.name} className={"studio-price-card" + ("featured" in item && item.featured ? " studio-price-featured" : "")}><p className="studio-price-note">{item.note}</p><h3>{item.name}</h3><p className="studio-price">{item.price}</p><p className="studio-price-note">{locale === "tr" ? "başlangıç fiyatı" : "starting at"}</p><ul>{item.features.map(feature => <li key={feature}><Check size={16} aria-hidden="true" />{feature}</li>)}</ul><Link className="studio-link" href={withLocale("/contact", locale)}>{copy.cta}<ArrowRight size={16} /></Link></article>)}</div></div></section>
 }

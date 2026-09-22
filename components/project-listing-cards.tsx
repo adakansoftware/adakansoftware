@@ -48,7 +48,7 @@ function ProjectListingCard({ project, index, locale }: { project: Project; inde
             </span>
           ) : (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-border/40 bg-background/60 px-2.5 py-1 text-[10px] font-medium text-muted-foreground backdrop-blur-md">
-              Demo
+              {project.coverImage ? (locale === "tr" ? "Web tasarımı" : "Web design") : "Demo"}
             </span>
           )}
         </div>
@@ -59,10 +59,8 @@ function ProjectListingCard({ project, index, locale }: { project: Project; inde
               alt={`${project.title} kapak görseli`}
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-105"
+              className="object-contain transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-background/15" />
-            <div className="absolute inset-0 grid-pattern opacity-10" />
           </>
         ) : (
           <>

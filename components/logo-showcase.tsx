@@ -5,7 +5,7 @@ import { PortfolioLogoCard, type PortfolioLogoWork } from "@/components/portfoli
 type LogoWork = PortfolioLogoWork
 
 export function LogoShowcase({ locale, works: managedWorks }: { locale: Locale; works?: LogoWork[] }) {
-  const works = (managedWorks ?? getLogoWorks(locale)).slice(0, 3)
+  const works = managedWorks ?? getLogoWorks(locale)
 
   return (
     <section className="section-shell py-12 md:py-16">

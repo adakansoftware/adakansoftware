@@ -59,6 +59,15 @@ export const servicesByLocale = {
 export const projectsByLocale = {
   tr: [
     {
+      title: "Z Grup İnşaat",
+      href: "/projects#z-grup-insaat",
+      category: "İnşaat ve hafriyat web sitesi",
+      year: "2026",
+      description: "Hafriyat, temel kazısı ve nakliyat hizmetlerini; filo, proje ve teklif bağlantılarıyla sunan kurumsal web tasarımı.",
+      color: "#a00b00",
+      coverImage: "/projects/z-grup-insaat-cover.png",
+    },
+    {
       title: "Sallıhoğulları Hafriyat",
       href: "https://sallihogullaridemobyadakansoftware.vercel.app/",
       category: "Hafriyat kurumsal web sitesi",
@@ -101,6 +110,15 @@ export const projectsByLocale = {
     },
   ],
   en: [
+    {
+      title: "Z Grup İnşaat",
+      href: "/projects#z-grup-insaat",
+      category: "Construction and excavation website",
+      year: "2026",
+      description: "A corporate website presenting excavation, foundation digging and transport services, with fleet, project and quote navigation.",
+      color: "#a00b00",
+      coverImage: "/projects/z-grup-insaat-cover.png",
+    },
     {
       title: "Sallıhoğulları Excavation",
       href: "https://sallihogullaridemobyadakansoftware.vercel.app/",
@@ -199,6 +217,14 @@ export const demoExamplesByLocale = {
 export const logoWorksByLocale = {
   tr: [
     {
+      title: "Z Grup",
+      category: "Logo tasarımı",
+      description: "Siyah geometrik Z formunu kırmızı bir çizgiyle birleştiren marka işareti.",
+      initials: "ZG",
+      logoImage: "/projects/z-grup-logo.png",
+      color: "#a00b00",
+    },
+    {
       title: "Salihoğulları Hafriyat",
       category: "Minimal wordmark",
       description: "Teknoloji ve danışmanlık markaları için keskin, sade ve dijitalde güçlü duran logotype çalışması.",
@@ -231,6 +257,14 @@ export const logoWorksByLocale = {
     },
   ],
   en: [
+    {
+      title: "Z Grup",
+      category: "Logo design",
+      description: "A geometric black Z paired with a sweeping red accent.",
+      initials: "ZG",
+      logoImage: "/projects/z-grup-logo.png",
+      color: "#a00b00",
+    },
     {
       title: "Salihoğulları Hafriyat",
       category: "Minimal wordmark",

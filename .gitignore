@@ -12,6 +12,9 @@ __v0_jsx-dev-runtime.ts
 # Common ignores
 node_modules
 .next/
+.open-next/
+.wrangler/
+.dev.vars*
 tsconfig.tsbuildinfo
 .DS_Store
 .data/

@@ -99,9 +99,10 @@ export async function claimReplayableContactOutboxEntries(input: {
   limit: number
   leaseMs: number
 }) {
-  const claimedEntries: ContactOutboxEntry[] = []
+  let claimedEntries: ContactOutboxEntry[] = []
 
   await getStore().updateOutboxEntries((entries) => {
+    claimedEntries = []
     const sortedEntries = [...entries].sort((left, right) => left.createdAt - right.createdAt)
     const selectedIds = new Set<string>()
 

@@ -15,7 +15,10 @@
     "test:smoke": "node scripts/run-smoke-routes.mjs",
     "test:smoke:boundaries": "node scripts/run-smoke-routes.mjs ./test-request-boundaries.mjs",
     "test:smoke:production": "node scripts/run-smoke-routes.mjs ./test-security-headers.mjs --production",
-    "ops:contact:worker": "node scripts/contact-replay-worker.mjs"
+    "ops:contact:worker": "node scripts/contact-replay-worker.mjs",
+    "build:cloudflare": "opennextjs-cloudflare build",
+    "deploy": "wrangler deploy",
+    "preview:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -64,6 +67,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@next/eslint-plugin-next": "^15.5.22",
+    "@opennextjs/cloudflare": "1.20.6",
     "@tailwindcss/postcss": "^4.2.0",
     "@types/node": "^22",
     "@types/react": "^19",
@@ -74,6 +78,7 @@
     "tailwindcss": "^4.2.0",
     "tw-animate-css": "1.3.3",
     "typescript": "5.7.3",
-    "typescript-eslint": "^8.59.2"
+    "typescript-eslint": "^8.59.2",
+    "wrangler": "4.136.3"
   }
 }

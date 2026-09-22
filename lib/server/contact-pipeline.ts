@@ -53,11 +53,15 @@ function pruneIdempotencyRecords(records: Map<string, ContactIdempotencyRecord>,
 }
 
 async function loadIdempotencyRecords(now: number) {
-  const records = new Map<string, ContactIdempotencyRecord>(await getStore().readIdempotencyRecords())
+  let records = new Map<string, ContactIdempotencyRecord>(await getStore().readIdempotencyRecords())
   const changed = pruneIdempotencyRecords(records, now)
 
   if (changed) {
-    await getStore().writeIdempotencyRecords(Array.from(records.entries()))
+    await getStore().updateIdempotencyRecords((latestRecords) => {
+      records = new Map(latestRecords)
+      pruneIdempotencyRecords(records, now)
+      return Array.from(records.entries())
+    })
   }
 
   return records
@@ -97,7 +101,7 @@ async function appendReplayAuditEntry(entry: ContactReplayAuditEntry) {
   })
 }
 
-export async function getIdempotencyReplay(request: Request, submission: ContactSubmission, now: number) {
+export async function getIdempotencyReplay(request: Request, submission: ContactSubmission, now: number, owner: string) {
   const key = normalizeIdempotencyKey(request.headers.get("idempotency-key"))
   if (!key) {
     return null
@@ -105,18 +109,22 @@ export async function getIdempotencyReplay(request: Request, submission: Contact
 
   const idempotencyRecords = await loadIdempotencyRecords(now)
 
-  const existingRecord = idempotencyRecords.get(key)
+  let existingRecord = idempotencyRecords.get(key)
   if (!existingRecord) {
-    const inProgress = await getStore().consumeDuplicate(
+    const reservation = await getStore().claimReservation(
       `idempotency:${key}`,
+      owner,
       contactPolicy.idempotencyWindowMs,
     )
 
-    if (inProgress) {
+    if (reservation !== "acquired") {
       return { key, conflict: false as const, pending: true as const }
     }
 
-    return null
+    // The previous owner may have committed and released between our initial
+    // read and this claim. Never accept a reused key from that stale snapshot.
+    existingRecord = (await loadIdempotencyRecords(Date.now())).get(key)
+    if (!existingRecord) return null
   }
 
   const fingerprint = getSubmissionFingerprint(submission)
@@ -137,6 +145,11 @@ export async function getIdempotencyReplay(request: Request, submission: Contact
       replayed: true,
     },
   }
+}
+
+export async function releaseIdempotencyReservation(request: Request, owner: string) {
+  const key = normalizeIdempotencyKey(request.headers.get("idempotency-key"))
+  if (key) await getStore().releaseReservation(`idempotency:${key}`, owner)
 }
 
 export async function storeIdempotencyReplay(
@@ -340,9 +353,9 @@ export async function runContactOutboxReplay(input: {
 
   await getStore().updateReplayRuntimeState((state) => {
     const currentLock = state.activeLock && state.activeLock.expiresAt > now ? state.activeLock : null
+    activeLock = currentLock
 
     if (currentLock) {
-      activeLock = currentLock
       return currentLock === state.activeLock ? state : { ...state, activeLock: currentLock }
     }
 

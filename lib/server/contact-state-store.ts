@@ -1,9 +1,10 @@
 import { join } from "node:path"
 
-import { createClient, type RedisClientType } from "redis"
+import { createClient, WatchError, type RedisClientType } from "redis"
 
 import type { ContactSubmission } from "@/lib/server/contact-service"
 import { readJsonFile, updateJsonFile, writeJsonFile } from "@/lib/server/json-file-store"
+import { createReservationOperations, type ContactReservations } from "./contact-reservations.ts"
 
 export type ContactOutboxStatus = "pending" | "delivered" | "skipped" | "failed" | "dead-letter"
 export type ContactStateBackend = "file" | "redis" | "postgres"
@@ -112,7 +113,9 @@ export type ContactStateStore = {
   consumeRateLimit(key: string, windowMs: number, maxRequests: number): Promise<boolean>
   isRateLimited(key: string, windowMs: number, maxRequests: number): Promise<boolean>
   clearRateLimit(key: string): Promise<void>
-  consumeDuplicate(key: string, windowMs: number): Promise<boolean>
+  claimReservation(key: string, owner: string, windowMs: number): Promise<"acquired" | "pending" | "completed">
+  completeReservation(key: string, owner: string): Promise<void>
+  releaseReservation(key: string, owner: string): Promise<void>
 }
 
 export type ContactStateStoreCapabilities = {
@@ -140,7 +143,7 @@ const REPLAY_AUDIT_FILE_PATH = join(DATA_DIRECTORY, "contact-replay-audit.json")
 const WORKER_RUNTIME_FILE_PATH = join(DATA_DIRECTORY, "contact-worker-runtime.json")
 const ADMIN_NONCES_FILE_PATH = join(DATA_DIRECTORY, "contact-admin-nonces.json")
 const RATE_LIMIT_FILE_PATH = join(DATA_DIRECTORY, "contact-rate-limits.json")
-const DUPLICATE_FILE_PATH = join(DATA_DIRECTORY, "contact-duplicates.json")
+const RESERVATIONS_FILE_PATH = join(DATA_DIRECTORY, "contact-reservations.json")
 
 let redisClientPromise: Promise<RedisClientType> | null = null
 
@@ -227,10 +230,11 @@ async function updateRedisJson<T>(name: string, fallback: T, updater: (value: T)
       const nextValue = await updater(currentValue)
       const transaction = client.multi()
       transaction.set(key, JSON.stringify(nextValue))
-      const result = await transaction.exec()
-
-      if (result !== null) {
-        return
+      try {
+        const result = await transaction.exec()
+        if (result !== null) return
+      } catch (error) {
+        if (!(error instanceof WatchError)) throw error
       }
     }
   } finally {
@@ -251,6 +255,7 @@ function normalizeOutboxEntries(entries: ContactOutboxEntry[]) {
 
 const fileContactStateStore: ContactStateStore = {
   backend: "file",
+  ...createReservationOperations((updater) => updateJsonFile<ContactReservations>(RESERVATIONS_FILE_PATH, {}, updater)),
   async readOutboxEntries() {
     const entries = await readJsonFile<ContactOutboxEntry[]>(OUTBOX_FILE_PATH, [])
     return normalizeOutboxEntries(entries)
@@ -361,20 +366,11 @@ const fileContactStateStore: ContactStateStore = {
       return remaining
     })
   },
-  async consumeDuplicate(key, windowMs) {
-    let duplicate = false
-    await updateJsonFile<Record<string, number>>(DUPLICATE_FILE_PATH, {}, (entries) => {
-      const now = Date.now()
-      const active = Object.fromEntries(Object.entries(entries).filter(([, expiry]) => expiry > now))
-      duplicate = Boolean(active[key])
-      return duplicate ? active : { ...active, [key]: now + windowMs }
-    })
-    return duplicate
-  },
 }
 
 const redisContactStateStore: ContactStateStore = {
   backend: "redis",
+  ...createReservationOperations((updater) => updateRedisJson<ContactReservations>("reservations", {}, updater)),
   async readOutboxEntries() {
     const entries = await readRedisJson<ContactOutboxEntry[]>("outbox", [])
     return normalizeOutboxEntries(entries)
@@ -471,11 +467,6 @@ const redisContactStateStore: ContactStateStore = {
   async clearRateLimit(key) {
     const client = await getRedisClient()
     await client.del(getRedisKey(`rate-limit:${key}`))
-  },
-  async consumeDuplicate(key, windowMs) {
-    const client = await getRedisClient()
-    const result = await client.set(getRedisKey(`duplicate:${key}`), "1", { NX: true, PX: windowMs })
-    return result !== "OK"
   },
 }
 

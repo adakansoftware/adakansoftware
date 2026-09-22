@@ -8,7 +8,7 @@ import { contactPolicy, getContactPolicySnapshot } from "@/lib/server/contact-po
 import { isValidContactFromDomain, isValidResendApiKey } from "@/lib/server/contact-runtime-config"
 import { getContactStateStore } from "@/lib/server/contact-state-store"
 import type { ContactDeliveryPort } from "@/lib/server/contact-ports"
-import { pruneExpiredBuckets, pruneExpiredEntries } from "@/lib/server/memory-store"
+import { pruneExpiredBuckets } from "@/lib/server/memory-store"
 
 function normalizeWhitespace(value: string) {
   return value.trim().replace(/\s+/g, " ")
@@ -33,7 +33,6 @@ const contactSchema = z.object({
 }).strict()
 
 const requestTimestampsByIp = new Map<string, number[]>()
-const recentSubmissionFingerprints = new Map<string, number>()
 
 export type ContactSubmission = z.infer<typeof contactSchema> & { locale: Locale }
 
@@ -86,30 +85,20 @@ function getSubmissionFingerprint(input: { email: string; project: string; local
     .digest("hex")
 }
 
-export async function isDuplicateSubmission(submission: ContactSubmission, ip: string, now: number) {
-  if (recentSubmissionFingerprints.size > 500) {
-    pruneExpiredEntries(recentSubmissionFingerprints, now, contactPolicy.duplicateWindowMs)
-  }
+function submissionReservationKey(submission: ContactSubmission, ip: string) {
+  return `submission:${getSubmissionFingerprint({ ...submission, ip })}`
+}
 
-  const fingerprint = getSubmissionFingerprint({
-    email: submission.email,
-    project: submission.project,
-    locale: submission.locale,
-    ip,
-  })
+export async function reserveContactSubmission(submission: ContactSubmission, ip: string, owner: string) {
+  return getContactStateStore().claimReservation(submissionReservationKey(submission, ip), owner, contactPolicy.duplicateWindowMs)
+}
 
-  if (process.env.CONTACT_STATE_BACKEND?.trim().toLowerCase() === "redis") {
-    return getContactStateStore().consumeDuplicate(fingerprint, contactPolicy.duplicateWindowMs)
-  }
+export async function completeContactSubmission(submission: ContactSubmission, ip: string, owner: string) {
+  await getContactStateStore().completeReservation(submissionReservationKey(submission, ip), owner)
+}
 
-  const previousTimestamp = recentSubmissionFingerprints.get(fingerprint)
-  if (previousTimestamp && now - previousTimestamp < contactPolicy.duplicateWindowMs) {
-    recentSubmissionFingerprints.set(fingerprint, now)
-    return true
-  }
-
-  recentSubmissionFingerprints.set(fingerprint, now)
-  return false
+export async function releaseContactSubmission(submission: ContactSubmission, ip: string, owner: string) {
+  await getContactStateStore().releaseReservation(submissionReservationKey(submission, ip), owner)
 }
 
 function getFromAddress() {
@@ -145,7 +134,7 @@ export function getContactServiceDiagnostics() {
   return {
     deliveryConfigured: isContactDeliveryConfigured(),
     inMemoryRateLimitBuckets: requestTimestampsByIp.size,
-    inMemoryDuplicateFingerprints: recentSubmissionFingerprints.size,
+    inMemoryDuplicateFingerprints: 0,
     policy: getContactPolicySnapshot(),
   }
 }

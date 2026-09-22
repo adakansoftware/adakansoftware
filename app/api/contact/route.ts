@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto"
+
 import { contactPolicy } from "@/lib/server/contact-policy"
 import { hasJsonContentType, readBoundedJsonObject } from "@/lib/request-body"
 import { isContactRuntimeConfigurationValid } from "@/lib/server/contact-runtime-config"
@@ -7,13 +9,16 @@ import {
   getIdempotencyReplay,
   markContactMessageDelivered,
   markContactMessageFailed,
+  releaseIdempotencyReservation,
   storeIdempotencyReplay,
 } from "@/lib/server/contact-pipeline"
 import {
   getContactContentLengthLimit,
   hasSpamTrapValue,
   isContactDeliveryConfigured,
-  isDuplicateSubmission,
+  reserveContactSubmission,
+  completeContactSubmission,
+  releaseContactSubmission,
   isRateLimited,
   parseContactPayload,
   resendContactDelivery,
@@ -63,6 +68,18 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const requestId = createRequestId(request)
+  try {
+    return await handleContactPost(request, requestId, randomUUID())
+  } catch (error) {
+    logServerEvent("error", "contact.persistence.failed", {
+      requestId,
+      error: error instanceof Error ? error.message : "unknown-error",
+    })
+    return jsonResponse({ ok: false, error: "Contact service is unavailable" }, { status: 503, requestId })
+  }
+}
+
+async function handleContactPost(request: Request, requestId: string, owner: string) {
   const now = Date.now()
   const clientIp = getClientIp(request)
 
@@ -145,68 +162,144 @@ export async function POST(request: Request) {
     return jsonResponse({ ok: false, error: "Invalid request" }, { status: 400, requestId })
   }
 
-  const replay = await getIdempotencyReplay(request, submission, now)
-  if (replay?.conflict) {
-    return jsonResponse({ ok: false, error: "Idempotency conflict" }, { status: 409, requestId })
-  }
-
-  if (replay && !replay.conflict && replay.pending) {
-    return jsonResponse({ ok: false, error: "Idempotency request in progress" }, { status: 409, requestId })
-  }
-
-  if (replay && !replay.conflict && !replay.pending) {
-    return jsonResponse(replay.body, { status: replay.status, requestId })
-  }
-
-  if (await isDuplicateSubmission(submission, clientIp, now)) {
-    const duplicateResponse = {
-      ok: true,
-      accepted: true,
-      duplicate: true,
-      deliveryConfigured: isContactDeliveryConfigured(),
-      skippedDelivery: true,
-      queued: false,
+  try {
+    const replay = await getIdempotencyReplay(request, submission, now, owner)
+    if (replay?.conflict) {
+      return jsonResponse({ ok: false, error: "Idempotency conflict" }, { status: 409, requestId })
     }
 
-    await storeIdempotencyReplay(request, submission, {
-      status: 200,
-      body: duplicateResponse,
+    if (replay && !replay.conflict && replay.pending) {
+      return jsonResponse({ ok: false, error: "Idempotency request in progress" }, { status: 409, requestId })
+    }
+
+    if (replay && !replay.conflict && !replay.pending) {
+      return jsonResponse(replay.body, { status: replay.status, requestId })
+    }
+
+    const reservation = await reserveContactSubmission(submission, clientIp, owner)
+    if (reservation === "pending") {
+      return jsonResponse({ ok: false, error: "Contact request in progress" }, { status: 409, requestId })
+    }
+    if (reservation === "completed") {
+      const duplicateResponse = {
+        ok: true,
+        accepted: true,
+        duplicate: true,
+        deliveryConfigured: isContactDeliveryConfigured(),
+        skippedDelivery: true,
+        queued: false,
+      }
+
+      await storeIdempotencyReplay(request, submission, {
+        status: 200,
+        body: duplicateResponse,
+      })
+
+      return jsonResponse(duplicateResponse, { requestId })
+    }
+
+    try {
+      await recordContactRequest(submission)
+    } catch (error) {
+      logServerEvent("error", "contact.request-record.failed", {
+        requestId,
+        error: error instanceof Error ? error.message : "unknown-error",
+      })
+      return jsonResponse({ ok: false, error: "Contact service is unavailable" }, { status: 503, requestId })
+    }
+
+    const outboxEntry = await createQueuedContactMessage(submission, {
+      owner: `request:${requestId}`,
     })
+    // Only durable contacts with an outbox entry may acknowledge a duplicate.
+    await completeContactSubmission(submission, clientIp, owner)
 
-    return jsonResponse(duplicateResponse, { requestId })
-  }
+    try {
+      const result = await resendContactDelivery.deliver(submission)
 
-  try {
-    await recordContactRequest(submission)
-  } catch (error) {
-    logServerEvent("error", "contact.request-record.failed", {
-      requestId,
-      error: error instanceof Error ? error.message : "unknown-error",
-    })
-    return jsonResponse({ ok: false, error: "Contact service is unavailable" }, { status: 503, requestId })
-  }
+      if (!result.ok) {
+        await markContactMessageFailed(
+          outboxEntry.id,
+          result.failure ?? "upstream-delivery-rejected",
+          undefined,
+          outboxEntry.attempts,
+          outboxEntry.leaseOwner,
+        )
 
-  const outboxEntry = await createQueuedContactMessage(submission, {
-    owner: `request:${requestId}`,
-  })
+        logServerEvent("error", "contact.delivery.rejected", {
+          requestId,
+          clientIp,
+          messageId: outboxEntry.id,
+          reason: result.failure,
+        })
 
-  try {
-    const result = await resendContactDelivery.deliver(submission)
+        const queuedResponse = {
+          ok: true,
+          accepted: true,
+          deliveryConfigured: isContactDeliveryConfigured(),
+          duplicate: false,
+          skippedDelivery: false,
+          queued: true,
+          deliveryPending: true,
+          messageId: outboxEntry.id,
+        }
 
-    if (!result.ok) {
+        await storeIdempotencyReplay(request, submission, {
+          status: 202,
+          body: queuedResponse,
+        })
+
+        return jsonResponse(queuedResponse, {
+          status: 202,
+          requestId,
+          headers: {
+            "X-Contact-Message-Id": outboxEntry.id,
+          },
+        })
+      }
+
+      await markContactMessageDelivered(
+        outboxEntry.id,
+        result.skipped ? "skipped" : "delivered",
+        outboxEntry.leaseOwner,
+      )
+
+      const successResponse = {
+        ok: true,
+        accepted: true,
+        deliveryConfigured: isContactDeliveryConfigured(),
+        duplicate: false,
+        skippedDelivery: result.skipped,
+        queued: true,
+        messageId: outboxEntry.id,
+      }
+
+      await storeIdempotencyReplay(request, submission, {
+        status: 200,
+        body: successResponse,
+      })
+
+      return jsonResponse(successResponse, {
+        requestId,
+        headers: {
+          "X-Contact-Message-Id": outboxEntry.id,
+        },
+      })
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "unknown-error"
       await markContactMessageFailed(
         outboxEntry.id,
-        result.failure ?? "upstream-delivery-rejected",
+        errorMessage,
         undefined,
         outboxEntry.attempts,
         outboxEntry.leaseOwner,
       )
 
-      logServerEvent("error", "contact.delivery.rejected", {
+      logServerEvent("error", "contact.delivery.failed", {
         requestId,
         clientIp,
         messageId: outboxEntry.id,
-        reason: result.failure,
+        error: errorMessage,
       })
 
       const queuedResponse = {
@@ -233,73 +326,18 @@ export async function POST(request: Request) {
         },
       })
     }
-
-    await markContactMessageDelivered(
-      outboxEntry.id,
-      result.skipped ? "skipped" : "delivered",
-      outboxEntry.leaseOwner,
-    )
-
-    const successResponse = {
-      ok: true,
-      accepted: true,
-      deliveryConfigured: isContactDeliveryConfigured(),
-      duplicate: false,
-      skippedDelivery: result.skipped,
-      queued: true,
-      messageId: outboxEntry.id,
+  } finally {
+    const released = await Promise.allSettled([
+      releaseIdempotencyReservation(request, owner),
+      releaseContactSubmission(submission, clientIp, owner),
+    ])
+    for (const result of released) {
+      if (result.status === "rejected") {
+        logServerEvent("error", "contact.reservation.release-failed", {
+          requestId,
+          error: result.reason instanceof Error ? result.reason.message : "unknown-error",
+        })
+      }
     }
-
-    await storeIdempotencyReplay(request, submission, {
-      status: 200,
-      body: successResponse,
-    })
-
-    return jsonResponse(successResponse, {
-      requestId,
-      headers: {
-        "X-Contact-Message-Id": outboxEntry.id,
-      },
-    })
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "unknown-error"
-    await markContactMessageFailed(
-      outboxEntry.id,
-      errorMessage,
-      undefined,
-      outboxEntry.attempts,
-      outboxEntry.leaseOwner,
-    )
-
-    logServerEvent("error", "contact.delivery.failed", {
-      requestId,
-      clientIp,
-      messageId: outboxEntry.id,
-      error: errorMessage,
-    })
-
-    const queuedResponse = {
-      ok: true,
-      accepted: true,
-      deliveryConfigured: isContactDeliveryConfigured(),
-      duplicate: false,
-      skippedDelivery: false,
-      queued: true,
-      deliveryPending: true,
-      messageId: outboxEntry.id,
-    }
-
-    await storeIdempotencyReplay(request, submission, {
-      status: 202,
-      body: queuedResponse,
-    })
-
-    return jsonResponse(queuedResponse, {
-      status: 202,
-      requestId,
-      headers: {
-        "X-Contact-Message-Id": outboxEntry.id,
-      },
-    })
   }
 }
