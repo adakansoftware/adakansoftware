@@ -1,4 +1,5 @@
 import { contactPolicy } from "@/lib/server/contact-policy"
+import { hasJsonContentType, readBoundedJsonObject } from "@/lib/request-body"
 import { isContactRuntimeConfigurationValid } from "@/lib/server/contact-runtime-config"
 import { getContactStateStoreStatus } from "@/lib/server/contact-state-store"
 import {
@@ -122,23 +123,18 @@ export async function POST(request: Request) {
     )
   }
 
-  const contentType = request.headers.get("content-type") ?? ""
-  if (!contentType.includes("application/json")) {
+  if (!hasJsonContentType(request)) {
     return jsonResponse({ ok: false, error: "Invalid request" }, { status: 400, requestId })
   }
 
-  let body: unknown
-
-  try {
-    const rawBody = await request.text()
-    if (new TextEncoder().encode(rawBody).byteLength > getContactContentLengthLimit()) {
-      return jsonResponse({ ok: false, error: "Payload too large" }, { status: 413, requestId })
-    }
-
-    body = JSON.parse(rawBody) as unknown
-  } catch {
-    return jsonResponse({ ok: false, error: "Invalid request" }, { status: 400, requestId })
+  const parsedBody = await readBoundedJsonObject(request, getContactContentLengthLimit())
+  if (!parsedBody.ok) {
+    return jsonResponse(
+      { ok: false, error: parsedBody.status === 413 ? "Payload too large" : "Invalid request" },
+      { status: parsedBody.status, requestId },
+    )
   }
+  const body = parsedBody.body
 
   if (hasSpamTrapValue(body)) {
     return jsonResponse({ ok: true, accepted: true }, { requestId })

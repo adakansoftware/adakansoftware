@@ -42,6 +42,29 @@ Before deployment run:
 
 ```sh
 npm run lint
+npm test
+npm run audit:production
 npm run build
+npm run test:smoke:production
+npm run test:smoke:boundaries
 npm run test:smoke
 ```
+
+Run the production smoke check before starting a development smoke server, so
+it uses the fresh production build. The boundary smoke check expects a configured
+test administrator (`ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`).
+It sends only invalid submissions and unauthenticated content requests.
+
+The full `test:smoke` suite creates contact records and replays the outbox. Run it
+only with a disposable test database and isolated contact state, with email
+delivery disabled. A successful contact response requires its database write;
+the full suite cannot validate successful delivery with no database configured.
+
+API JSON body limits are enforced while reading bytes, including requests without
+Content-Length. Oversized streams are cancelled and receive 413; malformed JSON,
+invalid UTF-8 and failed body reads receive 400. Existing limits remain 8 KiB for
+admin login, 32 KiB for admin content and `CONTACT_MAX_CONTENT_LENGTH` for contact.
+
+Local JSON state writes replace files through a temporary file in the same
+directory. Failed writes reject their caller without blocking later writes.
+This is single-process development storage, not a distributed transaction layer.

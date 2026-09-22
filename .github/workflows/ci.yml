@@ -29,8 +29,21 @@ jobs:
       - name: Audit production dependencies
         run: npm run audit:production
 
+      - name: Unit and security regression tests
+        run: npm test
+
       - name: Build
         run: npm run build
+
+      - name: Production security smoke tests
+        run: npm run test:smoke:production
+
+      - name: Request boundary smoke tests
+        run: npm run test:smoke:boundaries
+        env:
+          ADMIN_EMAIL: smoke@example.com
+          ADMIN_PASSWORD: smoke-only-password
+          ADMIN_SESSION_SECRET: smoke-only-session-secret-at-least-32-characters
 
       - name: Smoke test routes
         run: npm run test:smoke
