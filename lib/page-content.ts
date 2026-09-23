@@ -164,10 +164,10 @@ const approachPageContent: Record<Locale, ApproachContent> = {
 const servicesPageContent: Record<Locale, ServicesContent> = {
   tr: {
     header: {
-      title: "Markanın ihtiyacına göre",
+      title: "Yazılım ve tasarım için",
       gradientText: "net çözümler",
       description:
-        "Tek sayfalık bir vitrin yerine, her hizmet alanını ayrı hedef ve çıktı ile ele alıyoruz. Tasarım, metin ve geliştirme aynı büyüme amacına bağlanıyor.",
+        "Özel yazılım, kurumsal web sitesi, Next.js geliştirme, UI/UX ve marka kimliğini ayrı hedef ve çıktılarla ele alıyor; aynı büyüme amacında birleştiriyoruz.",
       secondaryHref: "/projects",
       secondaryLabel: "Projeleri İncele",
     },
@@ -192,6 +192,12 @@ const servicesPageContent: Record<Locale, ServicesContent> = {
         items: ["SaaS panel tasarımı", "Mobil uygulama arayüzleri", "Wireframe ve prototip", "Kullanıcı yolculuğu"],
       },
       {
+        id: "software-development",
+        title: "Özel Yazılım Geliştirme",
+        outcome: "İş süreçlerinize uyum sağlayan web uygulamaları, yönetim panelleri ve dijital ürünler geliştiririz.",
+        items: ["Web uygulaması", "Yönetim paneli", "API entegrasyonu", "İş akışı otomasyonu"],
+      },
+      {
         id: "frontend",
         title: "Frontend Geliştirme",
         outcome: "Tasarımları performanslı ve sürdürülebilir Next.js arayüzlerine dönüştürürüz.",
@@ -202,9 +208,9 @@ const servicesPageContent: Record<Locale, ServicesContent> = {
   en: {
     header: {
       title: "Clear solutions",
-      gradientText: "for every need",
+      gradientText: "for software and design",
       description:
-        "Instead of treating the site as a single showcase, we define each service area by its target, output, and business impact.",
+        "We connect custom software, corporate websites, Next.js development, UI/UX and brand identity through clear goals, outputs and business impact.",
       primaryHref: "/en/contact",
       primaryLabel: "Start a Project",
       secondaryHref: "/en/projects",
@@ -229,6 +235,12 @@ const servicesPageContent: Record<Locale, ServicesContent> = {
         title: "UI/UX Design",
         outcome: "We simplify product flows and make user decisions easier.",
         items: ["SaaS dashboard design", "Mobile app interfaces", "Wireframes and prototypes", "User journeys"],
+      },
+      {
+        id: "software-development",
+        title: "Custom Software Development",
+        outcome: "We build web applications, admin dashboards and digital products shaped around your business processes.",
+        items: ["Web applications", "Admin dashboards", "API integrations", "Workflow automation"],
       },
       {
         id: "frontend",

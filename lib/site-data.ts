@@ -22,6 +22,12 @@ export const servicesByLocale = {
       tags: ["SaaS", "Panel", "Mobil uygulama"],
     },
     {
+      title: "Özel Yazılım",
+      href: "/services#software-development",
+      description: "İş süreçlerinize uygun web uygulamaları, yönetim panelleri, API entegrasyonları ve otomasyonlar geliştiririz.",
+      tags: ["Web uygulaması", "API", "Otomasyon"],
+    },
+    {
       title: "Frontend Geliştirme",
       href: "/services#frontend",
       description: "Tasarımları performanslı, responsive ve sürdürülebilir Next.js arayüzlerine dönüştürürüz.",
@@ -46,6 +52,12 @@ export const servicesByLocale = {
       href: "/services#ui-ux",
       description: "We simplify complex flows and make products easier to understand, trust, and use again.",
       tags: ["SaaS", "Dashboard", "Mobile app"],
+    },
+    {
+      title: "Custom Software",
+      href: "/services#software-development",
+      description: "We build web applications, admin dashboards, API integrations and automations around your business processes.",
+      tags: ["Web apps", "API", "Automation"],
     },
     {
       title: "Frontend Development",

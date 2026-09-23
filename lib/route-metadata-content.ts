@@ -24,35 +24,37 @@ type MetadataContent = {
 export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, MetadataContent>> = {
   home: {
     tr: {
-      title: "Premium Web Tasarımı ve Marka Ajansı",
+      title: "Yazılım Şirketi ve Web Tasarım Ajansı",
       description:
-        "Adakan Software; premium web tasarımı, marka kimliği, UI/UX ve dönüşüm odaklı dijital ürün deneyimleri sunan yaratıcı ajans.",
-      keywords: ["premium web tasarımı", "marka ajansı", "ui ux tasarımı", "next.js ajansı"],
+        "Özel yazılım, kurumsal web sitesi, Next.js geliştirme, UI/UX, logo ve marka kimliği hizmetleri sunan İstanbul merkezli yazılım şirketi.",
+      keywords: ["yazılım şirketi", "yazılım firması", "özel yazılım geliştirme", "web tasarım ajansı", "kurumsal web sitesi", "Next.js geliştirme", "UI UX tasarımı", "İstanbul yazılım şirketi"],
     },
     en: {
-      title: "Premium Web Design and Brand Agency",
+      title: "Software Development and Web Design Agency",
       description:
-        "Adakan Software is a creative agency for premium websites, brand identity, UI/UX, and conversion-focused digital product experiences.",
-      keywords: ["premium web design", "brand agency", "ui ux design", "next.js agency"],
+        "Istanbul software company delivering custom software, corporate websites, Next.js development, UI/UX, logo design and brand identity.",
+      keywords: ["software development company", "custom software development", "web design agency", "corporate website", "Next.js development", "UI UX design", "Istanbul software company"],
     },
   },
   about: {
     tr: {
-      title: "Hakkımızda",
-      description: "Adakan Software tasarım, marka ve yazılımı aynı büyüme hedefinde birleştiren premium dijital stüdyodur.",
+      title: "Yazılım ve Tasarım Stüdyosu Hakkında",
+      description: "İstanbul merkezli yazılım ve tasarım stüdyomuz; strateji, UI/UX, web geliştirme ve marka kimliğini tek ekipte birleştirir.",
+      keywords: ["yazılım stüdyosu", "İstanbul yazılım firması", "dijital ürün ajansı", "web geliştirme ekibi"],
     },
     en: {
-      title: "About",
-      description: "Adakan Software is a premium digital studio connecting design, brand, and software around business growth.",
+      title: "About Our Software and Design Studio",
+      description: "Our Istanbul software and design studio brings strategy, UI/UX, web development and brand identity together in one team.",
+      keywords: ["software studio", "Istanbul software company", "digital product agency", "web development team"],
     },
   },
   approach: {
     tr: {
-      title: "Yaklaşımımız",
+      title: "Yazılım Projelerinde Çalışma Yaklaşımımız",
       description: "Önce strateji, sonra zanaat. Adakan Software tasarım kararlarını marka, kullanıcı ve sürdürülebilirlik odağında kurar.",
     },
     en: {
-      title: "Approach",
+      title: "Our Software Project Approach",
       description: "Strategy first, craft second. Adakan Software builds design decisions around brand, users, and long-term sustainability.",
     },
   },
@@ -78,22 +80,24 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
   },
   contact: {
     tr: {
-      title: "İletişim",
-      description: "Yeni web sitesi, marka kimliği veya dijital ürün projeniz için Adakan Software ile iletişime geçin.",
+      title: "Yazılım ve Web Projesi İçin İletişim",
+      description: "Özel yazılım, kurumsal web sitesi, UI/UX veya marka kimliği projenizin kapsamını ve teklif sürecini birlikte netleştirelim.",
+      keywords: ["yazılım projesi teklifi", "web sitesi teklifi", "yazılım firması iletişim", "web tasarım ajansı İstanbul"],
     },
     en: {
-      title: "Contact",
+      title: "Contact for Software and Web Projects",
       description: "Get in touch with Adakan Software about your new website, brand identity, or digital product project.",
+      keywords: ["software project quote", "website quote", "software company contact", "Istanbul web design agency"],
     },
   },
   logo: {
     tr: {
-      title: "Logo Tasarımı",
+      title: "Logo ve Kurumsal Kimlik Tasarımı",
       description: "Adakan Software logo tasarımı, marka işareti ve kurumsal kimlik sistemleri için premium görsel kimlik çözümleri sunar.",
       keywords: ["logo tasarımı", "marka kimliği", "kurumsal kimlik", "premium logo"],
     },
     en: {
-      title: "Logo Design",
+      title: "Logo and Brand Identity Design",
       description: "Adakan Software creates premium logo design, brand marks, and visual identity systems for ambitious brands.",
       keywords: ["logo design", "brand identity", "visual identity", "premium logo"],
     },
@@ -110,34 +114,38 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
   },
   pricing: {
     tr: {
-      title: "Fiyatlandırma",
-      description: "Web tasarım, marka kimliği ve dijital ürün projeleri için başlangıç fiyat aralıkları.",
-      keywords: ["web tasarım fiyatları", "marka kimliği fiyatları", "dijital ürün fiyatlandırma"],
+      title: "Yazılım ve Web Tasarım Fiyatları",
+      description: "Kurumsal web sitesi, özel yazılım, UI/UX, frontend geliştirme, logo ve marka kimliği projeleri için başlangıç fiyatlarını inceleyin.",
+      keywords: ["yazılım fiyatları", "web tasarım fiyatları", "kurumsal web sitesi fiyatı", "özel yazılım maliyeti", "UI UX fiyatları"],
     },
     en: {
-      title: "Pricing",
+      title: "Software and Web Design Pricing",
       description: "Starting price ranges for web, brand identity, and digital product projects.",
-      keywords: ["web design pricing", "brand identity pricing", "digital product pricing"],
+      keywords: ["software development pricing", "web design pricing", "corporate website cost", "custom software cost", "UI UX pricing"],
     },
   },
   projects: {
     tr: {
-      title: "Projeler",
-      description: "Web tasarımı, marka kimliği ve dijital ürün geliştirme işlerinin seçili örnekleri.",
+      title: "Yazılım ve Web Tasarım Projeleri",
+      description: "Kurumsal web sitesi, Next.js geliştirme, UI/UX, logo ve marka kimliği alanlarındaki seçili projelerimizi ve canlı işleri inceleyin.",
+      keywords: ["yazılım projeleri", "web tasarım örnekleri", "Next.js projeleri", "kurumsal web sitesi örnekleri", "UI UX portfolyo"],
     },
     en: {
-      title: "Projects",
+      title: "Software and Web Design Projects",
       description: "Selected examples of web design, brand identity, and digital product development work.",
+      keywords: ["software projects", "web design portfolio", "Next.js projects", "corporate website examples", "UI UX portfolio"],
     },
   },
   services: {
     tr: {
-      title: "Hizmetler",
-      description: "Premium web tasarımı, marka kimliği, UI/UX ve frontend geliştirme hizmetleri.",
+      title: "Yazılım Geliştirme ve Web Tasarım Hizmetleri",
+      description: "Özel yazılım, kurumsal web tasarımı, Next.js frontend, UI/UX, mobil arayüz, SEO altyapısı, logo ve marka kimliği hizmetleri.",
+      keywords: ["özel yazılım geliştirme", "web yazılım hizmetleri", "kurumsal web tasarım", "Next.js geliştirme", "frontend geliştirme", "UI UX tasarım", "mobil uygulama arayüzü"],
     },
     en: {
-      title: "Services",
+      title: "Software Development and Web Design Services",
       description: "Premium web design, brand identity, UI/UX, and frontend development services.",
+      keywords: ["custom software development", "web development services", "corporate web design", "Next.js development", "frontend development", "UI UX design"],
     },
   },
   terms: {

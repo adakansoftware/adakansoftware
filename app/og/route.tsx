@@ -3,18 +3,21 @@ import { type NextRequest } from "next/server"
 
 export const runtime = "nodejs"
 
-const pageData: Record<string, { subtitle: string; accent: string }> = {
-  services: { subtitle: "Web Design | Brand Identity | UI/UX | Frontend", accent: "#0066ff" },
-  projects: { subtitle: "Selected Work | Case Studies | Live Demos", accent: "#14b8a6" },
-  contact: { subtitle: "Start a Project | Get a Quote | Say Hello", accent: "#0066ff" },
-  logo: { subtitle: "Logo Design | Brand Mark | Identity Systems", accent: "#f59e0b" },
-  about: { subtitle: "Design & Software Studio | Istanbul, Turkey", accent: "#2dd4bf" },
-  default: { subtitle: "Premium Web Design | Brand Identity | UI/UX", accent: "#0066ff" },
+const pageData: Record<string, { tr: string; en: string; accent: string }> = {
+  services: { tr: "Özel Yazılım | Web Tasarım | Next.js | UI/UX", en: "Custom Software | Web Design | Next.js | UI/UX", accent: "#0066ff" },
+  projects: { tr: "Yazılım ve Web Tasarım Projeleri", en: "Software and Web Design Projects", accent: "#14b8a6" },
+  contact: { tr: "Yazılım Projenizi Birlikte Planlayalım", en: "Let’s Plan Your Software Project", accent: "#0066ff" },
+  logo: { tr: "Logo ve Kurumsal Kimlik Tasarımı", en: "Logo and Brand Identity Design", accent: "#f59e0b" },
+  about: { tr: "İstanbul Yazılım ve Tasarım Stüdyosu", en: "Istanbul Software and Design Studio", accent: "#2dd4bf" },
+  home: { tr: "Yazılım Geliştirme | Web Tasarım | UI/UX", en: "Software Development | Web Design | UI/UX", accent: "#0066ff" },
 }
 
 export async function GET(req: NextRequest) {
   const page = req.nextUrl.searchParams.get("page") ?? "default"
-  const { subtitle, accent } = pageData[page] ?? pageData.default
+  const locale = req.nextUrl.searchParams.get("locale") === "en" ? "en" : "tr"
+  const selected = pageData[page] ?? pageData.home
+  const subtitle = selected[locale]
+  const { accent } = selected
 
   return new ImageResponse(
     (

@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import type { Locale } from "@/lib/i18n"
 import { siteConfig } from "@/lib/site-config"
 import { routeMetadataContent, type RouteMetadataKey } from "@/lib/route-metadata-content"
+import { getPublicRouteByPath } from "@/lib/public-routes"
 
 const siteName = siteConfig.name
 const siteUrl = siteConfig.url
@@ -27,19 +28,24 @@ export function createPageMetadata({
   keywords = [],
 }: PageMetadataInput): Metadata {
   const canonicalPath = locale === "tr" ? path : `/en${path === "/" ? "" : path}`
-  const canonicalUrl = `${siteUrl}${canonicalPath === "/" ? "" : canonicalPath}`
-  const ogImage = new URL(`/og?page=${path.replace("/", "") || "default"}`, siteUrl).toString()
+  const canonicalUrl = new URL(canonicalPath, siteUrl).href
+  const ogImageUrl = new URL("/og", siteUrl)
+  ogImageUrl.searchParams.set("page", path.slice(1) || "home")
+  ogImageUrl.searchParams.set("locale", locale)
+  const ogImage = ogImageUrl.href
+  const fullTitle = `${title} | ${siteName}`
+  const index = getPublicRouteByPath(path)?.indexable !== false
 
   return {
-    title,
+    title: { absolute: fullTitle },
     description,
     keywords,
     alternates: {
-      canonical: canonicalPath,
+      canonical: canonicalUrl,
       languages: {
-        "tr-TR": path,
-        "en-US": path === "/" ? "/en" : `/en${path}`,
-        "x-default": path,
+        tr: new URL(path, siteUrl).href,
+        en: new URL(path === "/" ? "/en" : `/en${path}`, siteUrl).href,
+        "x-default": new URL(path, siteUrl).href,
       },
     },
     openGraph: {
@@ -48,6 +54,7 @@ export function createPageMetadata({
       url: canonicalUrl,
       siteName,
       locale: localeMap[locale].og,
+      alternateLocale: [localeMap[locale === "tr" ? "en" : "tr"].og],
       type: "website",
       images: [
         {
@@ -63,6 +70,11 @@ export function createPageMetadata({
       title: `${title} | ${siteName}`,
       description,
       images: [ogImage],
+    },
+    robots: {
+      index,
+      follow: true,
+      googleBot: { index, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
     },
   }
 }

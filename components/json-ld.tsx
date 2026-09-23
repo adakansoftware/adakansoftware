@@ -5,7 +5,7 @@ import { serializeJsonLd } from "@/lib/json-ld"
 export function JsonLd({ locale }: { locale: Locale }) {
   const organization = {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
+    "@type": "Organization",
     "@id": `${siteConfig.url}/#organization`,
     name: siteConfig.name,
     url: siteConfig.url,
@@ -22,14 +22,16 @@ export function JsonLd({ locale }: { locale: Locale }) {
       locale === "tr"
         ? "Büyümek isteyen markalar için stratejik web siteleri, marka kimlikleri ve dijital ürün arayüzleri üreten tasarım ve yazılım stüdyosu."
         : "A design and software studio creating strategic websites, brand identities, and digital product interfaces for growing brands.",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Istanbul",
-      addressCountry: "TR",
-    },
-    areaServed: ["TR", "GB", "US", "DE"],
-    serviceType: ["Web Design", "Brand Identity", "UI/UX Design", "Frontend Development", "Logo Design"],
-    priceRange: "$$",
+    knowsAbout: [
+      "Custom Software Development",
+      "Web Application Development",
+      "Corporate Web Design",
+      "Next.js Development",
+      "Frontend Development",
+      "UI/UX Design",
+      "Logo Design",
+      "Brand Identity",
+    ],
     sameAs: [
       "https://www.linkedin.com/company/adakan-software/",
       "https://twitter.com/adakansoftware",

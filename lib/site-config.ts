@@ -19,11 +19,14 @@ export const siteConfig = {
 
 export const rootMetadataCopy = {
   tr: {
-    title: "Adakan Software | Premium Web Tasarımı ve Marka Ajansı",
+    title: "Adakan Software | Yazılım Şirketi ve Web Tasarım Ajansı",
     description:
-      "Adakan Software; premium web tasarımı, logo, marka kimliği ve dönüşüm odaklı dijital ürün arayüzleri üreten futuristik yaratıcı ajans.",
+      "Adakan Software; özel yazılım, kurumsal web sitesi, Next.js, UI/UX, logo ve marka kimliği hizmetleri sunan İstanbul merkezli yazılım şirketidir.",
     keywords: [
       "Adakan Software",
+      "yazılım şirketi",
+      "yazılım firması",
+      "özel yazılım geliştirme",
       "premium web tasarımı",
       "logo tasarımı",
       "marka kimliği",
@@ -32,16 +35,18 @@ export const rootMetadataCopy = {
       "UI UX tasarımı",
     ],
     openGraphDescription:
-      "Premium web tasarımı, marka kimliği ve dönüşüm odaklı dijital ürün deneyimleri.",
+      "Özel yazılım, web tasarımı, Next.js geliştirme, UI/UX ve marka kimliği hizmetleri.",
     twitterDescription:
-      "Futuristik web tasarımı, marka kimliği ve dijital ürün arayüzleri.",
+      "Yazılım geliştirme, kurumsal web tasarımı ve dijital ürün çözümleri.",
   },
   en: {
-    title: "Adakan Software | Premium Web Design and Brand Agency",
+    title: "Adakan Software | Software Development and Web Design",
     description:
-      "Adakan Software is a futuristic creative agency crafting premium websites, logos, brand identities, and conversion-focused digital product interfaces.",
+      "Adakan Software is an Istanbul software company delivering custom software, corporate websites, Next.js, UI/UX and brand identity services.",
     keywords: [
       "Adakan Software",
+      "software development company",
+      "custom software development",
       "premium web design",
       "logo design",
       "brand identity",

@@ -35,15 +35,55 @@ export function createWebPageSchema({
 }
 
 export function createServiceSchema({ locale, url }: { locale: StructuredDataLocale; url: string }) {
+  const serviceTypes = locale === "tr"
+    ? ["Özel Yazılım Geliştirme", "Web Tasarımı ve Geliştirme", "Next.js Frontend Geliştirme", "UI/UX Tasarımı", "Marka Kimliği ve Logo Tasarımı"]
+    : ["Custom Software Development", "Web Design and Development", "Next.js Frontend Development", "UI/UX Design", "Brand Identity and Logo Design"]
+
   return {
     "@context": "https://schema.org",
     "@type": "Service",
     "@id": `${url}#service`,
-    name: locale === "tr" ? "Web Tasarımı, Marka Kimliği ve UI/UX Hizmetleri" : "Web Design, Brand Identity and UI/UX Services",
-    serviceType: locale === "tr" ? ["Web Tasarımı", "Marka Kimliği", "UI/UX Tasarımı", "Frontend Geliştirme"] : ["Web Design", "Brand Identity", "UI/UX Design", "Frontend Development"],
+    name: locale === "tr" ? "Yazılım Geliştirme, Web Tasarımı ve Dijital Ürün Hizmetleri" : "Software Development, Web Design and Digital Product Services",
+    description: locale === "tr"
+      ? "İşletmeler için özel yazılım, kurumsal web sitesi, Next.js frontend, UI/UX ve marka kimliği hizmetleri."
+      : "Custom software, corporate websites, Next.js frontend, UI/UX and brand identity services for businesses.",
+    serviceType: serviceTypes,
     provider: { "@id": `${new URL(url).origin}/#organization` },
     areaServed: ["TR", "GB", "US", "DE"],
     url,
     inLanguage: locale === "tr" ? "tr-TR" : "en-US",
+  }
+}
+
+export function createBreadcrumbSchema({
+  locale,
+  url,
+  pageName,
+}: {
+  locale: StructuredDataLocale
+  url: string
+  pageName: string
+}) {
+  const origin = new URL(url).origin
+  const homeUrl = locale === "tr" ? `${origin}/` : `${origin}/en`
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": `${url}#breadcrumb`,
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: locale === "tr" ? "Ana Sayfa" : "Home",
+        item: homeUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: pageName,
+        item: url,
+      },
+    ],
   }
 }

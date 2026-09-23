@@ -8,19 +8,19 @@ import { CTASection } from "@/components/cta-section"
 
 const content = {
   tr: {
-    intro: "Tasarım ve yazılım stüdyosu", title: "İyi fikirler.", accent: "Sade çözümler.",
-    description: "Markanız için güçlü bir kimlik, anlaşılır bir web sitesi ve kullanımı kolay dijital deneyimler tasarlıyoruz.",
+    intro: "İstanbul merkezli yazılım ve tasarım stüdyosu", title: "Web tasarım ve yazılım.", accent: "Sade çözümler.",
+    description: "İşletmeniz için özel yazılım, kurumsal web sitesi, Next.js arayüzleri, UI/UX ve güçlü marka kimlikleri tasarlayıp geliştiriyoruz.",
     start: "Projenizi konuşalım", work: "İşlerimizi keşfedin", services: "İhtiyacınız kadar. Özenle.",
-    serviceIntro: "Fikirden yayına, birbiriyle uyumlu tasarım ve geliştirme.",
+    serviceIntro: "Fikirden yayına; web tasarımı, özel yazılım geliştirme ve marka kimliği tek ekipte.",
     items: [["Marka kimliği", "Markanızı anlatan logo, renk ve tipografi. Her yerde tutarlı bir görünüm."], ["Web tasarımı", "İçeriği öne çıkaran, her ekranda rahat kullanılan web siteleri."], ["Yazılım geliştirme", "İşinize uygun, hızlı ve sürdürülebilir dijital ürünler."]],
     approach: "Az karmaşa. Daha iyi sonuç.",
     steps: [["Anlıyoruz", "İhtiyacınızı dinliyor, hedefi ve kapsamı birlikte netleştiriyoruz."], ["Tasarlıyoruz", "Gereksiz olanı çıkarıyor, işe yarayan çözüme odaklanıyoruz."], ["Hayata geçiriyoruz", "Geliştiriyor, test ediyor ve yayına alıyoruz."]], more: "Yaklaşımımız",
   },
   en: {
-    intro: "Design & development studio", title: "Good ideas.", accent: "Simple solutions.",
-    description: "We build clear brand identities, thoughtful websites and digital experiences that feel easy to use.",
+    intro: "Istanbul software and design studio", title: "Web design & software.", accent: "Simple solutions.",
+    description: "We design and build custom software, corporate websites, Next.js interfaces, UI/UX and clear brand identities for ambitious businesses.",
     start: "Let’s talk about your project", work: "Explore our work", services: "Just what you need. Done well.",
-    serviceIntro: "Connected design and development, from idea to launch.",
+    serviceIntro: "Web design, custom software development and brand identity from one connected team.",
     items: [["Brand identity", "A logo, colors and typography that tell your story. A consistent presence everywhere."], ["Web design", "Websites that put content first and feel comfortable on every screen."], ["Development", "Fast, maintainable digital products built around your business."]],
     approach: "Less complexity. Better outcomes.",
     steps: [["Understand", "We listen and define your goals and project scope together."], ["Design", "We remove what gets in the way and focus on what works."], ["Build", "We develop, test and help you launch."]], more: "Our approach",

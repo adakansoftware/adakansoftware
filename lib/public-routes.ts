@@ -9,13 +9,14 @@ export type PublicRoute = {
   changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>
   priority: number
   llms: boolean
+  indexable?: boolean
 }
 
 export const publicRoutes = [
   { path: "/", metadataKey: "home", changeFrequency: "weekly", priority: 1, llms: true },
   { path: "/about", metadataKey: "about", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/approach", metadataKey: "approach", changeFrequency: "monthly", priority: 0.8, llms: true },
-  { path: "/blog", metadataKey: "blog", changeFrequency: "monthly", priority: 0.8, llms: true },
+  { path: "/blog", metadataKey: "blog", changeFrequency: "monthly", priority: 0.8, llms: false, indexable: false },
   { path: "/careers", metadataKey: "careers", changeFrequency: "monthly", priority: 0.8, llms: false },
   { path: "/contact", metadataKey: "contact", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/logo", metadataKey: "logo", changeFrequency: "monthly", priority: 0.8, llms: true },
@@ -24,7 +25,7 @@ export const publicRoutes = [
   { path: "/projects", metadataKey: "projects", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/services", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
   { path: "/terms", metadataKey: "terms", changeFrequency: "yearly", priority: 0.3, llms: false },
-  { path: "/testimonials", metadataKey: "testimonials", changeFrequency: "monthly", priority: 0.7, llms: false },
+  { path: "/testimonials", metadataKey: "testimonials", changeFrequency: "monthly", priority: 0.7, llms: false, indexable: false },
 ] as const satisfies readonly PublicRoute[]
 
 export function getLocalizedPublicPath(route: PublicRoute, locale: Locale): string {
@@ -40,11 +41,11 @@ export function getPublicRouteByPath(path: string): PublicRoute | undefined {
 }
 
 export function buildSitemapEntries(routes: readonly PublicRoute[], baseUrl: string) {
-  return routes.flatMap((route) => {
+  return routes.filter((route) => route.indexable !== false).flatMap((route) => {
     const alternates = {
       languages: {
-        "tr-TR": getPublicUrl(route, "tr", baseUrl),
-        "en-US": getPublicUrl(route, "en", baseUrl),
+        tr: getPublicUrl(route, "tr", baseUrl),
+        en: getPublicUrl(route, "en", baseUrl),
         "x-default": getPublicUrl(route, "tr", baseUrl),
       },
     }
@@ -68,7 +69,7 @@ export function buildSitemapEntries(routes: readonly PublicRoute[], baseUrl: str
 
 export function buildRobotsPolicy(baseUrl: string) {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/api/", "/admin/"] },
+    rules: { userAgent: "*", allow: "/", disallow: ["/api/", "/admin", "/en/admin"] },
     sitemap: `${baseUrl}/sitemap.xml`,
     host: baseUrl,
   }
