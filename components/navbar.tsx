@@ -11,7 +11,7 @@ export function Navbar({ locale: _locale }: { locale: Locale }) {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const menu = useRef<HTMLDetailsElement>(null)
-  const links = locale === "tr" ? [["Hizmetler", "/services"], ["İşler", "/projects"], ["Fiyatlar", "/pricing"], ["Yaklaşım", "/approach"]] : [["Services", "/services"], ["Work", "/projects"], ["Pricing", "/pricing"], ["Approach", "/approach"]]
+  const links = locale === "tr" ? [["Hizmetler", "/services"], ["İşler", "/projects"], ["Logo", "/logo"], ["Fiyatlar", "/pricing"], ["Yaklaşım", "/approach"]] : [["Services", "/services"], ["Work", "/projects"], ["Logo", "/logo"], ["Pricing", "/pricing"], ["Approach", "/approach"]]
   const close = () => { if (menu.current) menu.current.open = false }
   const items = links.map(([label, href]) => <Link key={href} href={withLocale(href, locale)} onClick={close} aria-current={pathname === withLocale(href, locale) ? "page" : undefined}>{label}</Link>)
   return <header className="studio-header"><div className="studio-container studio-nav">

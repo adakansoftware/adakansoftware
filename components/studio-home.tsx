@@ -1,4 +1,6 @@
 import Link from "next/link"
+import { getManagedProjects } from "@/lib/content"
+import { ProjectListingCards } from "@/components/project-listing-cards"
 import { ArrowRight, Code2, PenTool, PanelsTopLeft } from "lucide-react"
 import { withLocale, type Locale } from "@/lib/i18n"
 import { PricingSection } from "@/components/pricing-section"
@@ -26,8 +28,9 @@ const content = {
 }
 const icons = [PenTool, PanelsTopLeft, Code2]
 
-export function StudioHome({ locale }: { locale: Locale }) {
+export async function StudioHome({ locale }: { locale: Locale }) {
   const copy = content[locale]
+  const projects = (await getManagedProjects(locale)).slice(0, 2)
   return <>
     <section className="studio-hero studio-container">
       <p className="studio-eyebrow">{copy.intro}</p>
@@ -37,6 +40,12 @@ export function StudioHome({ locale }: { locale: Locale }) {
     </section>
     <section id="services" className="studio-section studio-soft"><div className="studio-container"><h2>{copy.services}</h2><p className="studio-section-description">{copy.serviceIntro}</p><div className="studio-services">{copy.items.map(([title, description], index) => { const Icon = icons[index]; return <article key={title}><Icon size={25} strokeWidth={1.5} aria-hidden="true" /><h3>{title}</h3><p>{description}</p></article> })}</div></div></section>
     <section id="approach" className="studio-section"><div className="studio-container studio-approach"><div><h2>{copy.approach}</h2><Link className="studio-link" href={withLocale("/approach", locale)}>{copy.more}<ArrowRight size={16} /></Link></div><ol>{copy.steps.map(([title, description], index) => <li key={title}><span aria-hidden="true">0{index + 1}</span><div><h3>{title}</h3><p>{description}</p></div></li>)}</ol></div></section>
+    {projects.length > 0 && <section className="studio-section studio-container">
+      <h2>{locale === "tr" ? "Son çalışmalar." : "Recent work."}</h2>
+      <p className="studio-section-description">{locale === "tr" ? "Fikirden yayına taşıdığımız web deneyimleri." : "Web experiences we have taken from idea to launch."}</p>
+      <div className="mt-8"><ProjectListingCards projects={projects} locale={locale} /></div>
+      <Link className="studio-link mt-6" href={withLocale("/projects", locale)}>{locale === "tr" ? "Tüm işleri görün" : "View all work"}<ArrowRight size={16} /></Link>
+    </section>}
     <PricingSection locale={locale} /><CTASection locale={locale} />
   </>
 }

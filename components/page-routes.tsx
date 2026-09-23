@@ -1,5 +1,4 @@
 import Link from "next/link"
-import Image from "next/image"
 import { ArrowRight, ArrowUpRight, MessageCircle } from "lucide-react"
 
 import { AboutCards } from "@/components/about-cards"
@@ -16,7 +15,6 @@ import { ServiceDetailCards } from "@/components/service-detail-cards"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { getWhatsAppHref } from "@/lib/contact-links"
 import type { Locale } from "@/lib/i18n"
-import { getOptimizedProjectImage } from "@/lib/project-image-assets"
 import {
   getAboutPageContent,
   getApproachPageContent,
@@ -24,9 +22,8 @@ import {
   getLogoPageContent,
   getProjectsPageContent,
   getServicesPageContent,
-  getTestimonialsPageContent,
 } from "@/lib/page-content"
-import { getDemoExamples, getServices } from "@/lib/site-data"
+import { getServices } from "@/lib/site-data"
 import { getManagedLogoWorks, getManagedProjects } from "@/lib/content"
 
 export function AboutPageContent({ locale }: { locale: Locale }) {
@@ -177,7 +174,6 @@ export function ServicesPageContent({ locale }: { locale: Locale }) {
 
 export async function ProjectsPageContent({ locale }: { locale: Locale }) {
   const content = getProjectsPageContent(locale)
-  const demoExamples = getDemoExamples(locale)
   const [projects, logoWorks] = await Promise.all([getManagedProjects(locale), getManagedLogoWorks(locale)])
 
   return (
@@ -187,67 +183,6 @@ export async function ProjectsPageContent({ locale }: { locale: Locale }) {
       <section className="relative pb-32">
         <div className="section-shell">
           <ProjectListingCards projects={projects} locale={locale} />
-        </div>
-
-        <div className="section-shell mt-20">
-          <div className="mb-8 max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-tight md:text-5xl">
-              {locale === "tr" ? "Canlı akışları hızlıca incele" : "Explore live flows quickly"}
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              {locale === "tr"
-                ? "Hazır demo örnekleri; sektör, akış ve marka dili kararlarını canlı görmek için ayrı bir vitrin gibi çalışır."
-                : "Demo examples act as a separate showcase for reviewing industry, flow, and brand language decisions live."}
-            </p>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-3">
-            {demoExamples.map((demo) => {
-              const isExternalDemo = demo.href.startsWith("http://") || demo.href.startsWith("https://")
-
-              return (
-                <Link
-                  key={demo.title}
-                  href={demo.href}
-                  target={isExternalDemo ? "_blank" : undefined}
-                  rel={isExternalDemo ? "noreferrer" : undefined}
-                  className="group rounded-2xl border border-border/50 bg-card/25 p-5 transition-colors hover:border-accent/45"
-                >
-                  <div
-                    className="relative mb-5 aspect-[16/10] overflow-hidden rounded-xl"
-                    style={{ background: `linear-gradient(135deg, ${demo.color}30, transparent 55%, ${demo.color}18)` }}
-                  >
-                    {demo.coverImage ? (
-                      <>
-                        <Image
-                          src={getOptimizedProjectImage(demo.coverImage)}
-                          alt={`${demo.title} kapak görseli`}
-                          fill
-                          sizes="(min-width: 768px) 33vw, 100vw"
-                          className="object-cover opacity-75 transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent" />
-                      </>
-                    ) : (
-                      <>
-                        <div className="absolute inset-0 grid-pattern opacity-20" />
-                        <div className="absolute inset-x-5 top-6 rounded-xl border border-white/10 bg-background/35 p-4 backdrop-blur-md">
-                          <span className="block h-3 w-1/2 rounded-full bg-white/25" />
-                          <span className="mt-4 block h-10 rounded-lg" style={{ backgroundColor: `${demo.color}35` }} />
-                        </div>
-                      </>
-                    )}
-                    <div className="absolute right-4 bottom-4 flex h-10 w-10 items-center justify-center rounded-full bg-foreground/10 backdrop-blur-md transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">
-                      <ArrowUpRight className="h-4 w-4" />
-                    </div>
-                  </div>
-                  <p className="text-xs font-medium tracking-widest text-accent uppercase">{demo.category}</p>
-                  <h3 className="mt-3 text-xl font-bold">{demo.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{demo.description}</p>
-                </Link>
-              )
-            })}
-          </div>
         </div>
 
         <div className="section-shell mt-20">
@@ -288,7 +223,6 @@ export async function ProjectsPageContent({ locale }: { locale: Locale }) {
           </Link>
         </div>
       </section>
-      <TestimonialsSection locale={locale} />
       <CTASection locale={locale} />
     </>
   )
@@ -402,18 +336,15 @@ export function ContactPageContent({ locale }: { locale: Locale }) {
           </div>
         </div>
       </section>
-      <TestimonialsSection locale={locale} />
     </>
   )
 }
 
 export function TestimonialsPageContent({ locale }: { locale: Locale }) {
-  const content = getTestimonialsPageContent(locale)
 
   return (
     <>
       <PageJsonLd locale={locale} path="/testimonials" />
-      <PageHeader locale={locale} {...content.header} />
       <TestimonialsSection locale={locale} />
       <CTASection locale={locale} />
     </>

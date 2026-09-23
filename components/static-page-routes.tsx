@@ -12,10 +12,10 @@ export function BlogPageContent({ locale }: { locale: Locale }) {
   const copy = blogPageContent[locale]
   const bodyText =
     locale === "tr"
-      ? "Tasarım, marka ve frontend geliştirme üzerine ara sıra pratik notlar paylaşıyoruz. Haberdar olmak için e-posta bırak."
-      : "We occasionally share practical notes on design, brand strategy, and frontend development. Leave your email to stay updated."
-  const buttonLabel = locale === "tr" ? "Kayıt Ol" : "Subscribe"
-  const subject = locale === "tr" ? "E-bülten kaydı" : "Newsletter signup"
+      ? "Tasarım, marka ve web geliştirme üzerine notlarımızı burada paylaşacağız. Bir konu önermek için bize yazabilirsiniz."
+      : "Our notes on design, branding and web development will appear here. Send us a topic you would like us to cover."
+  const buttonLabel = locale === "tr" ? "Konu öner" : "Suggest a topic"
+  const subject = locale === "tr" ? "Blog konu önerisi" : "Blog topic suggestion"
 
   return (
     <>

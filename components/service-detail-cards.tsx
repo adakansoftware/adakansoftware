@@ -1,7 +1,3 @@
-"use client"
-
-import { useRef } from "react"
-import { motion, useInView, useReducedMotion } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
 
 type ServiceDetail = { id: string; title: string; outcome: string; items: string[] }
@@ -9,25 +5,18 @@ type ServiceDetail = { id: string; title: string; outcome: string; items: string
 export function ServiceDetailCards({ details }: { details: ServiceDetail[] }) {
   return (
     <div className="grid gap-6 lg:grid-cols-2">
-      {details.map((service, index) => (
-        <ServiceDetailCard key={service.id} service={service} index={index} />
+      {details.map((service) => (
+        <ServiceDetailCard key={service.id} service={service} />
       ))}
     </div>
   )
 }
 
-function ServiceDetailCard({ service, index }: { service: ServiceDetail; index: number }) {
-  const ref = useRef<HTMLElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-40px" })
-  const prefersReducedMotion = useReducedMotion()
+function ServiceDetailCard({ service }: { service: ServiceDetail }) {
 
   return (
-    <motion.article
-      ref={ref}
+    <article
       id={service.id}
-      initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
-      animate={prefersReducedMotion || isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : index * 0.1, ease: [0.22, 1, 0.36, 1] }}
       className="premium-border group rounded-2xl border border-border/50 bg-card/25 p-8 backdrop-blur-md transition-colors duration-300 hover:border-primary/40"
     >
       <div className="mb-8 flex items-start justify-between gap-6">
@@ -44,6 +33,6 @@ function ServiceDetailCard({ service, index }: { service: ServiceDetail; index: 
           </li>
         ))}
       </ul>
-    </motion.article>
+    </article>
   )
 }

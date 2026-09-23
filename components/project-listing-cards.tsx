@@ -1,9 +1,5 @@
-"use client"
-
-import { useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { motion, useInView, useReducedMotion } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
 
 import type { Locale } from "@/lib/i18n"
@@ -14,36 +10,29 @@ type Project = { title: string; href: string; category: string; year: string; de
 export function ProjectListingCards({ projects, locale }: { projects: Project[]; locale: Locale }) {
   return (
     <div className="grid gap-8 md:grid-cols-2">
-      {projects.map((project, index) => (
-        <ProjectListingCard key={project.title} project={project} index={index} locale={locale} />
+      {projects.map((project) => (
+        <ProjectListingCard key={project.title} project={project} locale={locale} />
       ))}
     </div>
   )
 }
 
-function ProjectListingCard({ project, index, locale }: { project: Project; index: number; locale: Locale }) {
-  const ref = useRef<HTMLElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-40px" })
-  const prefersReducedMotion = useReducedMotion()
+function ProjectListingCard({ project, locale }: { project: Project; locale: Locale }) {
   const isExternal = project.href.startsWith("http://") || project.href.startsWith("https://")
 
   return (
-    <motion.article
-      ref={ref}
+    <article
       id={project.href.includes("#") ? project.href.split("#")[1] : undefined}
-      initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
-      animate={prefersReducedMotion || isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : index * 0.1, ease: [0.22, 1, 0.36, 1] }}
       className="premium-border group rounded-2xl border border-border/50 bg-card/25 p-6 backdrop-blur-md transition-colors duration-300 hover:border-accent/40"
     >
       <div
-        className="relative mb-6 aspect-[4/3] overflow-hidden rounded-xl transition-transform duration-500 group-hover:scale-[1.01]"
+        className="relative mb-6 aspect-video overflow-hidden rounded-xl transition-transform duration-500 group-hover:scale-[1.01]"
         style={{ background: `linear-gradient(135deg, ${project.color}30, transparent 55%, ${project.color}18)` }}
       >
         <div className="absolute top-3 right-3 z-10">
           {isExternal ? (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium text-emerald-400 backdrop-blur-md">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium text-emerald-700 backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
               {locale === "tr" ? "Canlı" : "Live"}
             </span>
           ) : (
@@ -103,8 +92,8 @@ function ProjectListingCard({ project, index, locale }: { project: Project; inde
             </Link>
           ) : null}
         </div>
-        <ArrowUpRight className="mt-2 h-5 w-5 shrink-0 text-primary transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+
       </div>
-    </motion.article>
+    </article>
   )
 }
