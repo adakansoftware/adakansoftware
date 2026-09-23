@@ -8,6 +8,7 @@ export function JsonLd({ locale }: { locale: Locale }) {
     "@type": "Organization",
     "@id": `${siteConfig.url}/#organization`,
     name: siteConfig.name,
+    alternateName: ["Adakan", "Adakan Yazılım"],
     url: siteConfig.url,
     email: siteConfig.email,
     logo: `${siteConfig.url}/adakan-logo.png`,
@@ -46,6 +47,7 @@ export function JsonLd({ locale }: { locale: Locale }) {
     "@id": `${siteConfig.url}/#website`,
     url: siteConfig.url,
     name: siteConfig.name,
+    alternateName: "Adakan",
     publisher: {
       "@id": `${siteConfig.url}/#organization`,
     },
