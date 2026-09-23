@@ -5,6 +5,7 @@ import { ArrowRight, Code2, PenTool, PanelsTopLeft } from "lucide-react"
 import { withLocale, type Locale } from "@/lib/i18n"
 import { PricingSection } from "@/components/pricing-section"
 import { CTASection } from "@/components/cta-section"
+import { selectHomepageProjects } from "@/lib/public-projects"
 
 const content = {
   tr: {
@@ -30,7 +31,7 @@ const icons = [PenTool, PanelsTopLeft, Code2]
 
 export async function StudioHome({ locale }: { locale: Locale }) {
   const copy = content[locale]
-  const projects = (await getManagedProjects(locale)).slice(0, 2)
+  const projects = selectHomepageProjects(await getManagedProjects(locale))
   return <>
     <section className="studio-hero studio-container">
       <p className="studio-eyebrow">{copy.intro}</p>

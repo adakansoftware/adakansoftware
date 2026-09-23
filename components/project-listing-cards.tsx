@@ -37,7 +37,7 @@ function ProjectListingCard({ project, locale }: { project: Project; locale: Loc
             </span>
           ) : (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-border/40 bg-background/60 px-2.5 py-1 text-[10px] font-medium text-muted-foreground backdrop-blur-md">
-              {project.coverImage ? (locale === "tr" ? "Web tasarımı" : "Web design") : "Demo"}
+              {project.coverImage ? (locale === "tr" ? "Web tasarımı" : "Web design") : (locale === "tr" ? "Proje" : "Project")}
             </span>
           )}
         </div>
