@@ -10,6 +10,8 @@ type PageContent = {
   description: string
 }
 
+type FaqItem = { question: string; answer: string }
+
 export function createWebPageSchema({
   route: _route,
   locale,
@@ -85,5 +87,21 @@ export function createBreadcrumbSchema({
         item: url,
       },
     ],
+  }
+}
+
+export function createFaqSchema({ url, faqs }: { url: string; faqs: FaqItem[] }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${url}#faq`,
+    mainEntity: faqs.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   }
 }

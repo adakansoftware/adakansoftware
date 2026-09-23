@@ -17,7 +17,7 @@ export const servicesByLocale = {
     },
     {
       title: "UI/UX Tasarım",
-      href: "/services#ui-ux",
+      href: "/services/ui-ux-design",
       description: "Karmaşık akışları sadeleştirir, kullanıcıların ürünü anlamasını ve tekrar kullanmasını kolaylaştırırız.",
       tags: ["SaaS", "Panel", "Mobil uygulama"],
     },
@@ -32,6 +32,18 @@ export const servicesByLocale = {
       href: "/services/nextjs-development",
       description: "Tasarımları performanslı, responsive ve sürdürülebilir Next.js arayüzlerine dönüştürürüz.",
       tags: ["Next.js", "Animasyon", "Performans"],
+    },
+    {
+      title: "Web Uygulaması",
+      href: "/services/web-application-development",
+      description: "SaaS, portal, yönetim paneli ve operasyon araçlarını güvenli, hızlı ve ölçeklenebilir web uygulamalarına dönüştürürüz.",
+      tags: ["SaaS", "Portal", "Yönetim paneli"],
+    },
+    {
+      title: "İş Otomasyonu",
+      href: "/services/business-automation",
+      description: "Tekrarlayan veri, onay, bildirim ve raporlama adımlarını izlenebilir yazılım akışlarıyla otomatikleştiririz.",
+      tags: ["Otomasyon", "Entegrasyon", "Raporlama"],
     },
   ],
   en: [
@@ -49,7 +61,7 @@ export const servicesByLocale = {
     },
     {
       title: "UI/UX Design",
-      href: "/services#ui-ux",
+      href: "/services/ui-ux-design",
       description: "We simplify complex flows and make products easier to understand, trust, and use again.",
       tags: ["SaaS", "Dashboard", "Mobile app"],
     },
@@ -64,6 +76,18 @@ export const servicesByLocale = {
       href: "/services/nextjs-development",
       description: "We turn designs into performant, responsive, and maintainable Next.js interfaces.",
       tags: ["Next.js", "Animation", "Performance"],
+    },
+    {
+      title: "Web Applications",
+      href: "/services/web-application-development",
+      description: "We turn SaaS products, portals, admin dashboards and operations tools into secure, fast and scalable web applications.",
+      tags: ["SaaS", "Portal", "Admin dashboard"],
+    },
+    {
+      title: "Business Automation",
+      href: "/services/business-automation",
+      description: "We automate repetitive data, approval, notification and reporting tasks with observable software workflows.",
+      tags: ["Automation", "Integration", "Reporting"],
     },
   ],
 } satisfies Record<Locale, Array<{ title: string; href: string; description: string; tags: string[] }>>

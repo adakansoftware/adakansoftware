@@ -17,7 +17,7 @@ export const publicRoutes = [
   { path: "/about", metadataKey: "about", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/approach", metadataKey: "approach", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/blog", metadataKey: "blog", changeFrequency: "monthly", priority: 0.8, llms: false, indexable: false },
-  { path: "/careers", metadataKey: "careers", changeFrequency: "monthly", priority: 0.8, llms: false },
+  { path: "/careers", metadataKey: "careers", changeFrequency: "monthly", priority: 0.8, llms: false, indexable: false },
   { path: "/contact", metadataKey: "contact", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/logo", metadataKey: "logo", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/privacy", metadataKey: "privacy", changeFrequency: "yearly", priority: 0.3, llms: false },
@@ -27,6 +27,9 @@ export const publicRoutes = [
   { path: "/services/software-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
   { path: "/services/web-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
   { path: "/services/nextjs-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
+  { path: "/services/web-application-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
+  { path: "/services/business-automation", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
+  { path: "/services/ui-ux-design", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
   { path: "/terms", metadataKey: "terms", changeFrequency: "yearly", priority: 0.3, llms: false },
   { path: "/testimonials", metadataKey: "testimonials", changeFrequency: "monthly", priority: 0.7, llms: false, indexable: false },
 ] as const satisfies readonly PublicRoute[]

@@ -13,7 +13,7 @@ export function ServiceSeoPage({ slug, locale }: { slug: ServicePageSlug; locale
 
   return (
     <>
-      <PageJsonLd locale={locale} path={page.path} content={page.seo} serviceTypes={page.keywords} />
+      <PageJsonLd locale={locale} path={page.path} content={page.seo} serviceTypes={page.keywords} faqs={page.faqs} />
       <PageHeader
         locale={locale}
         title={page.title}
@@ -43,6 +43,20 @@ export function ServiceSeoPage({ slug, locale }: { slug: ServicePageSlug; locale
             {page.deliverables.map((item, index) => <div key={item} className="rounded-xl border border-border/40 bg-background/45 p-5"><span className="font-mono text-xs text-primary">0{index + 1}</span><p className="mt-3 text-sm leading-6">{item}</p></div>)}
           </div>
           <Link className="studio-link mt-8" href={withLocale("/services", locale)}>{locale === "tr" ? "Tüm hizmetleri görün" : "View all services"}<ArrowRight size={16} /></Link>
+        </div>
+        <div className="mt-16 max-w-4xl">
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">{page.faqTitle}</h2>
+          <div className="mt-7 divide-y divide-border/60 border-y border-border/60">
+            {page.faqs.map((item) => (
+              <details key={item.question} className="group py-5">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-semibold marker:content-none">
+                  {item.question}
+                  <span className="text-xl font-normal text-primary transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                </summary>
+                <p className="max-w-3xl pt-4 leading-7 text-muted-foreground">{item.answer}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
       <CTASection locale={locale} />

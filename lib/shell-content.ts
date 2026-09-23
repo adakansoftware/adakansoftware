@@ -61,8 +61,10 @@ export const footerContent = {
     services: [
       { name: "Web Tasarım", href: "/services/web-development" },
       { name: "Marka Kimliği", href: "/services#brand-identity" },
-      { name: "UI/UX Tasarım", href: "/services#ui-ux" },
+      { name: "UI/UX Tasarım", href: "/services/ui-ux-design" },
       { name: "Özel Yazılım", href: "/services/software-development" },
+      { name: "Web Uygulaması", href: "/services/web-application-development" },
+      { name: "İş Otomasyonu", href: "/services/business-automation" },
       { name: "Next.js Geliştirme", href: "/services/nextjs-development" },
     ],
   },
@@ -83,8 +85,10 @@ export const footerContent = {
     services: [
       { name: "Web Design", href: "/services/web-development" },
       { name: "Brand Identity", href: "/services#brand-identity" },
-      { name: "UI/UX Design", href: "/services#ui-ux" },
+      { name: "UI/UX Design", href: "/services/ui-ux-design" },
       { name: "Custom Software", href: "/services/software-development" },
+      { name: "Web Applications", href: "/services/web-application-development" },
+      { name: "Business Automation", href: "/services/business-automation" },
       { name: "Next.js Development", href: "/services/nextjs-development" },
     ],
   },
