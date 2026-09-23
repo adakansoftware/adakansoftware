@@ -8,7 +8,7 @@ export function LogoShowcase({ locale, works: managedWorks }: { locale: Locale; 
   const works = managedWorks ?? getLogoWorks(locale)
 
   return (
-    <section className="section-shell py-12 md:py-16">
+    <section id="logo-work" className="section-shell scroll-mt-24 py-12 md:py-16">
       <div className="section-frame px-5 py-8 sm:px-7 lg:px-10 lg:py-10">
         <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>

@@ -326,7 +326,7 @@ const logoPageContent: Record<Locale, LogoContent> = {
         "Logo tasarımını sadece güzel bir işaret olarak değil; renk, tipografi, kullanım kuralları ve dijital temas noktalarıyla birlikte çalışan bir marka sistemi olarak ele alıyoruz.",
       primaryHref: "/contact",
       primaryLabel: "Logo Projesi Başlat",
-      secondaryHref: "/projects",
+      secondaryHref: "/logo#logo-work",
       secondaryLabel: "Örnekleri Gör",
     },
     sections: [
@@ -355,7 +355,7 @@ const logoPageContent: Record<Locale, LogoContent> = {
         "We treat logo design as a working identity system: a clear mark supported by color, typography, usage rules, and digital touchpoints.",
       primaryHref: "/en/contact",
       primaryLabel: "Start a Logo Project",
-      secondaryHref: "/en/projects",
+      secondaryHref: "/en/logo#logo-work",
       secondaryLabel: "View Examples",
     },
     sections: [
