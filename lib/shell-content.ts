@@ -59,11 +59,11 @@ export const footerContent = {
       { name: "İletişim", href: "/contact" },
     ],
     services: [
-      { name: "Web Tasarım", href: "/services#web-design" },
+      { name: "Web Tasarım", href: "/services/web-development" },
       { name: "Marka Kimliği", href: "/services#brand-identity" },
       { name: "UI/UX Tasarım", href: "/services#ui-ux" },
-      { name: "Özel Yazılım", href: "/services#software-development" },
-      { name: "Frontend Geliştirme", href: "/services#frontend" },
+      { name: "Özel Yazılım", href: "/services/software-development" },
+      { name: "Next.js Geliştirme", href: "/services/nextjs-development" },
     ],
   },
   en: {
@@ -81,11 +81,11 @@ export const footerContent = {
       { name: "Contact", href: "/contact" },
     ],
     services: [
-      { name: "Web Design", href: "/services#web-design" },
+      { name: "Web Design", href: "/services/web-development" },
       { name: "Brand Identity", href: "/services#brand-identity" },
       { name: "UI/UX Design", href: "/services#ui-ux" },
-      { name: "Custom Software", href: "/services#software-development" },
-      { name: "Frontend Development", href: "/services#frontend" },
+      { name: "Custom Software", href: "/services/software-development" },
+      { name: "Next.js Development", href: "/services/nextjs-development" },
     ],
   },
 } satisfies Record<

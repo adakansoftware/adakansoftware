@@ -24,6 +24,9 @@ export const publicRoutes = [
   { path: "/pricing", metadataKey: "pricing", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/projects", metadataKey: "projects", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/services", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
+  { path: "/services/software-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
+  { path: "/services/web-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
+  { path: "/services/nextjs-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
   { path: "/terms", metadataKey: "terms", changeFrequency: "yearly", priority: 0.3, llms: false },
   { path: "/testimonials", metadataKey: "testimonials", changeFrequency: "monthly", priority: 0.7, llms: false, indexable: false },
 ] as const satisfies readonly PublicRoute[]

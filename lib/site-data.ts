@@ -5,7 +5,7 @@ export const servicesByLocale = {
   tr: [
     {
       title: "Web Tasarım",
-      href: "/services#web-design",
+      href: "/services/web-development",
       description: "Markanın değerini ilk ekranda hissettiren, hızlı, erişilebilir ve dönüşüm odaklı web siteleri tasarlarız.",
       tags: ["Kurumsal site", "Landing page", "E-ticaret"],
     },
@@ -23,13 +23,13 @@ export const servicesByLocale = {
     },
     {
       title: "Özel Yazılım",
-      href: "/services#software-development",
+      href: "/services/software-development",
       description: "İş süreçlerinize uygun web uygulamaları, yönetim panelleri, API entegrasyonları ve otomasyonlar geliştiririz.",
       tags: ["Web uygulaması", "API", "Otomasyon"],
     },
     {
       title: "Frontend Geliştirme",
-      href: "/services#frontend",
+      href: "/services/nextjs-development",
       description: "Tasarımları performanslı, responsive ve sürdürülebilir Next.js arayüzlerine dönüştürürüz.",
       tags: ["Next.js", "Animasyon", "Performans"],
     },
@@ -37,7 +37,7 @@ export const servicesByLocale = {
   en: [
     {
       title: "Web Design",
-      href: "/services#web-design",
+      href: "/services/web-development",
       description: "We design fast, accessible, conversion-focused websites that communicate your value from the first screen.",
       tags: ["Corporate site", "Landing page", "E-commerce"],
     },
@@ -55,13 +55,13 @@ export const servicesByLocale = {
     },
     {
       title: "Custom Software",
-      href: "/services#software-development",
+      href: "/services/software-development",
       description: "We build web applications, admin dashboards, API integrations and automations around your business processes.",
       tags: ["Web apps", "API", "Automation"],
     },
     {
       title: "Frontend Development",
-      href: "/services#frontend",
+      href: "/services/nextjs-development",
       description: "We turn designs into performant, responsive, and maintainable Next.js interfaces.",
       tags: ["Next.js", "Animation", "Performance"],
     },
