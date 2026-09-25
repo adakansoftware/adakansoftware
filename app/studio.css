@@ -1,7 +1,7 @@
 /* Shared visual language: quiet surfaces, one accent, readable type. */
 .studio-theme {
-  --font-display: var(--font-inter);
-  --font-hero-accent: var(--font-inter);
+  --font-display: var(--font-sans);
+  --font-hero-accent: var(--font-sans);
 }
 .studio-container { width: min(1120px, calc(100% - 64px)); margin-inline: auto; }
 .studio-header { position: sticky; top: 0; z-index: 100; background: rgb(250 250 252 / .86); border-bottom: 1px solid rgb(0 0 0 / .08); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
@@ -13,27 +13,27 @@
 .studio-desktop-nav a, .studio-nav-actions { font-size: 14px; }
 .studio-nav-actions { display: flex; align-items: center; gap: 22px; }
 .studio-theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid #d2d2d7; border-radius: 999px; color: #515154; background: rgb(255 255 255 / .7); transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease; }
-.studio-theme-toggle:hover { color: #0071e3; border-color: #a8a8ad; transform: translateY(-1px); }
+.studio-theme-toggle:hover { color: #0066cc; border-color: #a8a8ad; transform: translateY(-1px); }
 .studio-theme-icon-sun { display: none; }
 .dark .studio-theme-icon-sun { display: block; }
 .dark .studio-theme-icon-moon { display: none; }
 .studio-language { color: #6e6e73; padding-block: 12px; }
 .studio-desktop-nav a, .studio-language { transition: color .18s ease, opacity .18s ease; }
-.studio-desktop-nav a:hover, .studio-language:hover { color: #0071e3; text-decoration: none; }
-.studio-nav-cta { display: inline-flex; align-items: center; min-height: 36px; padding-inline: 16px; border-radius: 999px; background: #0071e3; color: white; transition: background .18s ease, transform .18s ease; }
+.studio-desktop-nav a:hover, .studio-language:hover { color: #0066cc; text-decoration: none; }
+.studio-nav-cta { display: inline-flex; align-items: center; min-height: 36px; padding-inline: 16px; border-radius: 999px; background: #0066cc; color: white; transition: background .18s ease, transform .18s ease; }
 .studio-nav-cta:hover { background: #0077ed; transform: translateY(-1px); }
-.studio-desktop-nav a[aria-current] { color: #0071e3; }
+.studio-desktop-nav a[aria-current] { color: #0066cc; }
 .studio-mobile-menu { display: none; }
-.studio-mobile-cta { color: #0071e3; font-weight: 600; }
+.studio-mobile-cta { color: #0066cc; font-weight: 600; }
 .studio-hero { text-align: center; padding-block: 112px 120px; }
 .studio-eyebrow { color: #6e6e73; font-size: 14px; margin-bottom: 26px; }
 .studio-hero h1 { font-size: clamp(48px, 6.4vw, 84px); font-weight: 600; line-height: 1.08; letter-spacing: -.055em; }
-.studio-hero h1 span, .studio-page-header h1 span { color: #0071e3; }
+.studio-hero h1 span, .studio-page-header h1 span { color: #0066cc; }
 .studio-lead { max-width: 570px; margin: 28px auto 0; color: #6e6e73; font-size: 18px; line-height: 1.7; }
 .studio-actions { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 26px; margin-top: 32px; }
-.studio-button { display: inline-flex; justify-content: center; align-items: center; gap: 14px; min-height: 48px; padding: 12px 25px; border-radius: 100px; background: #0071e3; color: white; font-size: 14px; font-weight: 500; transition: background .2s; }
+.studio-button { display: inline-flex; justify-content: center; align-items: center; gap: 14px; min-height: 48px; padding: 12px 25px; border-radius: 100px; background: #0066cc; color: white; font-size: 14px; font-weight: 500; transition: background .2s; }
 .studio-button:hover { background: #005bb8; }
-.studio-link { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; color: #0071e3; font-size: 14px; }
+.studio-link { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; color: #0066cc; font-size: 14px; }
 .studio-link:hover, .studio-footer a:hover, .studio-desktop-nav a:hover { text-decoration: underline; text-underline-offset: 5px; }
 .studio-section { padding-block: 88px; }
 .studio-soft { background: #f5f5f7; }
@@ -43,7 +43,7 @@
 .studio-services article { padding-inline: 32px; border-left: 1px solid #d2d2d7; }
 .studio-services article:first-child { padding-left: 0; border-left: 0; }
 .studio-services article:last-child { padding-right: 0; }
-.studio-services svg { color: #0071e3; margin-bottom: 22px; }
+.studio-services svg { color: #0066cc; margin-bottom: 22px; }
 .studio-section h3 { font-size: 20px; font-weight: 600; letter-spacing: -.025em; }
 .studio-services p, .studio-approach p { margin-top: 12px; color: #6e6e73; font-size: 15px; line-height: 1.75; }
 .studio-approach { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; }
@@ -55,13 +55,13 @@
 .studio-approach li > span { color: #86868b; padding-top: 3px; font-size: 13px; }
 .studio-pricing { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 40px; }
 .studio-price-card { display: flex; flex-direction: column; background: white; border: 1px solid #dedee3; border-radius: 18px; padding: 30px; }
-.studio-price-featured { border-color: #0071e3; }
+.studio-price-featured { border-color: #0066cc; }
 .studio-price-note { color: #6e6e73; font-size: 13px; }
 .studio-price-card h3 { margin-top: 12px; }
 .studio-price { margin-top: 30px; font-size: 38px; line-height: 1.25; font-weight: 600; letter-spacing: -.04em; }
 .studio-price-card ul { margin-top: 25px; padding-block: 24px; border-top: 1px solid #e8e8eb; display: grid; gap: 13px; }
 .studio-price-card li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #515154; }
-.studio-price-card li svg { color: #0071e3; flex: none; }
+.studio-price-card li svg { color: #0066cc; flex: none; }
 .studio-price-card > .studio-link { margin-top: auto; }
 .studio-cta { text-align: center; padding-block: 104px; }
 .studio-cta > p { margin-top: 20px; color: #6e6e73; line-height: 1.7; }
@@ -76,8 +76,7 @@
   position: absolute;
   left: 0;
   bottom: -.38em;
-  color: #1d1d1f;
-  opacity: .055;
+  color: #86868b;
   font-size: clamp(72px, 15vw, 180px);
   font-weight: 700;
   line-height: 1;
@@ -92,7 +91,7 @@
 .studio-page-header > p { max-width: 670px; margin-top: 24px; font-size: 18px; line-height: 1.75; color: #6e6e73; }
 .studio-page-header .studio-actions { justify-content: flex-start; }
 /* Existing detail pages share the same restrained surfaces. */
-.studio-theme .text-gradient { background: none; color: #0071e3; -webkit-text-fill-color: currentColor; }
+.studio-theme .text-gradient { background: none; color: #0066cc; -webkit-text-fill-color: currentColor; }
 .studio-theme .section-frame { background: #f5f5f7; border: 1px solid #e8e8eb; box-shadow: none; backdrop-filter: none; }
 .studio-theme .section-frame::before { content: none; }
 .studio-theme .premium-border { box-shadow: none; }
@@ -104,6 +103,8 @@
 .dark .studio-language { color: #a1a1a6; }
 .dark .studio-theme-toggle { color: #f5f5f7; background: rgb(255 255 255 / .08); border-color: rgb(255 255 255 / .16); }
 .dark .studio-theme-toggle:hover { color: #79baff; border-color: rgb(255 255 255 / .3); }
+.dark .studio-link { color: #2997ff; }
+.dark .studio-hero h1 span, .dark .studio-page-header h1 span, .dark .studio-theme .text-gradient { color: #2997ff; }
 .dark .studio-eyebrow, .dark .studio-lead, .dark .studio-section-description, .dark .studio-services p, .dark .studio-approach p, .dark .studio-price-note, .dark .studio-page-header > p, .dark .studio-cta > p { color: #a1a1a6; }
 .dark .studio-soft { background: #111317; }
 .dark .studio-services article { border-color: #33363c; }
@@ -114,7 +115,8 @@
 .dark .studio-price-card ul { border-color: #30343a; }
 .dark .studio-price-card li { color: #d2d2d7; }
 .dark .studio-footer { background: #0b0d10; border-color: #2a2d33; color: #a1a1a6; }
-.dark .studio-footer .studio-brand, .dark .studio-footer-wordmark { color: #f5f5f7; }
+.dark .studio-footer .studio-brand { color: #f5f5f7; }
+.dark .studio-footer-wordmark { color: #6e6e73; }
 .dark .studio-footer-bottom { border-color: #2a2d33; }
 .dark .studio-theme .section-frame { background: #111419; border-color: #30343a; }
 @media (max-width: 900px) {

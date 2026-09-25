@@ -72,7 +72,8 @@ export function getLocalizedPublicPath(route: PublicRoute, locale: Locale): stri
 }
 
 export function getPublicUrl(route: PublicRoute, locale: Locale, baseUrl: string): string {
-  return new URL(getLocalizedPublicPath(route, locale), baseUrl).toString()
+  const url = new URL(getLocalizedPublicPath(route, locale), baseUrl).toString()
+  return getLocalizedPublicPath(route, locale) === "/" ? url.replace(/\/$/, "") : url
 }
 
 export function getPublicRouteByPath(path: string): PublicRoute | undefined {

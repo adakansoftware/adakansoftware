@@ -12,6 +12,11 @@ const localeMap: Record<Locale, { og: string; alternates: string }> = {
   en: { og: "en_US", alternates: "en-US" },
 }
 
+function createAbsolutePageUrl(path: string) {
+  const url = new URL(path, siteUrl).href
+  return path === "/" ? url.replace(/\/$/, "") : url
+}
+
 type PageMetadataInput = {
   locale: Locale
   title: string
@@ -33,7 +38,7 @@ export function createPageMetadata({
 }: PageMetadataInput): Metadata {
   const paths = localizedPaths ?? { tr: path, en: path }
   const canonicalPath = locale === "tr" ? paths.tr : `/en${paths.en === "/" ? "" : paths.en}`
-  const canonicalUrl = new URL(canonicalPath, siteUrl).href
+  const canonicalUrl = createAbsolutePageUrl(canonicalPath)
   const ogImageUrl = new URL("/og", siteUrl)
   ogImageUrl.searchParams.set("page", path.slice(1) || "home")
   ogImageUrl.searchParams.set("locale", locale)
@@ -48,9 +53,9 @@ export function createPageMetadata({
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        tr: new URL(paths.tr, siteUrl).href,
-        en: new URL(paths.en === "/" ? "/en" : `/en${paths.en}`, siteUrl).href,
-        "x-default": new URL(paths.tr, siteUrl).href,
+        tr: createAbsolutePageUrl(paths.tr),
+        en: createAbsolutePageUrl(paths.en === "/" ? "/en" : `/en${paths.en}`),
+        "x-default": createAbsolutePageUrl(paths.tr),
       },
     },
     openGraph: {

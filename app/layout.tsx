@@ -1,6 +1,4 @@
 import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
 
 import { Footer } from "@/components/footer"
 import { JsonLd } from "@/components/json-ld"
@@ -8,12 +6,6 @@ import { Navbar } from "@/components/navbar"
 import { getRequestLocale } from "@/lib/request-locale"
 import { rootMetadataCopy, siteConfig } from "@/lib/site-config"
 import "./globals.css"
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -109,7 +101,7 @@ export default async function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${inter.variable} studio-theme font-sans antialiased`}>
+      <body className="studio-theme font-sans antialiased">
         <JsonLd locale={locale} />
         <a
           href="#main-content"
@@ -122,7 +114,6 @@ export default async function RootLayout({
           {children}
         </main>
         <Footer locale={locale} />
-        {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>
   )
