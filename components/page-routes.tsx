@@ -178,7 +178,25 @@ export async function ProjectsPageContent({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <PageJsonLd locale={locale} path="/projects" />
+      <PageJsonLd
+        locale={locale}
+        path="/projects"
+        items={[
+          ...projects.map((project) => ({
+            type: "CreativeWork" as const,
+            name: project.title,
+            description: project.description,
+            url: project.href,
+            image: project.coverImage,
+          })),
+          ...logoWorks.map((work) => ({
+            type: "ImageObject" as const,
+            name: work.title,
+            description: work.description,
+            image: work.logoImage,
+          })),
+        ]}
+      />
       <PageHeader locale={locale} {...content.header} />
       <section className="relative pb-32">
         <div className="section-shell">
@@ -234,7 +252,16 @@ export async function LogoPageContent({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <PageJsonLd locale={locale} path="/logo" />
+      <PageJsonLd
+        locale={locale}
+        path="/logo"
+        items={logoWorks.map((work) => ({
+          type: "ImageObject",
+          name: work.title,
+          description: work.description,
+          image: work.logoImage,
+        }))}
+      />
       <PageHeader locale={locale} {...content.header} />
       <section className="relative pb-32">
         <div className="section-shell">

@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next"
 
 import type { Locale } from "./i18n"
 import type { RouteMetadataKey } from "./route-metadata-content"
+import { getBlogPostPaths, type BlogPostKey } from "./blog-posts.ts"
 
 export type PublicRoute = {
   path: string
@@ -10,19 +11,36 @@ export type PublicRoute = {
   priority: number
   llms: boolean
   indexable?: boolean
+  images?: readonly string[]
+  localizedPaths?: Partial<Record<Locale, string>>
+  lastModified?: string
+  blogPostKey?: BlogPostKey
 }
+
+const blogPublicRoutes = getBlogPostPaths().map((post) => ({
+  path: post.tr,
+  localizedPaths: { tr: post.tr, en: post.en },
+  metadataKey: "blog" as const,
+  changeFrequency: "monthly" as const,
+  priority: 0.75,
+  llms: true,
+  lastModified: post.lastModified,
+  blogPostKey: post.key,
+}))
 
 export const publicRoutes = [
   { path: "/", metadataKey: "home", changeFrequency: "weekly", priority: 1, llms: true },
   { path: "/about", metadataKey: "about", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/approach", metadataKey: "approach", changeFrequency: "monthly", priority: 0.8, llms: true },
-  { path: "/blog", metadataKey: "blog", changeFrequency: "monthly", priority: 0.8, llms: false, indexable: false },
+  { path: "/blog", metadataKey: "blog", changeFrequency: "weekly", priority: 0.8, llms: true, lastModified: "2026-09-25" },
+  ...blogPublicRoutes,
   { path: "/careers", metadataKey: "careers", changeFrequency: "monthly", priority: 0.8, llms: false, indexable: false },
   { path: "/contact", metadataKey: "contact", changeFrequency: "monthly", priority: 0.8, llms: true },
-  { path: "/logo", metadataKey: "logo", changeFrequency: "monthly", priority: 0.8, llms: true },
+  { path: "/demos", metadataKey: "demos", changeFrequency: "monthly", priority: 0.8, llms: true, images: ["/demos/tableflow-pos-dashboard.png", "/projects/z-grup-insaat-cover.png", "/demos/adakan-dental-clinic.png", "/projects/sallihogullari-hafriyat-cover.png"] },
+  { path: "/logo", metadataKey: "logo", changeFrequency: "monthly", priority: 0.8, llms: true, images: ["/projects/z-grup-logo.svg", "/projects/salihogullari-hafriyat-logo.svg", "/projects/adakan-hafriyat-logo.svg", "/favicon-v3.svg"] },
   { path: "/privacy", metadataKey: "privacy", changeFrequency: "yearly", priority: 0.3, llms: false },
   { path: "/pricing", metadataKey: "pricing", changeFrequency: "monthly", priority: 0.8, llms: true },
-  { path: "/projects", metadataKey: "projects", changeFrequency: "monthly", priority: 0.8, llms: true },
+  { path: "/projects", metadataKey: "projects", changeFrequency: "monthly", priority: 0.8, llms: true, images: ["/projects/z-grup-insaat-cover.png", "/projects/sallihogullari-hafriyat-cover.png", "/projects/z-grup-logo.svg", "/projects/salihogullari-hafriyat-logo.svg", "/projects/adakan-hafriyat-logo.svg", "/favicon-v3.svg"] },
   { path: "/services", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
   { path: "/services/software-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
   { path: "/services/web-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
@@ -35,7 +53,8 @@ export const publicRoutes = [
 ] as const satisfies readonly PublicRoute[]
 
 export function getLocalizedPublicPath(route: PublicRoute, locale: Locale): string {
-  return locale === "tr" ? route.path : route.path === "/" ? "/en" : `/en${route.path}`
+  const localizedPath = route.localizedPaths?.[locale] ?? route.path
+  return locale === "tr" ? localizedPath : localizedPath === "/" ? "/en" : `/en${localizedPath}`
 }
 
 export function getPublicUrl(route: PublicRoute, locale: Locale, baseUrl: string): string {
@@ -60,12 +79,16 @@ export function buildSitemapEntries(routes: readonly PublicRoute[], baseUrl: str
       {
         url: getPublicUrl(route, "tr", baseUrl),
         alternates,
+        ...(route.images?.length ? { images: route.images.map((image) => new URL(image, baseUrl).href) } : {}),
+        ...(route.lastModified ? { lastModified: route.lastModified } : {}),
         changeFrequency: route.changeFrequency,
         priority: route.priority,
       },
       {
         url: getPublicUrl(route, "en", baseUrl),
         alternates,
+        ...(route.images?.length ? { images: route.images.map((image) => new URL(image, baseUrl).href) } : {}),
+        ...(route.lastModified ? { lastModified: route.lastModified } : {}),
         changeFrequency: route.changeFrequency,
         priority: Math.max(route.priority - 0.05, 0),
       },

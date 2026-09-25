@@ -27,10 +27,10 @@
 **Interfaces:**
 - Produces: `blogPostKeys`, `getBlogPosts(locale)`, `getBlogPostBySlug(slug, locale)`, and `getBlogPostPaths()`.
 
-- [ ] Write tests that require four articles, unique localized slugs and titles, at least four substantial sections, three FAQs, valid release dates, and a related `/services/` route.
-- [ ] Run `node --experimental-strip-types lib/blog-posts.test.mjs` and confirm it fails because the module is missing.
-- [ ] Add the typed content module with four practical guides in Turkish and English.
-- [ ] Run the focused test and confirm it passes.
+- [x] Write tests that require four articles, unique localized slugs and titles, at least four substantial sections, three FAQs, valid release dates, and a related `/services/` route.
+- [x] Run `node --experimental-strip-types lib/blog-posts.test.mjs` and confirm it fails because the module is missing.
+- [x] Add the typed content module with four practical guides in Turkish and English.
+- [x] Run the focused test and confirm it passes.
 
 ### Task 2: Localized metadata and public URL inventory
 
@@ -45,10 +45,10 @@
 - `createPageMetadata` consumes optional `localizedPaths: Record<Locale, string>`.
 - `PublicRoute` consumes optional `localizedPaths` and `lastModified`.
 
-- [ ] Add failing tests for different Turkish and English article paths, reciprocal hreflang, blog indexability, article sitemap URLs, and honest `lastModified` values.
-- [ ] Run the three focused test files and confirm the new assertions fail.
-- [ ] Extend metadata and public-route helpers, register the blog index and article routes, and include useful pages in `llms.txt`.
-- [ ] Run the focused tests and confirm they pass.
+- [x] Add failing tests for different Turkish and English article paths, reciprocal hreflang, blog indexability, article sitemap URLs, and honest `lastModified` values.
+- [x] Run the three focused test files and confirm the new assertions fail.
+- [x] Extend metadata and public-route helpers, register the blog index and article routes, and include useful pages in `llms.txt`.
+- [x] Run the focused tests and confirm they pass.
 
 ### Task 3: Article structured data
 
@@ -60,10 +60,10 @@
 **Interfaces:**
 - Produces: `createArticleSchema`, plus existing breadcrumb and FAQ schemas serialized as one graph.
 
-- [ ] Add a failing test for Article headline, canonical URL, language, dates, organization author/publisher, and main entity link.
-- [ ] Run the focused test and confirm failure.
-- [ ] Implement the pure Article schema builder and safe rendering component.
-- [ ] Run the focused test and confirm it passes.
+- [x] Add a failing test for Article headline, canonical URL, language, dates, organization author/publisher, and main entity link.
+- [x] Run the focused test and confirm failure.
+- [x] Implement the pure Article schema builder and safe rendering component.
+- [x] Run the focused test and confirm it passes.
 
 ### Task 4: Blog index and article routes
 
@@ -78,10 +78,10 @@
 **Interfaces:**
 - Dynamic routes use `generateStaticParams`, `dynamicParams = false`, and `createPageMetadata` with localized paths.
 
-- [ ] Add failing route-source tests requiring static params, not-found handling, localized metadata, article cards, and removal of placeholder copy.
-- [ ] Run the focused test and confirm failure.
-- [ ] Build the index cards, readable article page, Turkish route, and prefixed English route using existing components and styles.
-- [ ] Run focused tests and confirm they pass.
+- [x] Add failing route-source tests requiring static params, not-found handling, localized metadata, article cards, and removal of placeholder copy.
+- [x] Run the focused test and confirm failure.
+- [x] Build the index cards, readable article page, Turkish route, and prefixed English route using existing components and styles.
+- [x] Run focused tests and confirm they pass.
 
 ### Task 5: Verification
 
@@ -91,11 +91,10 @@
 **Interfaces:**
 - Produces a deployable build with no open temporary ports.
 
-- [ ] Run every `lib/**/*.test.mjs` file sequentially and require zero failures.
-- [ ] Run `npm run lint`.
-- [ ] Run `npx tsc --noEmit`.
-- [ ] Run `npm run build`.
-- [ ] Start the production server on a temporary port and inspect canonical, hreflang, Article, FAQ, breadcrumb, sitemap, robots, and `llms.txt` output.
-- [ ] Stop the temporary server and verify its port is closed.
-- [ ] Run `git diff --check` and inspect the final diff without pushing.
-
+- [x] Run every `lib/**/*.test.mjs` file sequentially and require zero failures.
+- [x] Run `npm run lint`.
+- [x] Run `npx tsc --noEmit`.
+- [x] Run `npm run build`.
+- [x] Start the production server on a temporary port and inspect canonical, hreflang, Article, FAQ, breadcrumb, sitemap, robots, and `llms.txt` output.
+- [x] Stop the temporary server and verify its port is closed.
+- [x] Run `git diff --check` and inspect the final diff without pushing.

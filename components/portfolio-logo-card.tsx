@@ -15,9 +15,7 @@ export type PortfolioLogoWork = {
 export function PortfolioLogoCard({ work, href }: { work: PortfolioLogoWork; href?: string }) {
   const content = (
     <>
-      <div
-        className="relative mb-5 aspect-square overflow-hidden rounded-xl border border-border/50 bg-white"
-      >
+      <div className="relative mb-5 aspect-square overflow-hidden rounded-xl border border-border/50 bg-white transition-colors duration-300 dark:bg-[#8f949c]">
         <div className="absolute inset-3 flex items-center justify-center">
           {work.logoImage ? (
             <Image
@@ -46,6 +44,6 @@ export function PortfolioLogoCard({ work, href }: { work: PortfolioLogoWork; hre
     </>
   )
 
-  const className = "group block overflow-hidden rounded-2xl border border-border/50 bg-card/25 p-5 transition-colors hover:border-accent/45 premium-border"
+  const className = "group block overflow-hidden rounded-2xl border border-border/50 bg-secondary/50 p-5 transition-colors hover:border-accent/45 premium-border dark:bg-white/[0.04]"
   return href ? <Link href={href} className={className}>{content}</Link> : <article className={className}>{content}</article>
 }

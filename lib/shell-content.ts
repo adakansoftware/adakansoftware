@@ -11,6 +11,7 @@ export const navbarContent = {
     links: [
       { name: "Hizmetler", href: "/services" },
       { name: "Projeler", href: "/projects" },
+      { name: "Demolar", href: "/demos" },
       { name: "Logo", href: "/logo" },
       { name: "Fiyatlar", href: "/pricing" },
       { name: "Yaklaşımımız", href: "/approach" },
@@ -24,6 +25,7 @@ export const navbarContent = {
     links: [
       { name: "Services", href: "/services" },
       { name: "Projects", href: "/projects" },
+      { name: "Demos", href: "/demos" },
       { name: "Logo", href: "/logo" },
       { name: "Pricing", href: "/pricing" },
       { name: "Approach", href: "/approach" },
@@ -46,7 +48,7 @@ export const navbarContent = {
 export const footerContent = {
   tr: {
     description:
-      "Büyümek isteyen markalar için stratejik web siteleri, marka kimlikleri ve dijital ürün arayüzleri üreten tasarım ve yazılım stüdyosu.",
+      "İşletmeler için özel yazılım, web uygulaması, kurumsal web sitesi, UI/UX ve marka kimliği geliştiren İstanbul merkezli yazılım şirketi.",
     companyTitle: "Şirket",
     servicesTitle: "Hizmetler",
     rights: "Tüm hakları saklıdır.",
@@ -70,7 +72,7 @@ export const footerContent = {
   },
   en: {
     description:
-      "A design and software studio creating strategic websites, brand identities, and digital product interfaces for ambitious brands.",
+      "An Istanbul software company building custom software, web applications, corporate websites, UI/UX and brand identity systems.",
     companyTitle: "Company",
     servicesTitle: "Services",
     rights: "All rights reserved.",

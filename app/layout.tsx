@@ -42,6 +42,7 @@ export const metadata: Metadata = {
     languages: {
       "tr-TR": "/",
       "en-US": "/en",
+      "x-default": "/",
     },
   },
   openGraph: {
@@ -86,6 +87,15 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
+const themeScript = `
+  try {
+    const savedTheme = localStorage.getItem('theme');
+    const useDarkTheme = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', useDarkTheme);
+    document.documentElement.style.colorScheme = useDarkTheme ? 'dark' : 'light';
+  } catch {}
+`
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -95,7 +105,10 @@ export default async function RootLayout({
   const skipLinkLabel = locale === "tr" ? "İçeriğe geç" : "Skip to content"
 
   return (
-    <html lang={locale} className="bg-background">
+    <html lang={locale} className="bg-background" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={`${inter.variable} studio-theme font-sans antialiased`}>
         <JsonLd locale={locale} />
         <a

@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { CTASection } from "@/components/cta-section"
@@ -7,32 +8,43 @@ import { createMailtoHref } from "@/lib/contact-links"
 import type { Locale } from "@/lib/i18n"
 import { careersPageContent, blogPageContent, legalPageContent } from "@/lib/static-page-content"
 import { siteConfig } from "@/lib/site-config"
+import { getBlogPosts } from "@/lib/blog-posts"
+import { withLocale } from "@/lib/i18n"
 
 export function BlogPageContent({ locale }: { locale: Locale }) {
   const copy = blogPageContent[locale]
-  const bodyText =
-    locale === "tr"
-      ? "Tasarım, marka ve web geliştirme üzerine notlarımızı burada paylaşacağız. Bir konu önermek için bize yazabilirsiniz."
-      : "Our notes on design, branding and web development will appear here. Send us a topic you would like us to cover."
-  const buttonLabel = locale === "tr" ? "Konu öner" : "Suggest a topic"
-  const subject = locale === "tr" ? "Blog konu önerisi" : "Blog topic suggestion"
+  const posts = getBlogPosts(locale)
 
   return (
     <>
-      <PageJsonLd locale={locale} path="/blog" />
+      <PageJsonLd
+        locale={locale}
+        path="/blog"
+        items={posts.map((post) => ({
+          type: "BlogPosting",
+          name: post.title,
+          description: post.excerpt,
+          url: withLocale(`/blog/${post.slug}`, locale),
+        }))}
+      />
       <PageHeader locale={locale} {...copy} />
       <section className="relative pb-32">
-        <div className="section-shell max-w-2xl">
-          <div className="rounded-2xl border border-border/50 bg-card/25 p-8 backdrop-blur-md md:p-10">
-            <h2 className="text-2xl font-bold">{bodyText}</h2>
-            <a
-              href={createMailtoHref(siteConfig.email, subject)}
-              className="group mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-            >
-              {buttonLabel}
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
-            </a>
-          </div>
+        <div className="section-shell grid gap-5 md:grid-cols-2">
+          {posts.map((post) => (
+            <article key={post.key} className="rounded-3xl border border-border/60 bg-card/40 p-7 shadow-[0_18px_60px_rgba(0,0,0,0.05)] md:p-9">
+              <div className="flex flex-wrap items-center gap-3 text-xs font-medium tracking-[0.12em] text-muted-foreground uppercase">
+                <span>{post.category}</span>
+                <span aria-hidden="true">·</span>
+                <span>{post.readingTime}</span>
+              </div>
+              <h2 className="mt-5 text-2xl font-semibold tracking-tight md:text-3xl">{post.title}</h2>
+              <p className="mt-4 leading-7 text-muted-foreground">{post.excerpt}</p>
+              <Link className="studio-link mt-7" href={withLocale(`/blog/${post.slug}`, locale)}>
+                {locale === "tr" ? "Rehberi okuyun" : "Read the guide"}
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </article>
+          ))}
         </div>
       </section>
       <CTASection locale={locale} />

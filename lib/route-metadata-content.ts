@@ -7,6 +7,7 @@ export type RouteMetadataKey =
   | "blog"
   | "careers"
   | "contact"
+  | "demos"
   | "logo"
   | "privacy"
   | "pricing"
@@ -60,12 +61,14 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
   },
   blog: {
     tr: {
-      title: "Blog",
-      description: "Tasarım, marka ve frontend geliştirme tarafında iş hedeflerine bağlanan pratik notlar.",
+      title: "Yazılım ve Web Geliştirme Rehberleri",
+      description: "Özel yazılım, web uygulaması, kurumsal web sitesi, Next.js, teknik SEO ve performans hakkında uygulamaya dönük kapsamlı rehberler.",
+      keywords: ["yazılım rehberi", "özel yazılım", "web uygulaması", "Next.js SEO", "kurumsal web sitesi"],
     },
     en: {
-      title: "Blog",
-      description: "Practical notes on design, brand, and frontend development tied to business goals.",
+      title: "Software and Web Development Guides",
+      description: "Practical guides to custom software, web applications, corporate websites, Next.js, technical SEO and web performance.",
+      keywords: ["software development guides", "custom software", "web application", "Next.js SEO", "corporate website"],
     },
   },
   careers: {
@@ -88,6 +91,18 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
       title: "Contact for Software and Web Projects",
       description: "Get in touch with Adakan Software about your new website, brand identity, or digital product project.",
       keywords: ["software project quote", "website quote", "software company contact", "Istanbul web design agency"],
+    },
+  },
+  demos: {
+    tr: {
+      title: "Canlı Web Sitesi Demoları",
+      description: "Adakan Software tarafından tasarlanan diş kliniği, kurumsal hizmet ve farklı sektörlere yönelik canlı web sitesi demolarını inceleyin.",
+      keywords: ["web sitesi demo", "kurumsal web sitesi örnekleri", "diş kliniği web sitesi", "Next.js demo", "web tasarım örnekleri"],
+    },
+    en: {
+      title: "Live Website Demos",
+      description: "Explore live website demos designed by Adakan Software for dental clinics, corporate services, and businesses across different industries.",
+      keywords: ["website demos", "corporate website examples", "dental clinic website", "Next.js demos", "web design examples"],
     },
   },
   logo: {

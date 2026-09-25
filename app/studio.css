@@ -12,6 +12,11 @@
 .studio-desktop-nav { display: flex; gap: 28px; margin-left: auto; }
 .studio-desktop-nav a, .studio-nav-actions { font-size: 14px; }
 .studio-nav-actions { display: flex; align-items: center; gap: 22px; }
+.studio-theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid #d2d2d7; border-radius: 999px; color: #515154; background: rgb(255 255 255 / .7); transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease; }
+.studio-theme-toggle:hover { color: #0071e3; border-color: #a8a8ad; transform: translateY(-1px); }
+.studio-theme-icon-sun { display: none; }
+.dark .studio-theme-icon-sun { display: block; }
+.dark .studio-theme-icon-moon { display: none; }
 .studio-language { color: #6e6e73; padding-block: 12px; }
 .studio-desktop-nav a, .studio-language { transition: color .18s ease, opacity .18s ease; }
 .studio-desktop-nav a:hover, .studio-language:hover { color: #0071e3; text-decoration: none; }
@@ -92,6 +97,26 @@
 .studio-theme .section-frame::before { content: none; }
 .studio-theme .premium-border { box-shadow: none; }
 .studio-theme .grid-pattern { background-image: none; }
+.dark .studio-header { background: rgb(18 18 20 / .86); border-bottom-color: rgb(255 255 255 / .1); }
+.dark .studio-brand { color: #f5f5f7; }
+.dark .studio-desktop-nav a { color: #d2d2d7; }
+.dark .studio-desktop-nav a:hover, .dark .studio-desktop-nav a[aria-current], .dark .studio-language:hover { color: #2997ff; }
+.dark .studio-language { color: #a1a1a6; }
+.dark .studio-theme-toggle { color: #f5f5f7; background: rgb(255 255 255 / .08); border-color: rgb(255 255 255 / .16); }
+.dark .studio-theme-toggle:hover { color: #79baff; border-color: rgb(255 255 255 / .3); }
+.dark .studio-eyebrow, .dark .studio-lead, .dark .studio-section-description, .dark .studio-services p, .dark .studio-approach p, .dark .studio-price-note, .dark .studio-page-header > p, .dark .studio-cta > p { color: #a1a1a6; }
+.dark .studio-soft { background: #111317; }
+.dark .studio-services article { border-color: #33363c; }
+.dark .studio-approach li { border-color: #33363c; }
+.dark .studio-approach li > span { color: #a1a1a6; }
+.dark .studio-price-card { background: #111419; border-color: #30343a; }
+.dark .studio-price-featured { border-color: #2997ff; }
+.dark .studio-price-card ul { border-color: #30343a; }
+.dark .studio-price-card li { color: #d2d2d7; }
+.dark .studio-footer { background: #0b0d10; border-color: #2a2d33; color: #a1a1a6; }
+.dark .studio-footer .studio-brand, .dark .studio-footer-wordmark { color: #f5f5f7; }
+.dark .studio-footer-bottom { border-color: #2a2d33; }
+.dark .studio-theme .section-frame { background: #111419; border-color: #30343a; }
 @media (max-width: 900px) {
   .studio-nav { gap: 20px; }
   .studio-desktop-nav { display: none; }
@@ -101,7 +126,9 @@
   .studio-mobile-menu summary::-webkit-details-marker { display: none; }
   .studio-nav-cta { display: none; }
   .studio-mobile-menu nav { position: absolute; top: 100%; left: 0; right: 0; background: rgb(250 250 252 / .96); border-bottom: 1px solid rgb(0 0 0 / .1); padding: 14px max(32px, calc((100vw - 1120px) / 2)) 24px; display: grid; backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); box-shadow: 0 18px 38px rgb(0 0 0 / .06); }
+  .dark .studio-mobile-menu nav { background: rgb(18 18 20 / .97); border-bottom-color: rgb(255 255 255 / .1); box-shadow: 0 18px 38px rgb(0 0 0 / .3); }
   .studio-mobile-menu nav a { padding-block: 14px; border-bottom: 1px solid rgb(0 0 0 / .07); font-size: 17px; letter-spacing: -.2px; }
+  .dark .studio-mobile-menu nav a { border-bottom-color: rgb(255 255 255 / .08); }
   .studio-mobile-menu nav a:last-child { border-bottom: 0; padding-top: 18px; }
   .studio-approach { gap: 50px; }
   .studio-price-card { padding: 24px; }
@@ -143,6 +170,6 @@
   .studio-mobile-menu summary { width: 40px; height: 40px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .studio-button, .studio-nav-cta, .studio-desktop-nav a, .studio-language { transition: none; }
+  .studio-button, .studio-nav-cta, .studio-desktop-nav a, .studio-language, .studio-theme-toggle { transition: none; }
   .studio-nav-cta:hover { transform: none; }
 }

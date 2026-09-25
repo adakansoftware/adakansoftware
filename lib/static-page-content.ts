@@ -3,36 +3,20 @@ import { siteConfig } from "@/lib/site-config"
 
 export const blogPageContent = {
   tr: {
-    title: "Dijital büyüme üzerine",
-    gradientText: "kısa notlar",
-    description: "Tasarım, marka ve frontend geliştirme tarafında iş hedeflerine bağlanan pratik notlar.",
+    title: "Yazılımı daha doğru",
+    gradientText: "planlamak için rehberler",
+    description: "Özel yazılım, web uygulamaları, kurumsal web siteleri, Next.js, SEO ve performans kararlarını açık biçimde anlatan uygulamalı rehberler.",
     secondaryHref: "/services",
     secondaryLabel: "Hizmetleri Gör",
-    badge: "Yakında",
-    ctaHref: "/contact",
-    ctaLabel: "Haberdar olmak için iletişime geç",
-    posts: [
-      "İyi bir landing page ilk 5 saniyede ne anlatmalı?",
-      "Marka kimliğinde renk sistemini doğru kurmak",
-      "Next.js projelerinde performans ve algılanan hız",
-    ],
   },
   en: {
-    title: "Short notes",
-    gradientText: "on digital growth",
-    description: "Practical notes on design, brand, and frontend development tied to business goals.",
+    title: "Practical guides for",
+    gradientText: "better software decisions",
+    description: "Clear guides to custom software, web applications, corporate websites, Next.js, SEO and performance decisions.",
     primaryHref: "/en/contact",
     primaryLabel: "Contact Us",
     secondaryHref: "/en/services",
     secondaryLabel: "View Services",
-    badge: "Soon",
-    ctaHref: "/en/contact",
-    ctaLabel: "Contact us to be notified",
-    posts: [
-      "What should a strong landing page communicate in the first 5 seconds?",
-      "Building a practical color system for brand identity",
-      "Performance and perceived speed in Next.js projects",
-    ],
   },
 } as const satisfies Record<
   Locale,
@@ -44,10 +28,6 @@ export const blogPageContent = {
     primaryLabel?: string
     secondaryHref: string
     secondaryLabel: string
-    badge: string
-    ctaHref: string
-    ctaLabel: string
-    posts: string[]
   }
 >
 

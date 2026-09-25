@@ -18,6 +18,7 @@ type PageMetadataInput = {
   description: string
   path: string
   keywords?: string[]
+  localizedPaths?: Record<Locale, string>
 }
 
 export function createPageMetadata({
@@ -26,8 +27,10 @@ export function createPageMetadata({
   description,
   path,
   keywords = [],
+  localizedPaths,
 }: PageMetadataInput): Metadata {
-  const canonicalPath = locale === "tr" ? path : `/en${path === "/" ? "" : path}`
+  const paths = localizedPaths ?? { tr: path, en: path }
+  const canonicalPath = locale === "tr" ? paths.tr : `/en${paths.en === "/" ? "" : paths.en}`
   const canonicalUrl = new URL(canonicalPath, siteUrl).href
   const ogImageUrl = new URL("/og", siteUrl)
   ogImageUrl.searchParams.set("page", path.slice(1) || "home")
@@ -43,9 +46,9 @@ export function createPageMetadata({
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        tr: new URL(path, siteUrl).href,
-        en: new URL(path === "/" ? "/en" : `/en${path}`, siteUrl).href,
-        "x-default": new URL(path, siteUrl).href,
+        tr: new URL(paths.tr, siteUrl).href,
+        en: new URL(paths.en === "/" ? "/en" : `/en${paths.en}`, siteUrl).href,
+        "x-default": new URL(paths.tr, siteUrl).href,
       },
     },
     openGraph: {

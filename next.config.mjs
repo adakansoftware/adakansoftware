@@ -25,6 +25,7 @@ const contentSecurityPolicy = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   outputFileTracingRoot: projectRoot,
+  allowedDevOrigins: ["127.0.0.1"],
   experimental: {
     cpus: 2,
     staticGenerationMaxConcurrency: 2,
