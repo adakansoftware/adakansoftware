@@ -5,24 +5,6 @@ import { fileURLToPath } from "node:url"
 const projectRoot = dirname(fileURLToPath(import.meta.url))
 const isProduction = process.env.NODE_ENV === "production"
 
-const contentSecurityPolicy = [
-  "default-src 'self'",
-  "base-uri 'self'",
-  "frame-ancestors 'none'",
-  "form-action 'self' mailto:",
-  "object-src 'none'",
-  `script-src 'self' 'unsafe-inline'${isProduction ? "" : " 'unsafe-eval'"}`,
-  "script-src-attr 'none'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https:",
-  "font-src 'self' data:",
-  "connect-src 'self' https://vitals.vercel-insights.com https://vercel.live",
-  "frame-src 'none'",
-  "worker-src 'self' blob:",
-  "manifest-src 'self'",
-  ...(isProduction ? ["upgrade-insecure-requests"] : []),
-].join("; ")
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   outputFileTracingRoot: projectRoot,
@@ -74,10 +56,6 @@ const nextConfig = {
             value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
           },
           {
-            key: "Content-Security-Policy",
-            value: contentSecurityPolicy,
-          },
-          {
             key: "Cross-Origin-Opener-Policy",
             value: "same-origin",
           },
@@ -88,6 +66,14 @@ const nextConfig = {
           {
             key: "X-DNS-Prefetch-Control",
             value: "off",
+          },
+          {
+            key: "X-Permitted-Cross-Domain-Policies",
+            value: "none",
+          },
+          {
+            key: "Origin-Agent-Cluster",
+            value: "?1",
           },
           ...(isProduction
             ? [

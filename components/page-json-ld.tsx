@@ -4,6 +4,7 @@ import { routeMetadataContent } from "@/lib/route-metadata-content"
 import { siteConfig } from "@/lib/site-config"
 import { createBreadcrumbSchema, createFaqSchema, createItemListSchema, createServiceSchema, createWebPageSchema, type StructuredDataItem } from "@/lib/structured-data"
 import { serializeJsonLd } from "@/lib/json-ld"
+import { NonceScript } from "@/components/nonce-script"
 
 export function PageJsonLd({ locale, path, content: contentOverride, serviceTypes, faqs, items }: { locale: Locale; path: string; content?: { title: string; description: string }; serviceTypes?: string[]; faqs?: Array<{ question: string; answer: string }>; items?: StructuredDataItem[] }) {
   const route = getPublicRouteByPath(path)
@@ -25,5 +26,5 @@ export function PageJsonLd({ locale, path, content: contentOverride, serviceType
     ...(absoluteItems?.length ? [createItemListSchema({ url, name: content.title, items: absoluteItems })] : []),
   ]
 
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemas) }} />
+  return <NonceScript type="application/ld+json" content={serializeJsonLd(schemas)} />
 }

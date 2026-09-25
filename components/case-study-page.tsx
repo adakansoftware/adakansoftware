@@ -10,6 +10,7 @@ import type { CaseStudyKey } from "@/lib/case-studies"
 import { getCaseStudy, getCaseStudyPaths } from "@/lib/case-studies"
 import { siteConfig } from "@/lib/site-config"
 import { createBreadcrumbSchema, createCreativeWorkSchema, createFaqSchema, createWebPageSchema } from "@/lib/structured-data"
+import { NonceScript } from "@/components/nonce-script"
 
 export function CaseStudyPage({ studyKey, locale }: { studyKey: CaseStudyKey; locale: Locale }) {
   const study = getCaseStudy(studyKey, locale)
@@ -28,7 +29,7 @@ export function CaseStudyPage({ studyKey, locale }: { studyKey: CaseStudyKey; lo
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemas) }} />
+      <NonceScript type="application/ld+json" content={serializeJsonLd(schemas)} />
       <main>
         <section className="section-shell pb-16 pt-28 md:pb-24 md:pt-36">
           <Link href={withLocale("/projects", locale)} className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground">

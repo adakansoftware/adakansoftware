@@ -18,6 +18,8 @@ for (const [header, expected] of [
   ["x-content-type-options", "nosniff"],
   ["x-frame-options", "DENY"],
   ["referrer-policy", "strict-origin-when-cross-origin"],
+  ["x-permitted-cross-domain-policies", "none"],
+  ["origin-agent-cluster", "?1"],
 ]) {
   assert.equal(response.headers.get(header), expected, header)
 }
@@ -26,15 +28,29 @@ const csp = response.headers.get("content-security-policy") ?? ""
 for (const directive of ["frame-ancestors 'none'", "object-src 'none'", "base-uri 'self'", "script-src-attr 'none'", "upgrade-insecure-requests"]) {
   assert.ok(csp.split("; ").includes(directive), directive)
 }
+const scriptDirective = csp.split("; ").find((directive) => directive.startsWith("script-src ")) ?? ""
+const nonce = scriptDirective.match(/'nonce-([^']+)'/)?.[1]
+assert.ok(nonce, "script nonce")
+assert.ok(scriptDirective.includes("'strict-dynamic'"), "strict-dynamic")
+assert.ok(!scriptDirective.includes("'unsafe-inline'"), "script-src excludes unsafe-inline")
+assert.ok(!scriptDirective.includes("'unsafe-eval'"), "script-src excludes unsafe-eval")
 
-const sensitivePath = await secureFetch("/.env")
-assert.equal(sensitivePath.status, 404, "/.env")
+const html = await response.text()
+const scriptTags = [...html.matchAll(/<script\b[^>]*>/gi)].map((match) => match[0])
+assert.ok(scriptTags.length > 0, "rendered script tags")
+for (const tag of scriptTags) {
+  assert.ok(tag.includes(`nonce="${nonce}"`), `matching nonce on ${tag.slice(0, 100)}`)
+}
+
+for (const path of ["/.env", "/.well-known/.env", "/%252eenv"]) {
+  const sensitivePath = await secureFetch(path)
+  assert.equal(sensitivePath.status, 404, path)
+}
 
 const healthResponse = await secureFetch("/api/health")
 assert.equal(healthResponse.status, 200, "/api/health")
 const health = await healthResponse.json()
 assert.deepEqual(Object.keys(health).sort(), ["ok", "status"])
-assert.ok(!csp.includes("'unsafe-eval'"))
 
 const insecureTransport = await secureFetch("/projects?from=security-smoke", {
   headers: { "x-forwarded-proto": "http" },

@@ -4,6 +4,7 @@ import { getBlogEditorial } from "@/lib/blog-editorial"
 import { serializeJsonLd } from "@/lib/json-ld"
 import { siteConfig } from "@/lib/site-config"
 import { createArticleSchema, createBreadcrumbSchema, createFaqSchema, createWebPageSchema } from "@/lib/structured-data"
+import { NonceScript } from "@/components/nonce-script"
 
 export function BlogArticleJsonLd({ locale, post }: { locale: Locale; post: BlogPost }) {
   const editorial = getBlogEditorial(post.key, locale)
@@ -39,5 +40,5 @@ export function BlogArticleJsonLd({ locale, post }: { locale: Locale; post: Blog
     createFaqSchema({ url, faqs: post.faqs }),
   ]
 
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemas) }} />
+  return <NonceScript type="application/ld+json" content={serializeJsonLd(schemas)} />
 }

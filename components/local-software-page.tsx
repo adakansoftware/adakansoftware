@@ -9,6 +9,7 @@ import { withLocale } from "@/lib/i18n"
 import { getLocalSoftwarePage } from "@/lib/local-service-page"
 import { siteConfig } from "@/lib/site-config"
 import { createBreadcrumbSchema, createFaqSchema, createServiceSchema, createWebPageSchema } from "@/lib/structured-data"
+import { NonceScript } from "@/components/nonce-script"
 
 export function LocalSoftwarePage({ locale }: { locale: Locale }) {
   const page = getLocalSoftwarePage(locale)
@@ -25,7 +26,7 @@ export function LocalSoftwarePage({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemas) }} />
+      <NonceScript type="application/ld+json" content={serializeJsonLd(schemas)} />
       <PageHeader locale={locale} title={page.title} gradientText={page.accent} description={page.description} primaryHref={withLocale("/contact", locale)} primaryLabel={locale === "tr" ? "Projeyi konuşalım" : "Discuss your project"} secondaryHref={withLocale("/projects", locale)} secondaryLabel={locale === "tr" ? "Proje örnekleri" : "Project examples"} />
       <section className="section-shell pb-24 md:pb-32">
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">

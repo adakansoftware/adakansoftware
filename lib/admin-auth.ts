@@ -1,8 +1,9 @@
 import { cookies } from "next/headers"
 
 import { createAdminSession, verifyAdminSession } from "@/lib/admin-session"
+import { getAdminCookieName } from "@/lib/admin-cookie"
 
-const cookieName = "adakan_admin"
+const cookieName = getAdminCookieName()
 export const adminSessionMaxAgeSeconds = 8 * 60 * 60
 
 export function hasAdminSessionConfiguration() {

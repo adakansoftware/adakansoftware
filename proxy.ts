@@ -4,14 +4,16 @@ import { NextResponse } from "next/server"
 import { defaultLocale, isLocale, localeHeaderName, stripLocalePrefix } from "@/lib/i18n"
 import { getProxyRateLimitPolicy, isProxyRateLimited } from "@/lib/server/proxy-rate-limit"
 import { getTrustedClientIp } from "@/lib/server/client-ip"
+import { buildContentSecurityPolicy, createCspNonce, cspNonceHeaderName } from "@/lib/server/content-security-policy"
 import { isSensitiveDotPath } from "@/lib/server/sensitive-path"
 import { getCanonicalRedirectUrl } from "@/lib/server/transport-security"
 import { siteConfig } from "@/lib/site-config"
 
 const PUBLIC_FILE = /\.[^/]+$/
 
-function withSecurityHeaders(response: NextResponse) {
+function withSecurityHeaders(response: NextResponse, contentSecurityPolicy: string) {
   response.headers.set("X-Proxy-Cache", "bypass")
+  response.headers.set("Content-Security-Policy", contentSecurityPolicy)
   return response
 }
 
@@ -36,18 +38,21 @@ function applyApiBurstProtection(request: NextRequest) {
   )
 }
 
-function forwardWithLocale(requestHeaders: Headers) {
+function forwardWithLocale(requestHeaders: Headers, contentSecurityPolicy: string) {
   return withSecurityHeaders(
     NextResponse.next({
       request: {
         headers: requestHeaders,
       },
     }),
+    contentSecurityPolicy,
   )
 }
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const nonce = createCspNonce()
+  const contentSecurityPolicy = buildContentSecurityPolicy(nonce, process.env.NODE_ENV === "production")
   const canonicalRedirectUrl = getCanonicalRedirectUrl(
     request.url,
     siteConfig.url,
@@ -56,20 +61,20 @@ export function proxy(request: NextRequest) {
   )
 
   if (canonicalRedirectUrl) {
-    return withSecurityHeaders(NextResponse.redirect(canonicalRedirectUrl, 308))
+    return withSecurityHeaders(NextResponse.redirect(canonicalRedirectUrl, 308), contentSecurityPolicy)
   }
 
   if (isSensitiveDotPath(pathname)) {
-    return withSecurityHeaders(new NextResponse(null, { status: 404 }))
+    return withSecurityHeaders(new NextResponse(null, { status: 404 }), contentSecurityPolicy)
   }
 
   if (pathname.startsWith("/api")) {
     const limitedResponse = applyApiBurstProtection(request)
     if (limitedResponse) {
-      return withSecurityHeaders(limitedResponse)
+      return withSecurityHeaders(limitedResponse, contentSecurityPolicy)
     }
 
-    return withSecurityHeaders(NextResponse.next())
+    return withSecurityHeaders(NextResponse.next(), contentSecurityPolicy)
   }
 
   if (
@@ -77,26 +82,28 @@ export function proxy(request: NextRequest) {
     pathname.startsWith("/favicon") ||
     PUBLIC_FILE.test(pathname)
   ) {
-    return withSecurityHeaders(NextResponse.next())
+    return withSecurityHeaders(NextResponse.next(), contentSecurityPolicy)
   }
 
   const [, firstSegment] = pathname.split("/")
   const requestHeaders = new Headers(request.headers)
+  requestHeaders.set(cspNonceHeaderName, nonce)
+  requestHeaders.set("Content-Security-Policy", contentSecurityPolicy)
 
   if (firstSegment === defaultLocale) {
     const redirectUrl = request.nextUrl.clone()
     redirectUrl.pathname = stripLocalePrefix(pathname)
 
-    return withSecurityHeaders(NextResponse.redirect(redirectUrl))
+    return withSecurityHeaders(NextResponse.redirect(redirectUrl), contentSecurityPolicy)
   }
 
   if (isLocale(firstSegment)) {
     requestHeaders.set(localeHeaderName, firstSegment)
-    return forwardWithLocale(requestHeaders)
+    return forwardWithLocale(requestHeaders, contentSecurityPolicy)
   }
 
   requestHeaders.set(localeHeaderName, defaultLocale)
-  return forwardWithLocale(requestHeaders)
+  return forwardWithLocale(requestHeaders, contentSecurityPolicy)
 }
 
 export const config = {

@@ -2,6 +2,7 @@ import type { Locale } from "@/lib/i18n"
 import { siteConfig } from "@/lib/site-config"
 import { serializeJsonLd } from "@/lib/json-ld"
 import { createOrganizationSchema, createWebsiteSchema } from "@/lib/structured-data"
+import { NonceScript } from "@/components/nonce-script"
 
 export function JsonLd({ locale }: { locale: Locale }) {
   const organization = createOrganizationSchema({
@@ -22,8 +23,8 @@ export function JsonLd({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(organization) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(website) }} />
+      <NonceScript type="application/ld+json" content={serializeJsonLd(organization)} />
+      <NonceScript type="application/ld+json" content={serializeJsonLd(website)} />
     </>
   )
 }
