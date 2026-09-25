@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto"
 
 import { contactPolicy } from "@/lib/server/contact-policy"
+import { persistContactWithoutDelivery } from "@/lib/server/contact-database-fallback"
 import { hasJsonContentType, readBoundedJsonObject } from "@/lib/request-body"
 import { isContactRuntimeConfigurationValid } from "@/lib/server/contact-runtime-config"
 import { getContactStateStoreStatus } from "@/lib/server/contact-state-store"
@@ -83,17 +84,13 @@ async function handleContactPost(request: Request, requestId: string, owner: str
   const now = Date.now()
   const clientIp = getClientIp(request)
 
-  if (!isContactRuntimeConfigurationValid()) {
-    return jsonResponse(
-      { ok: false, error: "Contact service is unavailable" },
-      { status: 503, requestId },
-    )
-  }
+  const fullPipelineConfigured = isContactRuntimeConfigurationValid()
 
-  // Production delivery relies on Redis for rate limiting, idempotency, and
-  // the outbox. Fail closed with a clear service response instead of allowing
-  // a later state-store operation to surface as an unhandled 500.
-  if (process.env.NODE_ENV === "production") {
+  // The full production pipeline relies on Redis for durable rate limiting,
+  // idempotency, and its delivery outbox. When configured, fail closed if that
+  // shared state is unavailable. A database-only fallback below still keeps
+  // genuine inquiries when optional delivery infrastructure is not configured.
+  if (process.env.NODE_ENV === "production" && fullPipelineConfigured) {
     try {
       const stateStatus = await getContactStateStoreStatus()
       if (!stateStatus.available) {
@@ -160,6 +157,17 @@ async function handleContactPost(request: Request, requestId: string, owner: str
   const submission = parseContactPayload(body)
   if (!submission) {
     return jsonResponse({ ok: false, error: "Invalid request" }, { status: 400, requestId })
+  }
+
+  if (!fullPipelineConfigured) {
+    const fallbackResponse = await persistContactWithoutDelivery(submission, recordContactRequest)
+
+    logServerEvent("warn", "contact.accepted.database-only", {
+      requestId,
+      clientIp,
+    })
+
+    return jsonResponse(fallbackResponse, { requestId })
   }
 
   try {
