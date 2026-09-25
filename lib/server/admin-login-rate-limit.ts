@@ -1,3 +1,8 @@
+import {
+  getSharedRateLimitStore,
+  hasSharedRateLimitConfiguration,
+} from "./shared-rate-limit.ts"
+
 const WINDOW_MS = 10 * 60_000
 const MAX_FAILURES = 5
 
@@ -5,19 +10,12 @@ const failuresByIp = new Map<string, number[]>()
 
 type AdminRateLimitEnvironment = {
   NODE_ENV?: string
-  CONTACT_STATE_BACKEND?: string
-  REDIS_URL?: string
+  DATABASE_URL?: string
+  ADMIN_SESSION_SECRET?: string
 }
 
 export function shouldUseSharedAdminRateLimit(environment: AdminRateLimitEnvironment = process.env) {
-  return environment.NODE_ENV === "production"
-    && environment.CONTACT_STATE_BACKEND?.trim().toLowerCase() === "redis"
-    && Boolean(environment.REDIS_URL?.trim())
-}
-
-async function getSharedStateStore() {
-  const { getContactStateStore } = await import("./contact-state-store")
-  return getContactStateStore()
+  return hasSharedRateLimitConfiguration(environment)
 }
 
 function recentFailures(ip: string, now: number) {
@@ -36,7 +34,7 @@ function recentFailures(ip: string, now: number) {
 
 export async function isAdminLoginRateLimited(ip: string, now: number) {
   if (shouldUseSharedAdminRateLimit()) {
-    return (await getSharedStateStore()).isRateLimited(`admin-login:${ip}`, WINDOW_MS, MAX_FAILURES)
+    return getSharedRateLimitStore().isLimited("admin-login", ip, WINDOW_MS, MAX_FAILURES, now)
   }
   return recentFailures(ip, now).length >= MAX_FAILURES
 }
@@ -47,11 +45,13 @@ export async function shouldRejectAdminLogin(ip: string, now: number) {
 
 export async function recordAdminLoginFailure(ip: string, now: number) {
   if (shouldUseSharedAdminRateLimit()) {
-    return (await getSharedStateStore()).consumeRateLimit(
-      `admin-login:${ip}`,
+    return (await getSharedRateLimitStore().consume(
+      "admin-login",
+      ip,
       WINDOW_MS,
       MAX_FAILURES,
-    )
+      now,
+    )).limited
   }
 
   const failures = recentFailures(ip, now)
@@ -62,7 +62,7 @@ export async function recordAdminLoginFailure(ip: string, now: number) {
 
 export async function clearAdminLoginFailures(ip: string) {
   if (shouldUseSharedAdminRateLimit()) {
-    await (await getSharedStateStore()).clearRateLimit(`admin-login:${ip}`)
+    await getSharedRateLimitStore().clear("admin-login", ip)
     return
   }
 

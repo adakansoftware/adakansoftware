@@ -12,6 +12,7 @@ const contentSecurityPolicy = [
   "form-action 'self' mailto:",
   "object-src 'none'",
   `script-src 'self' 'unsafe-inline'${isProduction ? "" : " 'unsafe-eval'"}`,
+  "script-src-attr 'none'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",

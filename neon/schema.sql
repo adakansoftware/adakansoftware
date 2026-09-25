@@ -38,3 +38,13 @@ create table if not exists contact_requests (
 );
 
 create index if not exists contact_requests_status_created_at_idx on contact_requests (status, created_at desc);
+
+create table if not exists security_rate_limits (
+  scope text not null,
+  identifier_hash text not null check (length(identifier_hash) = 64),
+  window_started_at timestamptz not null,
+  request_count integer not null check (request_count > 0),
+  primary key (scope, identifier_hash)
+);
+
+create index if not exists security_rate_limits_window_started_at_idx on security_rate_limits (window_started_at);

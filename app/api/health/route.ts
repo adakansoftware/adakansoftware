@@ -6,6 +6,7 @@ import { getProxyRateLimitDiagnostics } from "@/lib/server/proxy-rate-limit"
 import { getContactStateStore, getContactStateStoreStatus } from "@/lib/server/contact-state-store"
 import { getSafeContactStateError } from "@/lib/server/contact-state-status"
 import { getManagedContentSourceStatus } from "@/lib/content-source-status"
+import { getPublicHealthPayload } from "@/lib/server/public-health"
 import {
   createRequestId,
   emptyResponse,
@@ -54,12 +55,7 @@ export async function GET(request: Request) {
       || (isContactDeliveryConfigured() && contactConfigurationIssues.length === 0)
 
     return jsonResponse(
-      {
-        ok: ready,
-        status: ready ? "ok" : "degraded",
-        service: "adakansoftware-website",
-        timestamp: new Date().toISOString(),
-      },
+      getPublicHealthPayload(ready),
       {
         requestId,
         headers: { Allow: ALLOW_HEADER_VALUE },

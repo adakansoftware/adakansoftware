@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { defaultLocale, isLocale, localeHeaderName, stripLocalePrefix } from "@/lib/i18n"
 import { getProxyRateLimitPolicy, isProxyRateLimited } from "@/lib/server/proxy-rate-limit"
 import { getTrustedClientIp } from "@/lib/server/client-ip"
+import { isSensitiveDotPath } from "@/lib/server/sensitive-path"
 
 const PUBLIC_FILE = /\.[^/]+$/
 
@@ -46,6 +47,10 @@ function forwardWithLocale(requestHeaders: Headers) {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  if (isSensitiveDotPath(pathname)) {
+    return withSecurityHeaders(new NextResponse(null, { status: 404 }))
+  }
+
   if (pathname.startsWith("/api")) {
     const limitedResponse = applyApiBurstProtection(request)
     if (limitedResponse) {
@@ -83,5 +88,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|.*\\..*).*)"],
+  matcher: ["/((?!_next/static|_next/image).*)"],
 }

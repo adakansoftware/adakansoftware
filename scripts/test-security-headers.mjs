@@ -16,9 +16,17 @@ for (const [header, expected] of [
 }
 
 const csp = response.headers.get("content-security-policy") ?? ""
-for (const directive of ["frame-ancestors 'none'", "object-src 'none'", "base-uri 'self'", "upgrade-insecure-requests"]) {
+for (const directive of ["frame-ancestors 'none'", "object-src 'none'", "base-uri 'self'", "script-src-attr 'none'", "upgrade-insecure-requests"]) {
   assert.ok(csp.split("; ").includes(directive), directive)
 }
+
+const sensitivePath = await fetch(`${baseUrl}/.env`)
+assert.equal(sensitivePath.status, 404, "/.env")
+
+const healthResponse = await fetch(`${baseUrl}/api/health`)
+assert.equal(healthResponse.status, 200, "/api/health")
+const health = await healthResponse.json()
+assert.deepEqual(Object.keys(health).sort(), ["ok", "status"])
 assert.ok(!csp.includes("'unsafe-eval'"))
 
 for (const path of ["/api/admin/session", "/api/admin/content", "/api/admin/contact-requests"]) {

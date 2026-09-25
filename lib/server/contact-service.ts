@@ -9,6 +9,7 @@ import { isValidContactFromDomain, isValidResendApiKey } from "@/lib/server/cont
 import { getContactStateStore } from "@/lib/server/contact-state-store"
 import type { ContactDeliveryPort } from "@/lib/server/contact-ports"
 import { pruneExpiredBuckets } from "@/lib/server/memory-store"
+import { getSharedRateLimitStore, hasSharedRateLimitConfiguration } from "./shared-rate-limit.ts"
 
 function normalizeWhitespace(value: string) {
   return value.trim().replace(/\s+/g, " ")
@@ -62,6 +63,15 @@ export function parseContactPayload(payload: unknown) {
 }
 
 export async function isRateLimited(ip: string, now: number) {
+  if (hasSharedRateLimitConfiguration()) {
+    return (await getSharedRateLimitStore().consume(
+      "contact",
+      ip,
+      contactPolicy.rateLimitWindowMs,
+      contactPolicy.rateLimitMaxRequests,
+      now,
+    )).limited
+  }
   if (process.env.CONTACT_STATE_BACKEND?.trim().toLowerCase() === "redis") {
     return getContactStateStore().consumeRateLimit(`contact:${ip}`, contactPolicy.rateLimitWindowMs, contactPolicy.rateLimitMaxRequests)
   }
