@@ -19,6 +19,7 @@ type PageMetadataInput = {
   path: string
   keywords?: string[]
   localizedPaths?: Record<Locale, string>
+  article?: { publishedTime: string; modifiedTime: string; authors: string[] }
 }
 
 export function createPageMetadata({
@@ -28,6 +29,7 @@ export function createPageMetadata({
   path,
   keywords = [],
   localizedPaths,
+  article,
 }: PageMetadataInput): Metadata {
   const paths = localizedPaths ?? { tr: path, en: path }
   const canonicalPath = locale === "tr" ? paths.tr : `/en${paths.en === "/" ? "" : paths.en}`
@@ -58,7 +60,9 @@ export function createPageMetadata({
       siteName,
       locale: localeMap[locale].og,
       alternateLocale: [localeMap[locale === "tr" ? "en" : "tr"].og],
-      type: "website",
+      ...(article
+        ? { type: "article" as const, publishedTime: article.publishedTime, modifiedTime: article.modifiedTime, authors: article.authors }
+        : { type: "website" as const }),
       images: [
         {
           url: ogImage,

@@ -95,6 +95,7 @@ export function createArticleSchema({
   publishedAt,
   modifiedAt,
   image,
+  citations = [],
 }: {
   locale: StructuredDataLocale
   url: string
@@ -103,6 +104,7 @@ export function createArticleSchema({
   publishedAt: string
   modifiedAt: string
   image: string
+  citations?: string[]
 }) {
   const origin = new URL(url).origin
 
@@ -114,6 +116,7 @@ export function createArticleSchema({
     headline,
     description,
     image,
+    ...(citations.length ? { citation: citations } : {}),
     datePublished: publishedAt,
     dateModified: modifiedAt,
     inLanguage: locale === "tr" ? "tr-TR" : "en-US",

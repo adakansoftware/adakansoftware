@@ -1,10 +1,12 @@
 import type { Locale } from "@/lib/i18n"
 import type { BlogPost } from "@/lib/blog-posts"
+import { getBlogEditorial } from "@/lib/blog-editorial"
 import { serializeJsonLd } from "@/lib/json-ld"
 import { siteConfig } from "@/lib/site-config"
 import { createArticleSchema, createBreadcrumbSchema, createFaqSchema, createWebPageSchema } from "@/lib/structured-data"
 
 export function BlogArticleJsonLd({ locale, post }: { locale: Locale; post: BlogPost }) {
+  const editorial = getBlogEditorial(post.key, locale)
   const path = `/blog/${post.slug}`
   const url = new URL(locale === "tr" ? path : `/en${path}`, siteConfig.url).href
   const imageUrl = new URL("/og", siteConfig.url)
@@ -32,10 +34,10 @@ export function BlogArticleJsonLd({ locale, post }: { locale: Locale; post: Blog
       publishedAt: post.publishedAt,
       modifiedAt: post.modifiedAt,
       image: imageUrl.href,
+      citations: editorial.sources.map(source => source.href),
     }),
     createFaqSchema({ url, faqs: post.faqs }),
   ]
 
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(schemas) }} />
 }
-

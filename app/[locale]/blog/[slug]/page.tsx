@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!post) return {}
   const paths = getBlogPostPaths().find((item) => item.key === post.key)!
   const localizedPaths = { tr: paths.tr, en: paths.en }
-  return createPageMetadata({ locale, path: localizedPaths[locale], localizedPaths, title: post.seo.title, description: post.seo.description, keywords: post.seo.keywords })
+  return createPageMetadata({ locale, path: localizedPaths[locale], localizedPaths, title: post.seo.title, description: post.seo.description, keywords: post.seo.keywords, article: { publishedTime: post.publishedAt, modifiedTime: post.modifiedAt, authors: ["Adakan Software"] } })
 }
 
 export default async function LocalizedBlogPostRoute({ params }: { params: Promise<{ locale: string; slug: string }> }) {
@@ -28,4 +28,3 @@ export default async function LocalizedBlogPostRoute({ params }: { params: Promi
   if (!post) notFound()
   return <BlogArticlePage locale={locale} post={post} />
 }
-
