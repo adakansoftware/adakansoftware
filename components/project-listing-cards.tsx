@@ -5,7 +5,7 @@ import { ArrowUpRight } from "lucide-react"
 import type { Locale } from "@/lib/i18n"
 import { getOptimizedProjectImage } from "@/lib/project-image-assets"
 
-type Project = { title: string; href: string; category: string; year: string; description: string; color: string; coverImage?: string }
+type Project = { title: string; href: string; liveUrl?: string; category: string; year: string; description: string; color: string; coverImage?: string }
 
 export function ProjectListingCards({ projects, locale }: { projects: Project[]; locale: Locale }) {
   return (
@@ -30,7 +30,7 @@ function ProjectListingCard({ project, locale }: { project: Project; locale: Loc
         style={{ background: `linear-gradient(135deg, ${project.color}30, transparent 55%, ${project.color}18)` }}
       >
         <div className="absolute top-3 right-3 z-10">
-          {isExternal ? (
+          {project.liveUrl || isExternal ? (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium text-emerald-700 backdrop-blur-md">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
               {locale === "tr" ? "Canlı" : "Live"}
@@ -80,12 +80,19 @@ function ProjectListingCard({ project, locale }: { project: Project; locale: Loc
           </p>
           <h2 className="mt-3 text-3xl font-bold transition-colors duration-300 group-hover:text-accent">{project.title}</h2>
           <p className="mt-4 text-muted-foreground">{project.description}</p>
+          <Link
+            href={project.href}
+            className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+          >
+            {locale === "tr" ? "Proje incelemesini aç" : "Read the case study"}
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
           {isExternal ? (
             <Link
               href={project.href}
               target="_blank"
               rel="noreferrer"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+              className="ml-5 mt-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
             >
               {locale === "tr" ? "Canlı siteyi aç" : "Open live site"}
               <ArrowUpRight className="h-4 w-4" />

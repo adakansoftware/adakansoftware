@@ -96,7 +96,8 @@ export const projectsByLocale = {
   tr: [
     {
       title: "Z Grup İnşaat",
-      href: "https://zgrupinsaat.vercel.app/",
+      href: "/projects/z-grup-insaat",
+      liveUrl: "https://zgrupinsaat.vercel.app/",
       category: "İnşaat ve hafriyat web sitesi",
       year: "2026",
       description: "Hafriyat, temel kazısı ve nakliyat hizmetlerini; filo, proje ve teklif bağlantılarıyla sunan kurumsal web tasarımı.",
@@ -105,7 +106,8 @@ export const projectsByLocale = {
     },
     {
       title: "Salihoğulları Hafriyat",
-      href: "https://sallihogullaridemobyadakansoftware.vercel.app/",
+      href: "/projects/salihogullari-hafriyat",
+      liveUrl: "https://salihogullaridemobyadakansoftware.vercel.app/",
       category: "Hafriyat kurumsal web sitesi",
       year: "2026",
       description: "Adana merkezli hafriyat ve iş makinesi hizmetleri için saha güveni, hizmet kapsamı ve teklif akışını netleştiren kurumsal web deneyimi.",
@@ -116,7 +118,8 @@ export const projectsByLocale = {
   en: [
     {
       title: "Z Grup İnşaat",
-      href: "https://zgrupinsaat.vercel.app/",
+      href: "/projects/z-group-construction",
+      liveUrl: "https://zgrupinsaat.vercel.app/",
       category: "Construction and excavation website",
       year: "2026",
       description: "A corporate website presenting excavation, foundation digging and transport services, with fleet, project and quote navigation.",
@@ -125,7 +128,8 @@ export const projectsByLocale = {
     },
     {
       title: "Salihoğulları Excavation",
-      href: "https://sallihogullaridemobyadakansoftware.vercel.app/",
+      href: "/projects/salihogullari-excavation",
+      liveUrl: "https://salihogullaridemobyadakansoftware.vercel.app/",
       category: "Construction services website",
       year: "2026",
       description: "A corporate web experience for an Adana-based excavation and machinery company, clarifying field trust, service scope, and quote flow.",
@@ -133,7 +137,7 @@ export const projectsByLocale = {
       coverImage: "/projects/sallihogullari-hafriyat-cover.png",
     },
   ],
-} satisfies Record<Locale, Array<{ title: string; href: string; category: string; year: string; description: string; color: string; coverImage?: string }>>
+} satisfies Record<Locale, Array<{ title: string; href: string; liveUrl?: string; category: string; year: string; description: string; color: string; coverImage?: string }>>
 
 export const demoExamplesByLocale = {
   tr: [
@@ -163,7 +167,7 @@ export const demoExamplesByLocale = {
     },
     {
       title: "Salihoğulları Hafriyat Demo",
-      href: "https://sallihogullaridemobyadakansoftware.vercel.app/",
+      href: "https://salihogullaridemobyadakansoftware.vercel.app/",
       category: "Kurumsal demo",
       description: "Hafriyat ve iş makinesi hizmetleri için hazırlanmış canlı demo deneyimi.",
       coverImage: "/projects/sallihogullari-hafriyat-cover.png",
@@ -197,7 +201,7 @@ export const demoExamplesByLocale = {
     },
     {
       title: "Salihoğulları Excavation Demo",
-      href: "https://sallihogullaridemobyadakansoftware.vercel.app/",
+      href: "https://salihogullaridemobyadakansoftware.vercel.app/",
       category: "Corporate demo",
       description: "A live demo experience for excavation and machinery services.",
       coverImage: "/projects/sallihogullari-hafriyat-cover.png",

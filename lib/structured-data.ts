@@ -151,6 +151,23 @@ export function createWebPageSchema({
   }
 }
 
+export function createCreativeWorkSchema({ locale, url, name, description, image, liveUrl }: { locale: StructuredDataLocale; url: string; name: string; description: string; image: string; liveUrl: string }) {
+  const origin = new URL(url).origin
+  return {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "@id": `${url}#project`,
+    url,
+    name,
+    description,
+    image,
+    sameAs: liveUrl,
+    inLanguage: locale === "tr" ? "tr-TR" : "en-US",
+    creator: { "@id": `${origin}/#organization` },
+    mainEntityOfPage: { "@id": `${url}#webpage` },
+  }
+}
+
 export function createServiceSchema({ locale, url, name, description, serviceTypes: providedServiceTypes }: { locale: StructuredDataLocale; url: string; name?: string; description?: string; serviceTypes?: string[] }) {
   const serviceTypes = providedServiceTypes ?? (locale === "tr"
     ? ["Özel Yazılım Geliştirme", "Web Tasarımı ve Geliştirme", "Next.js Frontend Geliştirme", "UI/UX Tasarımı", "Marka Kimliği ve Logo Tasarımı"]

@@ -5,6 +5,9 @@ const localizedRoutePairs = [
   { tr: "/blog/kurumsal-web-sitesi-maliyeti", en: "/blog/corporate-website-cost-and-scope" },
   { tr: "/blog/nextjs-seo-performans-rehberi", en: "/blog/nextjs-seo-performance-guide" },
   { tr: "/blog/web-sitesi-ve-web-uygulamasi-farki", en: "/blog/website-vs-web-application" },
+  { tr: "/istanbul-yazilim-sirketi", en: "/istanbul-software-company" },
+  { tr: "/projects/z-grup-insaat", en: "/projects/z-group-construction" },
+  { tr: "/projects/salihogullari-hafriyat", en: "/projects/salihogullari-excavation" },
 ] as const
 
 export function getLocalizedRouteAlternate(pathname: string, targetLocale: Locale) {
@@ -14,4 +17,3 @@ export function getLocalizedRouteAlternate(pathname: string, targetLocale: Local
   if (!pair) return switchLocalePath(pathname, targetLocale)
   return targetLocale === "tr" ? pair.tr : `/en${pair.en}`
 }
-

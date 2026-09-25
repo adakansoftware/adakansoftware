@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next"
 import type { Locale } from "./i18n"
 import type { RouteMetadataKey } from "./route-metadata-content"
 import { getBlogPostPaths, type BlogPostKey } from "./blog-posts.ts"
+import { getCaseStudyPaths } from "./case-studies.ts"
 
 export type PublicRoute = {
   path: string
@@ -28,6 +29,17 @@ const blogPublicRoutes = getBlogPostPaths().map((post) => ({
   blogPostKey: post.key,
 }))
 
+const caseStudyPublicRoutes = getCaseStudyPaths().map((study) => ({
+  path: study.tr,
+  localizedPaths: { tr: study.tr, en: study.en },
+  metadataKey: "projects" as const,
+  changeFrequency: "monthly" as const,
+  priority: 0.8,
+  llms: true,
+  lastModified: study.lastModified,
+  images: [study.key === "z-grup-insaat" ? "/projects/z-grup-insaat-cover.png" : "/projects/sallihogullari-hafriyat-cover.png"],
+}))
+
 export const publicRoutes = [
   { path: "/", metadataKey: "home", changeFrequency: "weekly", priority: 1, llms: true },
   { path: "/about", metadataKey: "about", changeFrequency: "monthly", priority: 0.8, llms: true },
@@ -37,10 +49,12 @@ export const publicRoutes = [
   { path: "/careers", metadataKey: "careers", changeFrequency: "monthly", priority: 0.8, llms: false, indexable: false },
   { path: "/contact", metadataKey: "contact", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/demos", metadataKey: "demos", changeFrequency: "monthly", priority: 0.8, llms: true, images: ["/demos/tableflow-pos-dashboard.png", "/projects/z-grup-insaat-cover.png", "/demos/adakan-dental-clinic.png", "/projects/sallihogullari-hafriyat-cover.png"] },
+  { path: "/istanbul-yazilim-sirketi", localizedPaths: { tr: "/istanbul-yazilim-sirketi", en: "/istanbul-software-company" }, metadataKey: "istanbulSoftwareCompany", changeFrequency: "monthly", priority: 0.9, llms: true, lastModified: "2026-09-25" },
   { path: "/logo", metadataKey: "logo", changeFrequency: "monthly", priority: 0.8, llms: true, images: ["/projects/z-grup-logo.svg", "/projects/salihogullari-hafriyat-logo.svg", "/projects/adakan-hafriyat-logo.svg", "/favicon-v3.svg"] },
   { path: "/privacy", metadataKey: "privacy", changeFrequency: "yearly", priority: 0.3, llms: false },
   { path: "/pricing", metadataKey: "pricing", changeFrequency: "monthly", priority: 0.8, llms: true },
   { path: "/projects", metadataKey: "projects", changeFrequency: "monthly", priority: 0.8, llms: true, images: ["/projects/z-grup-insaat-cover.png", "/projects/sallihogullari-hafriyat-cover.png", "/projects/z-grup-logo.svg", "/projects/salihogullari-hafriyat-logo.svg", "/projects/adakan-hafriyat-logo.svg", "/favicon-v3.svg"] },
+  ...caseStudyPublicRoutes,
   { path: "/services", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
   { path: "/services/software-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },
   { path: "/services/web-development", metadataKey: "services", changeFrequency: "monthly", priority: 0.9, llms: true },

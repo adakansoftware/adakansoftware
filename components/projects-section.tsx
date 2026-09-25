@@ -11,7 +11,7 @@ import { withLocale, type Locale } from "@/lib/i18n"
 import { getOptimizedProjectImage } from "@/lib/project-image-assets"
 import { getProjects } from "@/lib/site-data"
 
-type Project = { title: string; href: string; category: string; year: string; description: string; color: string; coverImage?: string }
+type Project = { title: string; href: string; liveUrl?: string; category: string; year: string; description: string; color: string; coverImage?: string }
 
 export function ProjectsSection({ locale = "tr", projects: managedProjects }: { locale?: Locale; projects?: Project[] }) {
   const projects = managedProjects ?? getProjects(locale)

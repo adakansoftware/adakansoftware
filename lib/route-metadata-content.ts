@@ -2,6 +2,7 @@ import type { Locale } from "@/lib/i18n"
 
 export type RouteMetadataKey =
   | "home"
+  | "istanbulSoftwareCompany"
   | "about"
   | "approach"
   | "blog"
@@ -91,6 +92,18 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
       title: "Contact for Software and Web Projects",
       description: "Get in touch with Adakan Software about your new website, brand identity, or digital product project.",
       keywords: ["software project quote", "website quote", "software company contact", "Istanbul web design agency"],
+    },
+  },
+  istanbulSoftwareCompany: {
+    tr: {
+      title: "İstanbul Yazılım Şirketi ve Web Tasarım",
+      description: "İstanbul merkezli Adakan Software; özel yazılım, web uygulaması, kurumsal web sitesi, Next.js, UI/UX ve iş otomasyonu hizmetleri sunar.",
+      keywords: ["İstanbul yazılım şirketi", "İstanbul yazılım firması", "özel yazılım İstanbul", "İstanbul web tasarım", "web uygulaması geliştirme"],
+    },
+    en: {
+      title: "Istanbul Software Company and Web Design",
+      description: "Istanbul-based Adakan Software delivers custom software, web applications, corporate websites, Next.js development, UI/UX and business automation.",
+      keywords: ["Istanbul software company", "custom software Istanbul", "Istanbul web design", "web application development", "Next.js agency"],
     },
   },
   demos: {
