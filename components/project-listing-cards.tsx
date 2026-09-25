@@ -4,6 +4,7 @@ import { ArrowUpRight } from "lucide-react"
 
 import type { Locale } from "@/lib/i18n"
 import { getOptimizedProjectImage } from "@/lib/project-image-assets"
+import { LiveStatusBadge } from "@/components/live-status-badge"
 
 type Project = { title: string; href: string; liveUrl?: string; category: string; year: string; description: string; color: string; coverImage?: string }
 
@@ -31,10 +32,7 @@ function ProjectListingCard({ project, locale }: { project: Project; locale: Loc
       >
         <div className="absolute top-3 right-3 z-10">
           {project.liveUrl || isExternal ? (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium text-emerald-700 backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
-              {locale === "tr" ? "Canlı" : "Live"}
-            </span>
+            <LiveStatusBadge locale={locale} />
           ) : (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-border/40 bg-background/60 px-2.5 py-1 text-[10px] font-medium text-muted-foreground backdrop-blur-md">
               {project.coverImage ? (locale === "tr" ? "Web tasarımı" : "Web design") : (locale === "tr" ? "Proje" : "Project")}

@@ -154,6 +154,36 @@
   }
 }
 
+@keyframes loading-progress {
+  0% { transform: translateX(-110%) scaleX(.58); opacity: .45; }
+  48% { transform: translateX(22%) scaleX(1); opacity: 1; }
+  100% { transform: translateX(165%) scaleX(.62); opacity: .5; }
+}
+
+@keyframes loading-halo {
+  0%, 100% { transform: translateY(0); box-shadow: 0 18px 60px color-mix(in oklab, var(--accent) 10%, transparent); }
+  50% { transform: translateY(-3px); box-shadow: 0 24px 72px color-mix(in oklab, var(--accent) 18%, transparent); }
+}
+
+.loading-progress {
+  animation: loading-progress 1.45s cubic-bezier(.4, 0, .2, 1) infinite;
+}
+
+.loading-halo {
+  animation: loading-halo 2.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-progress,
+  .loading-halo {
+    animation: none;
+  }
+
+  .loading-progress {
+    transform: translateX(24%);
+  }
+}
+
 .mobile-menu-native > summary {
   cursor: pointer;
   list-style: none;

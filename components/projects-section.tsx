@@ -10,6 +10,7 @@ import { projectsSectionContent } from "@/lib/home-content"
 import { withLocale, type Locale } from "@/lib/i18n"
 import { getOptimizedProjectImage } from "@/lib/project-image-assets"
 import { getProjects } from "@/lib/site-data"
+import { LiveStatusBadge } from "@/components/live-status-badge"
 
 type Project = { title: string; href: string; liveUrl?: string; category: string; year: string; description: string; color: string; coverImage?: string }
 
@@ -181,10 +182,7 @@ function ProjectCard({
               </span>
               <div className="flex items-center gap-2">
                 {isExternalProject ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium text-emerald-400 backdrop-blur-md">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-                    Canli
-                  </span>
+                  <LiveStatusBadge locale={locale} />
                 ) : (
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-border/40 bg-background/60 px-2.5 py-1 text-[10px] font-medium text-muted-foreground backdrop-blur-md">
                     Demo
