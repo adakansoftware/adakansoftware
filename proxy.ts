@@ -5,6 +5,8 @@ import { defaultLocale, isLocale, localeHeaderName, stripLocalePrefix } from "@/
 import { getProxyRateLimitPolicy, isProxyRateLimited } from "@/lib/server/proxy-rate-limit"
 import { getTrustedClientIp } from "@/lib/server/client-ip"
 import { isSensitiveDotPath } from "@/lib/server/sensitive-path"
+import { getCanonicalRedirectUrl } from "@/lib/server/transport-security"
+import { siteConfig } from "@/lib/site-config"
 
 const PUBLIC_FILE = /\.[^/]+$/
 
@@ -46,6 +48,16 @@ function forwardWithLocale(requestHeaders: Headers) {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const canonicalRedirectUrl = getCanonicalRedirectUrl(
+    request.url,
+    siteConfig.url,
+    process.env.NODE_ENV,
+    request.headers.get("x-forwarded-proto"),
+  )
+
+  if (canonicalRedirectUrl) {
+    return withSecurityHeaders(NextResponse.redirect(canonicalRedirectUrl, 308))
+  }
 
   if (isSensitiveDotPath(pathname)) {
     return withSecurityHeaders(new NextResponse(null, { status: 404 }))

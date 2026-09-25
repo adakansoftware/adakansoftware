@@ -25,7 +25,9 @@ async function waitForServer() {
 
   while (Date.now() < deadline) {
     try {
-      const response = await fetch(`${baseUrl}/api/health`)
+      const response = await fetch(`${baseUrl}/api/health`, {
+        headers: serverMode === "start" ? { "x-forwarded-proto": "https" } : undefined,
+      })
       if (response.ok) return
     } catch {
       // The development server is still starting.
