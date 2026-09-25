@@ -1,4 +1,5 @@
 import { adminCookie, adminSessionMaxAgeSeconds, cookieName } from "@/lib/admin-auth"
+import { matchesAdminCredentials } from "@/lib/admin-login-credentials"
 import { hasAdminLoginConfiguration } from "@/lib/admin-login-config"
 import { getAdminSessionMutationRequestError, readAdminLoginCredentials } from "@/lib/admin-session-request"
 import { getTrustedClientIp } from "@/lib/server/client-ip"
@@ -43,7 +44,10 @@ export async function POST(request: Request) {
     return jsonResponse({ ok: false }, { status: credentials.status, requestId })
   }
   const { email, password } = credentials
-  if (!matchesAdminCredentials(email, password)) {
+  if (!matchesAdminCredentials(email, password, {
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
+  })) {
     await recordAdminLoginFailure(clientIp, now)
     return jsonResponse({ ok: false }, { status: 401, requestId })
   }
@@ -53,18 +57,3 @@ export async function POST(request: Request) {
   response.cookies.set(cookieName, adminCookie(), { httpOnly: true, sameSite: "strict", secure: process.env.NODE_ENV === "production", path: "/", maxAge: adminSessionMaxAgeSeconds })
   return response
 }
-
-function matchesAdminCredentials(email: string, password: string) {
-  const expectedEmail = process.env.ADMIN_EMAIL ?? ""
-  const expectedPassword = process.env.ADMIN_PASSWORD ?? ""
-  const emailBuffer = Buffer.from(email)
-  const expectedEmailBuffer = Buffer.from(expectedEmail)
-  const passwordBuffer = Buffer.from(password)
-  const expectedPasswordBuffer = Buffer.from(expectedPassword)
-
-  return emailBuffer.length === expectedEmailBuffer.length
-    && passwordBuffer.length === expectedPasswordBuffer.length
-    && timingSafeEqual(emailBuffer, expectedEmailBuffer)
-    && timingSafeEqual(passwordBuffer, expectedPasswordBuffer)
-}
-import { timingSafeEqual } from "node:crypto"
