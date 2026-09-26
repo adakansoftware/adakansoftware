@@ -22,3 +22,6 @@ tsconfig.tsbuildinfo
 dev-server.log
 prod-server.log
 prod-server*.log
+
+# Local source artwork; generated web assets are committed separately.
+source-assets/*.glb

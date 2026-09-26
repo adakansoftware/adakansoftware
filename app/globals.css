@@ -117,11 +117,11 @@
     transition: background-color 240ms ease, color 240ms ease;
     text-rendering: geometricPrecision;
     width: 100%;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   a,
   button {

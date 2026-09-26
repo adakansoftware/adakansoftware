@@ -6,6 +6,7 @@ import { withLocale, type Locale } from "@/lib/i18n"
 import { PricingSection } from "@/components/pricing-section"
 import { CTASection } from "@/components/cta-section"
 import { selectHomepageProjects } from "@/lib/public-projects"
+import { LaptopReveal } from "@/components/laptop-reveal"
 
 const content = {
   tr: {
@@ -39,6 +40,7 @@ export async function StudioHome({ locale }: { locale: Locale }) {
       <p className="studio-lead">{copy.description}</p>
       <div className="studio-actions"><Link className="studio-button" href={withLocale("/contact", locale)}>{copy.start}<ArrowRight size={16} /></Link><Link className="studio-link" href={withLocale("/projects", locale)}>{copy.work}<ArrowRight size={16} /></Link></div>
     </section>
+    <LaptopReveal locale={locale} />
     <section id="services" className="studio-section studio-soft"><div className="studio-container"><h2>{copy.services}</h2><p className="studio-section-description">{copy.serviceIntro}</p><div className="studio-services">{copy.items.map(([title, description], index) => { const Icon = icons[index]; return <article key={title}><Icon size={25} strokeWidth={1.5} aria-hidden="true" /><h3>{title}</h3><p>{description}</p></article> })}</div></div></section>
     <section id="approach" className="studio-section"><div className="studio-container studio-approach"><div><h2>{copy.approach}</h2><Link className="studio-link" href={withLocale("/approach", locale)}>{copy.more}<ArrowRight size={16} /></Link></div><ol>{copy.steps.map(([title, description], index) => <li key={title}><span aria-hidden="true">0{index + 1}</span><div><h3>{title}</h3><p>{description}</p></div></li>)}</ol></div></section>
     {projects.length > 0 && <section className="studio-section studio-container">
