@@ -1,8 +1,11 @@
 export const LAPTOP_FRAME_COUNT = 72
+export const LAPTOP_FRAMES_PER_SHEET = 6
+export const LAPTOP_SHEET_COUNT = LAPTOP_FRAME_COUNT / LAPTOP_FRAMES_PER_SHEET
 export const LAPTOP_OPENING_START = 0.06
 export const LAPTOP_OPENING_END = 0.78
 export const LAPTOP_MESSAGE_DURATION = 0.16
 export const LAPTOP_FRAME_VERSION = "2"
+export const LAPTOP_SPRITE_VERSION = "1"
 
 export type LaptopTheme = "light" | "dark"
 
@@ -37,9 +40,12 @@ export function advanceLaptopMotion(
     target.frame,
     LAPTOP_MOBILE_FRAMES_PER_SECOND * elapsedMs / 1000,
   )
+  const visibleMessageTarget = nextFrame >= LAPTOP_FRAME_COUNT
+    ? target.messageProgress
+    : 0
   const nextMessageProgress = moveTowards(
     current.messageProgress,
-    target.messageProgress,
+    visibleMessageTarget,
     elapsedMs / LAPTOP_MOBILE_MESSAGE_DURATION_MS,
   )
 
@@ -56,6 +62,20 @@ export function clamp(value: number, minimum: number, maximum: number) {
 export function laptopFrameSource(frame: number, theme: LaptopTheme) {
   const safeFrame = clamp(Math.round(frame), 1, LAPTOP_FRAME_COUNT)
   return `/laptop-frames/${theme}/laptop-${String(safeFrame).padStart(4, "0")}.webp?v=${LAPTOP_FRAME_VERSION}`
+}
+
+export function laptopSpriteFrame(frame: number, theme: LaptopTheme) {
+  const safeFrame = clamp(Math.round(frame), 1, LAPTOP_FRAME_COUNT)
+  const frameIndex = safeFrame - 1
+  const sheet = Math.floor(frameIndex / LAPTOP_FRAMES_PER_SHEET) + 1
+  const positionInSheet = frameIndex % LAPTOP_FRAMES_PER_SHEET
+  const column = positionInSheet % 3
+  const row = Math.floor(positionInSheet / 3)
+
+  return {
+    source: `/laptop-sprites/${theme}/sheet-${String(sheet).padStart(2, "0")}.webp?v=${LAPTOP_SPRITE_VERSION}`,
+    backgroundPosition: `${column * 50}% ${row * 100}%`,
+  }
 }
 
 export function calculateLaptopMotion({

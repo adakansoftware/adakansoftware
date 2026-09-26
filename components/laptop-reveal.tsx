@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react"
 import { useReducedMotion } from "framer-motion"
-import NextImage from "next/image"
 
 import type { Locale } from "@/lib/i18n"
 import {
@@ -10,16 +9,17 @@ import {
   calculateLaptopMotion,
   clamp,
   LAPTOP_FRAME_COUNT,
-  laptopFrameSource,
+  LAPTOP_FRAMES_PER_SHEET,
+  LAPTOP_SHEET_COUNT,
+  laptopSpriteFrame,
   type LaptopTheme,
 } from "@/lib/laptop-animation"
 
 const themes: LaptopTheme[] = ["light", "dark"]
-const preloadBatchSize = 8
 
 export function LaptopReveal({ locale }: { locale: Locale }) {
   const sectionRef = useRef<HTMLElement>(null)
-  const preloadedFramesRef = useRef<HTMLImageElement[]>([])
+  const preloadedSpritesRef = useRef<HTMLImageElement[]>([])
   const motionRef = useRef({ frame: 1, messageProgress: 0 })
   const targetMotionRef = useRef({ frame: 1, messageProgress: 0 })
   const reduceMotion = useReducedMotion()
@@ -95,45 +95,40 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     const section = sectionRef.current
     if (!section) return
 
-    let cancelled = false
-    let nextFrame = 1
-    let timeoutId = 0
-
-    const loadBatch = () => {
-      if (cancelled || nextFrame > LAPTOP_FRAME_COUNT) return
-
-      const batchEnd = Math.min(nextFrame + preloadBatchSize - 1, LAPTOP_FRAME_COUNT)
-      for (; nextFrame <= batchEnd; nextFrame += 1) {
-        for (const theme of themes) {
+    const loadSprites = () => {
+      for (const theme of themes) {
+        for (let sheet = 0; sheet < LAPTOP_SHEET_COUNT; sheet += 1) {
           const image = new window.Image()
           image.decoding = "async"
-          image.src = laptopFrameSource(nextFrame, theme)
-          preloadedFramesRef.current.push(image)
+          image.src = laptopSpriteFrame(
+            sheet * LAPTOP_FRAMES_PER_SHEET + 1,
+            theme,
+          ).source
+          preloadedSpritesRef.current.push(image)
         }
       }
-      timeoutId = window.setTimeout(loadBatch, 35)
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return
         observer.disconnect()
-        loadBatch()
+        loadSprites()
       },
       { rootMargin: "100% 0px" },
     )
     observer.observe(section)
 
     return () => {
-      cancelled = true
       observer.disconnect()
-      window.clearTimeout(timeoutId)
-      preloadedFramesRef.current = []
+      preloadedSpritesRef.current = []
     }
   }, [reduceMotion])
 
   const visibleFrame = reduceMotion ? LAPTOP_FRAME_COUNT : motion.frame
   const messageProgress = reduceMotion ? 1 : motion.messageProgress
+  const lightSprite = laptopSpriteFrame(visibleFrame, "light")
+  const darkSprite = laptopSpriteFrame(visibleFrame, "dark")
   const headline = locale === "tr"
     ? ["Fikri ürüne.", "Ürünü etkiye."]
     : ["Ideas to products.", "Products to impact."]
@@ -149,23 +144,19 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
           <h2>{locale === "tr" ? "Detaylar açıldıkça fark görünür." : "The difference appears in the details."}</h2>
         </div>
         <div className="studio-laptop-product" aria-hidden="true">
-          <NextImage
+          <div
             className="studio-laptop-frame studio-laptop-frame-light"
-            src={laptopFrameSource(visibleFrame, "light")}
-            alt=""
-            width={960}
-            height={540}
-            decoding="async"
-            unoptimized
+            style={{
+              backgroundImage: `url("${lightSprite.source}")`,
+              backgroundPosition: lightSprite.backgroundPosition,
+            }}
           />
-          <NextImage
+          <div
             className="studio-laptop-frame studio-laptop-frame-dark"
-            src={laptopFrameSource(visibleFrame, "dark")}
-            alt=""
-            width={960}
-            height={540}
-            decoding="async"
-            unoptimized
+            style={{
+              backgroundImage: `url("${darkSprite.source}")`,
+              backgroundPosition: darkSprite.backgroundPosition,
+            }}
           />
           <div
             className="studio-laptop-screen-message"

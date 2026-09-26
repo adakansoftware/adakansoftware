@@ -37,8 +37,7 @@
 .studio-laptop-heading p { color: #86868b; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
 .studio-laptop-heading h2 { margin-top: 12px; font-size: clamp(32px, 4.6vw, 64px); font-weight: 600; line-height: 1.05; letter-spacing: -.05em; }
 .studio-laptop-product { position: relative; width: min(888px, 90vw); aspect-ratio: 16 / 9; margin-top: clamp(8px, 2vh, 18px); container-type: inline-size; }
-.studio-laptop-product img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.studio-laptop-frame { position: absolute; inset: 0; }
+.studio-laptop-frame { position: absolute; inset: 0; background-repeat: no-repeat; background-size: 300% 200%; }
 .studio-laptop-frame-dark { visibility: hidden; }
 .dark .studio-laptop-frame-light { visibility: hidden; }
 .dark .studio-laptop-frame-dark { visibility: visible; }
