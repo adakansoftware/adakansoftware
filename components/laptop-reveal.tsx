@@ -6,6 +6,7 @@ import NextImage from "next/image"
 
 import type { Locale } from "@/lib/i18n"
 import {
+  advanceLaptopMotion,
   calculateLaptopMotion,
   clamp,
   LAPTOP_FRAME_COUNT,
@@ -19,6 +20,8 @@ const preloadBatchSize = 8
 export function LaptopReveal({ locale }: { locale: Locale }) {
   const sectionRef = useRef<HTMLElement>(null)
   const preloadedFramesRef = useRef<HTMLImageElement[]>([])
+  const motionRef = useRef({ frame: 1, messageProgress: 0 })
+  const targetMotionRef = useRef({ frame: 1, messageProgress: 0 })
   const reduceMotion = useReducedMotion()
   const [motion, setMotion] = useState({ frame: 1, messageProgress: 0 })
 
@@ -28,30 +31,45 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     if (!observedSection) return
 
     let animationFrame = 0
-    const updateFrame = () => {
-      animationFrame = 0
+    const readTargetMotion = () => {
       const section = sectionRef.current
-      if (!section) return
+      if (!section) return targetMotionRef.current
 
-      const nextMotion = calculateLaptopMotion({
+      return calculateLaptopMotion({
         sectionTop: section.getBoundingClientRect().top,
         sectionHeight: section.offsetHeight,
         viewportHeight: window.innerHeight,
       })
-      setMotion((current) => {
-        if (
-          current.frame === nextMotion.frame &&
-          Math.abs(current.messageProgress - nextMotion.messageProgress) < 0.005
-        ) return current
-        return nextMotion
-      })
+    }
+
+    const commitMotion = (nextMotion: typeof motion) => {
+      motionRef.current = nextMotion
+      setMotion(nextMotion)
+    }
+
+    const animateToTarget = () => {
+      animationFrame = 0
+      const target = targetMotionRef.current
+      const isMobile = window.matchMedia("(max-width: 640px)").matches
+      const nextMotion = isMobile
+        ? advanceLaptopMotion(motionRef.current, target)
+        : target
+      commitMotion(nextMotion)
+
+      if (
+        nextMotion.frame !== target.frame ||
+        Math.abs(nextMotion.messageProgress - target.messageProgress) >= 0.005
+      ) animationFrame = window.requestAnimationFrame(animateToTarget)
     }
 
     const requestFrameUpdate = () => {
-      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateFrame)
+      targetMotionRef.current = readTargetMotion()
+      if (!animationFrame) animationFrame = window.requestAnimationFrame(animateToTarget)
     }
 
-    updateFrame()
+    const initialMotion = readTargetMotion()
+    targetMotionRef.current = initialMotion
+    commitMotion(initialMotion)
     window.addEventListener("scroll", requestFrameUpdate, { passive: true })
     window.addEventListener("resize", requestFrameUpdate)
     const resizeObserver = new ResizeObserver(requestFrameUpdate)

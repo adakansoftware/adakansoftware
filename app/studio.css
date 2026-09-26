@@ -170,7 +170,7 @@
   .studio-eyebrow { font-size: 12px; margin-bottom: 22px; }
   .studio-lead { font-size: 16px; margin-top: 24px; }
   .studio-actions { gap: 12px 22px; }
-  .studio-laptop-story { min-height: 220vh; }
+  .studio-laptop-story { min-height: 360svh; }
   .studio-laptop-sticky { height: calc(100svh - 76px); min-height: 0; padding: 32px 16px 10px; }
   .studio-laptop-heading h2 { font-size: clamp(30px, 9vw, 45px); }
   .studio-laptop-product { width: min(760px, 104vw); margin-top: 3vh; }
