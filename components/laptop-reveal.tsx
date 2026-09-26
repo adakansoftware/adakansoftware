@@ -51,14 +51,11 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     const animateToTarget = (timestamp: number) => {
       animationFrame = 0
       const target = targetMotionRef.current
-      const isMobile = window.matchMedia("(max-width: 640px)").matches
       const elapsedMs = previousAnimationTime
         ? Math.min(timestamp - previousAnimationTime, 50)
         : 1000 / 60
       previousAnimationTime = timestamp
-      const nextMotion = isMobile
-        ? advanceLaptopMotion(motionRef.current, target, elapsedMs)
-        : target
+      const nextMotion = advanceLaptopMotion(motionRef.current, target, elapsedMs)
       commitMotion(nextMotion)
 
       if (

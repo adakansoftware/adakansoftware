@@ -31,7 +31,7 @@
 .studio-hero h1 span, .studio-page-header h1 span { color: #0066cc; }
 .studio-lead { max-width: 570px; margin: 28px auto 0; color: #6e6e73; font-size: 18px; line-height: 1.7; }
 .studio-actions { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 26px; margin-top: 32px; }
-.studio-laptop-story { position: relative; min-height: 250vh; background: #000; color: #f5f5f7; }
+.studio-laptop-story { position: relative; min-height: 250svh; background: #000; color: #f5f5f7; }
 .studio-laptop-sticky { position: sticky; top: 76px; display: flex; height: calc(100svh - 76px); min-height: 0; flex-direction: column; align-items: center; justify-content: flex-start; padding: clamp(24px, 4vh, 42px) 24px 12px; }
 .studio-laptop-heading { position: relative; z-index: 6; max-width: 760px; text-align: center; }
 .studio-laptop-heading p { color: #86868b; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
@@ -170,7 +170,6 @@
   .studio-eyebrow { font-size: 12px; margin-bottom: 22px; }
   .studio-lead { font-size: 16px; margin-top: 24px; }
   .studio-actions { gap: 12px 22px; }
-  .studio-laptop-story { min-height: 360svh; }
   .studio-laptop-sticky { height: calc(100svh - 76px); min-height: 0; padding: 32px 16px 10px; }
   .studio-laptop-heading h2 { font-size: clamp(30px, 9vw, 45px); }
   .studio-laptop-product { width: min(760px, 104vw); margin-top: 3vh; }
