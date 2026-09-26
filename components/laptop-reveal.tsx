@@ -12,6 +12,7 @@ import {
   LAPTOP_FRAMES_PER_SHEET,
   LAPTOP_SHEET_COUNT,
   laptopSpriteFrame,
+  resolveLaptopViewportHeight,
   type LaptopTheme,
 } from "@/lib/laptop-animation"
 
@@ -19,7 +20,6 @@ const themes: LaptopTheme[] = ["light", "dark"]
 
 export function LaptopReveal({ locale }: { locale: Locale }) {
   const sectionRef = useRef<HTMLElement>(null)
-  const preloadedSpritesRef = useRef<HTMLImageElement[]>([])
   const motionRef = useRef({ frame: 1, messageProgress: 0 })
   const targetMotionRef = useRef({ frame: 1, messageProgress: 0 })
   const reduceMotion = useReducedMotion()
@@ -39,13 +39,22 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
       return calculateLaptopMotion({
         sectionTop: section.getBoundingClientRect().top,
         sectionHeight: section.offsetHeight,
-        viewportHeight: window.innerHeight,
+        viewportHeight: resolveLaptopViewportHeight(
+          section.offsetHeight,
+          window.innerHeight,
+        ),
       })
     }
 
     const commitMotion = (nextMotion: typeof motion) => {
       motionRef.current = nextMotion
-      setMotion(nextMotion)
+      setMotion((currentMotion) => {
+        const frameChanged = Math.round(currentMotion.frame) !== Math.round(nextMotion.frame)
+        const messageChanged = Math.abs(
+          currentMotion.messageProgress - nextMotion.messageProgress,
+        ) >= 0.001
+        return frameChanged || messageChanged ? nextMotion : currentMotion
+      })
     }
 
     const animateToTarget = (timestamp: number) => {
@@ -70,7 +79,20 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
     const requestFrameUpdate = () => {
       targetMotionRef.current = readTargetMotion()
+      if (document.hidden) return
       if (!animationFrame) animationFrame = window.requestAnimationFrame(animateToTarget)
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (animationFrame) window.cancelAnimationFrame(animationFrame)
+        animationFrame = 0
+        previousAnimationTime = 0
+        return
+      }
+
+      previousAnimationTime = 0
+      requestFrameUpdate()
     }
 
     const initialMotion = readTargetMotion()
@@ -78,12 +100,14 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     commitMotion(initialMotion)
     window.addEventListener("scroll", requestFrameUpdate, { passive: true })
     window.addEventListener("resize", requestFrameUpdate)
+    document.addEventListener("visibilitychange", handleVisibilityChange)
     const resizeObserver = new ResizeObserver(requestFrameUpdate)
     resizeObserver.observe(observedSection)
 
     return () => {
       window.removeEventListener("scroll", requestFrameUpdate)
       window.removeEventListener("resize", requestFrameUpdate)
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
       resizeObserver.disconnect()
       if (animationFrame) window.cancelAnimationFrame(animationFrame)
     }
@@ -94,17 +118,25 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
     const section = sectionRef.current
     if (!section) return
+    const pendingImages = new Set<HTMLImageElement>()
 
     const loadSprites = () => {
       for (const theme of themes) {
         for (let sheet = 0; sheet < LAPTOP_SHEET_COUNT; sheet += 1) {
           const image = new window.Image()
           image.decoding = "async"
+          pendingImages.add(image)
+          const releaseImage = () => {
+            image.onload = null
+            image.onerror = null
+            pendingImages.delete(image)
+          }
+          image.onload = releaseImage
+          image.onerror = releaseImage
           image.src = laptopSpriteFrame(
             sheet * LAPTOP_FRAMES_PER_SHEET + 1,
             theme,
           ).source
-          preloadedSpritesRef.current.push(image)
         }
       }
     }
@@ -121,7 +153,12 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
     return () => {
       observer.disconnect()
-      preloadedSpritesRef.current = []
+      for (const image of pendingImages) {
+        image.onload = null
+        image.onerror = null
+        image.src = ""
+      }
+      pendingImages.clear()
     }
   }, [reduceMotion])
 

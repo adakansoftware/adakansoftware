@@ -4,6 +4,7 @@ export const LAPTOP_SHEET_COUNT = LAPTOP_FRAME_COUNT / LAPTOP_FRAMES_PER_SHEET
 export const LAPTOP_OPENING_START = 0.06
 export const LAPTOP_OPENING_END = 0.78
 export const LAPTOP_MESSAGE_DURATION = 0.16
+export const LAPTOP_STORY_VIEWPORTS = 2.5
 export const LAPTOP_FRAME_VERSION = "2"
 export const LAPTOP_SPRITE_VERSION = "1"
 
@@ -57,6 +58,14 @@ export function advanceLaptopMotion(
 
 export function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(Math.max(value, minimum), maximum)
+}
+
+export function resolveLaptopViewportHeight(
+  sectionHeight: number,
+  browserViewportHeight: number,
+) {
+  const stableStoryViewportHeight = sectionHeight / LAPTOP_STORY_VIEWPORTS
+  return Math.min(browserViewportHeight, stableStoryViewportHeight)
 }
 
 export function laptopFrameSource(frame: number, theme: LaptopTheme) {
