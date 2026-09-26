@@ -31,6 +31,7 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     if (!observedSection) return
 
     let animationFrame = 0
+    let previousAnimationTime = 0
     const readTargetMotion = () => {
       const section = sectionRef.current
       if (!section) return targetMotionRef.current
@@ -47,19 +48,27 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
       setMotion(nextMotion)
     }
 
-    const animateToTarget = () => {
+    const animateToTarget = (timestamp: number) => {
       animationFrame = 0
       const target = targetMotionRef.current
       const isMobile = window.matchMedia("(max-width: 640px)").matches
+      const elapsedMs = previousAnimationTime
+        ? Math.min(timestamp - previousAnimationTime, 50)
+        : 1000 / 60
+      previousAnimationTime = timestamp
       const nextMotion = isMobile
-        ? advanceLaptopMotion(motionRef.current, target)
+        ? advanceLaptopMotion(motionRef.current, target, elapsedMs)
         : target
       commitMotion(nextMotion)
 
       if (
         nextMotion.frame !== target.frame ||
         Math.abs(nextMotion.messageProgress - target.messageProgress) >= 0.005
-      ) animationFrame = window.requestAnimationFrame(animateToTarget)
+      ) {
+        animationFrame = window.requestAnimationFrame(animateToTarget)
+      } else {
+        previousAnimationTime = 0
+      }
     }
 
     const requestFrameUpdate = () => {

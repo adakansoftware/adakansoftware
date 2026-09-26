@@ -17,14 +17,31 @@ export type LaptopMotion = {
   messageProgress: number
 }
 
-export function advanceLaptopMotion(current: LaptopMotion, target: LaptopMotion): LaptopMotion {
-  const frameDifference = target.frame - current.frame
-  const frameStep = Math.sign(frameDifference) * Math.max(1, Math.ceil(Math.abs(frameDifference) * 0.09))
-  const nextFrame = Math.abs(frameDifference) <= 1 ? target.frame : current.frame + frameStep
-  const messageDifference = target.messageProgress - current.messageProgress
-  const nextMessageProgress = Math.abs(messageDifference) < 0.005
-    ? target.messageProgress
-    : current.messageProgress + messageDifference * 0.14
+const LAPTOP_MOBILE_FRAMES_PER_SECOND = 20
+const LAPTOP_MOBILE_MESSAGE_DURATION_MS = 1600
+
+function moveTowards(current: number, target: number, maximumDistance: number) {
+  const difference = target - current
+  if (Math.abs(difference) <= maximumDistance) return target
+  return current + Math.sign(difference) * maximumDistance
+}
+
+export function advanceLaptopMotion(
+  current: LaptopMotion,
+  target: LaptopMotion,
+  deltaMs = 1000 / 60,
+): LaptopMotion {
+  const elapsedMs = clamp(deltaMs, 0, 50)
+  const nextFrame = moveTowards(
+    current.frame,
+    target.frame,
+    LAPTOP_MOBILE_FRAMES_PER_SECOND * elapsedMs / 1000,
+  )
+  const nextMessageProgress = moveTowards(
+    current.messageProgress,
+    target.messageProgress,
+    elapsedMs / LAPTOP_MOBILE_MESSAGE_DURATION_MS,
+  )
 
   return {
     frame: clamp(nextFrame, 1, LAPTOP_FRAME_COUNT),
