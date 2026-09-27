@@ -31,7 +31,7 @@
 .studio-hero h1 span, .studio-page-header h1 span { color: #0066cc; }
 .studio-lead { max-width: 570px; margin: 28px auto 0; color: #6e6e73; font-size: 18px; line-height: 1.7; }
 .studio-actions { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 26px; margin-top: 32px; }
-.studio-laptop-story { position: relative; min-height: 250svh; background: #000; color: #f5f5f7; }
+.studio-laptop-story { position: relative; min-height: 250svh; background: #f5f5f7; color: #1d1d1f; transition: background-color .3s ease, color .3s ease; }
 .studio-laptop-sticky { position: sticky; top: 76px; display: flex; height: calc(100svh - 76px); min-height: 0; flex-direction: column; align-items: center; justify-content: flex-start; padding: clamp(24px, 4vh, 42px) 24px 12px; }
 .studio-laptop-heading { position: relative; z-index: 6; max-width: 760px; text-align: center; }
 .studio-laptop-heading p { color: #86868b; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
@@ -122,6 +122,7 @@
 .dark .studio-language { color: #a1a1a6; }
 .dark .studio-theme-toggle { color: #f5f5f7; background: rgb(255 255 255 / .08); border-color: rgb(255 255 255 / .16); }
 .dark .studio-theme-toggle:hover { color: #79baff; border-color: rgb(255 255 255 / .3); }
+.dark .studio-laptop-story { background: #000; color: #f5f5f7; }
 .dark .studio-link { color: #2997ff; }
 .dark .studio-hero h1 span, .dark .studio-page-header h1 span, .dark .studio-theme .text-gradient { color: #2997ff; }
 .dark .studio-eyebrow, .dark .studio-lead, .dark .studio-section-description, .dark .studio-services p, .dark .studio-approach p, .dark .studio-price-note, .dark .studio-page-header > p, .dark .studio-cta > p { color: #a1a1a6; }

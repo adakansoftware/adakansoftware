@@ -139,8 +139,12 @@ scene.render.image_settings.color_mode = "RGB"
 scene.view_settings.look = "AgX - Medium High Contrast"
 scene.world.use_nodes = True
 world_background = scene.world.node_tree.nodes.get("Background")
-world_background.inputs["Color"].default_value = (0.0, 0.0, 0.0, 1.0)
-world_background.inputs["Strength"].default_value = 0.01
+if THEME == "light":
+    world_background.inputs["Color"].default_value = (0.91, 0.91, 0.93, 1.0)
+    world_background.inputs["Strength"].default_value = 0.8
+else:
+    world_background.inputs["Color"].default_value = (0.0, 0.0, 0.0, 1.0)
+    world_background.inputs["Strength"].default_value = 0.01
 
 if PREVIEW or CLOSED_PREVIEW:
     scene.frame_set(1 if CLOSED_PREVIEW else 72)
