@@ -1,7 +1,11 @@
 import { getContactPipelineDiagnostics } from "@/lib/server/contact-pipeline"
-import { getContactServiceDiagnostics, isContactDeliveryConfigured } from "@/lib/server/contact-service"
+import { getContactServiceDiagnostics } from "@/lib/server/contact-service"
 import { contactPolicy } from "@/lib/server/contact-policy"
-import { getContactRuntimeConfigurationIssues } from "@/lib/server/contact-runtime-config"
+import {
+  getContactRuntimeConfigurationIssues,
+  getContactRuntimeMode,
+  isContactRuntimeConfigurationValid,
+} from "@/lib/server/contact-runtime-config"
 import { getProxyRateLimitDiagnostics } from "@/lib/server/proxy-rate-limit"
 import { getContactStateStore, getContactStateStoreStatus } from "@/lib/server/contact-state-store"
 import { getSafeContactStateError } from "@/lib/server/contact-state-status"
@@ -50,9 +54,7 @@ export async function GET(request: Request) {
   const includeDiagnostics = await isAuthorizedAdminRequest(request)
 
   if (!includeDiagnostics) {
-    const contactConfigurationIssues = getContactRuntimeConfigurationIssues()
-    const ready = process.env.NODE_ENV !== "production"
-      || (isContactDeliveryConfigured() && contactConfigurationIssues.length === 0)
+    const ready = isContactRuntimeConfigurationValid()
 
     return jsonResponse(
       getPublicHealthPayload(ready),
@@ -65,6 +67,7 @@ export async function GET(request: Request) {
 
   const diagnostics = getContactServiceDiagnostics()
   const contactConfigurationIssues = getContactRuntimeConfigurationIssues()
+  const contactRuntimeMode = getContactRuntimeMode()
   const proxyRateLimit = includeDiagnostics ? getProxyRateLimitDiagnostics() : null
   const pipeline = includeDiagnostics ? await getContactPipelineDiagnostics() : null
   const stateStatus = await getContactStateStoreStatus()
@@ -88,8 +91,7 @@ export async function GET(request: Request) {
   const status =
     process.env.NODE_ENV === "production"
       && (
-        !isContactDeliveryConfigured()
-        || contactConfigurationIssues.length > 0
+        contactConfigurationIssues.length > 0
         || hasQueueAlerts
         || !workerHealthy
         || !stateStatus.available
@@ -108,12 +110,13 @@ export async function GET(request: Request) {
             environment: process.env.NODE_ENV ?? "development",
             checks: {
               contactDeliveryConfigured: diagnostics.deliveryConfigured,
+              contactRuntimeMode,
               contactRuntimeConfigurationValid: contactConfigurationIssues.length === 0,
               requestId: true,
               originProtection: true,
-              duplicateProtection: true,
-              idempotencyProtection: true,
-              outboxTracking: true,
+              duplicateProtection: contactRuntimeMode === "email",
+              idempotencyProtection: contactRuntimeMode === "email",
+              outboxTracking: contactRuntimeMode === "email",
               replayEndpointProtected: true,
               signedAdminProtection: hasSignedAdminProtection(),
               signedAdminNonceProtection: hasSignedAdminNonceProtection(),

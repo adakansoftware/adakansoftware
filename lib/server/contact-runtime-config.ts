@@ -24,6 +24,17 @@ function hasStrongSecret(value: string | undefined) {
   return !isPlaceholderValue(value) && value!.trim().length >= MINIMUM_SECRET_LENGTH
 }
 
+function isValidDatabaseUrl(value: string | undefined) {
+  if (isPlaceholderValue(value)) return false
+
+  try {
+    const url = new URL(value!.trim())
+    return (url.protocol === "postgres:" || url.protocol === "postgresql:") && Boolean(url.hostname)
+  } catch {
+    return false
+  }
+}
+
 function isValidRedisUrl(value: string | undefined) {
   if (isPlaceholderValue(value)) {
     return false
@@ -37,11 +48,7 @@ function isValidRedisUrl(value: string | undefined) {
   }
 }
 
-export function getContactRuntimeConfigurationIssues(environment = process.env.NODE_ENV) {
-  if (environment !== "production") {
-    return []
-  }
-
+function getEmailPipelineConfigurationIssues() {
   const issues: string[] = []
 
   if (!isValidResendApiKey(process.env.RESEND_API_KEY)) {
@@ -73,6 +80,33 @@ export function getContactRuntimeConfigurationIssues(environment = process.env.N
   }
 
   return issues
+}
+
+function isDatabaseInboxConfigured() {
+  return isValidDatabaseUrl(process.env.DATABASE_URL)
+    && hasStrongSecret(process.env.ADMIN_SESSION_SECRET)
+}
+
+export function getContactRuntimeMode(environment = process.env.NODE_ENV) {
+  if (environment !== "production") return "development" as const
+  if (getEmailPipelineConfigurationIssues().length === 0) return "email" as const
+  if (isDatabaseInboxConfigured()) return "database" as const
+  return "invalid" as const
+}
+
+export function isContactDeliveryPipelineConfigured(environment = process.env.NODE_ENV) {
+  return environment !== "production" || getContactRuntimeMode(environment) === "email"
+}
+
+export function getContactRuntimeConfigurationIssues(environment = process.env.NODE_ENV) {
+  if (environment !== "production" || getContactRuntimeMode(environment) !== "invalid") {
+    return []
+  }
+
+  return [
+    ...getEmailPipelineConfigurationIssues(),
+    "DATABASE_URL and an ADMIN_SESSION_SECRET of at least 32 characters are required for database-only contact delivery",
+  ]
 }
 
 export function isContactRuntimeConfigurationValid(environment = process.env.NODE_ENV) {

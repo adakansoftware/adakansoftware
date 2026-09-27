@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto"
 import { contactPolicy } from "@/lib/server/contact-policy"
 import { persistContactWithoutDelivery } from "@/lib/server/contact-database-fallback"
 import { hasJsonContentType, readBoundedJsonObject } from "@/lib/request-body"
-import { isContactRuntimeConfigurationValid } from "@/lib/server/contact-runtime-config"
+import { isContactDeliveryPipelineConfigured } from "@/lib/server/contact-runtime-config"
 import { getContactStateStoreStatus } from "@/lib/server/contact-state-store"
 import {
   createQueuedContactMessage,
@@ -84,7 +84,7 @@ async function handleContactPost(request: Request, requestId: string, owner: str
   const now = Date.now()
   const clientIp = getClientIp(request)
 
-  const fullPipelineConfigured = isContactRuntimeConfigurationValid()
+  const fullPipelineConfigured = isContactDeliveryPipelineConfigured()
 
   // The full production pipeline relies on Redis for durable rate limiting,
   // idempotency, and its delivery outbox. When configured, fail closed if that
