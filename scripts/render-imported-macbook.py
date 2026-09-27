@@ -18,6 +18,10 @@ PREVIEW = "--preview" in ARGS
 CLOSED_PREVIEW = "--closed" in ARGS
 START_FRAME = next((int(arg.split("=", 1)[1]) for arg in ARGS if arg.startswith("--start=")), 1)
 THEME = next((arg.split("=", 1)[1] for arg in ARGS if arg.startswith("--theme=")), "dark")
+CLOSED_ANGLE_DEGREES = next(
+    (float(arg.split("=", 1)[1]) for arg in ARGS if arg.startswith("--closed-angle=")),
+    109.6,
+)
 
 if not SOURCE:
     raise SystemExit("Archive the source GLB in source-assets or pass its path after --")
@@ -88,16 +92,28 @@ lid_min, lid_max = bounds(lid_meshes)
 base_meshes = [obj for obj in ([base_group] + descendants(base_group)) if obj.type == "MESH"]
 base_min, base_max = bounds(base_meshes)
 
-bpy.ops.object.empty_add(type="PLAIN_AXES", location=(model_center.x, base_max.y - 0.006, base_max.z + 0.006))
+# Use the supplied model's physical hinge bar as the rotation axis. Estimating
+# this point from the chassis bounds makes the display rise away from the base
+# during the middle of the opening animation.
+hinge_reference = bpy.data.objects.get("UEFeUEhkJPdlgXF")
+if hinge_reference is None:
+    raise SystemExit("The expected display hinge geometry was not found in the supplied GLB")
+hinge_min, hinge_max = bounds([hinge_reference])
+hinge_center = (hinge_min + hinge_max) / 2
+# The mesh describes the hinge barrel; its mechanical rotation axis sits a
+# little above the barrel centre so the closed lid rests on the deck.
+hinge_center.z += 0.0015
+
+bpy.ops.object.empty_add(type="PLAIN_AXES", location=hinge_center)
 hinge = bpy.context.object
 hinge.name = "MacBook display hinge"
 world_matrix = lid_root.matrix_world.copy()
 lid_root.parent = hinge
 lid_root.matrix_world = world_matrix
 
-# The imported open geometry leans slightly behind the hinge. A 116-degree turn
-# brings its top edge forward onto the keyboard deck.
-hinge.rotation_euler = (math.radians(116), 0, 0)
+# The imported open geometry leans slightly behind the hinge. A 109.6-degree turn
+# brings its top edge forward and leaves the lid on top of the keyboard deck.
+hinge.rotation_euler = (math.radians(CLOSED_ANGLE_DEGREES), 0, 0)
 hinge.keyframe_insert(data_path="rotation_euler", frame=1)
 hinge.keyframe_insert(data_path="rotation_euler", frame=12)
 hinge.rotation_euler = (0, 0, 0)

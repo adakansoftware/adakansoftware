@@ -5,8 +5,8 @@ export const LAPTOP_OPENING_START = 0.06
 export const LAPTOP_OPENING_END = 0.78
 export const LAPTOP_MESSAGE_DURATION = 0.16
 export const LAPTOP_STORY_VIEWPORTS = 2.5
-export const LAPTOP_FRAME_VERSION = "4"
-export const LAPTOP_SPRITE_VERSION = "3"
+export const LAPTOP_FRAME_VERSION = "5"
+export const LAPTOP_SPRITE_VERSION = "4"
 
 export type LaptopTheme = "light" | "dark"
 
