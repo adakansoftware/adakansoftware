@@ -139,6 +139,11 @@ assert(robots.text.includes("Disallow: /admin"), "/robots.txt: must block admin 
 assert(robots.text.includes("Disallow: /en/admin"), "/robots.txt: must block localized admin crawling")
 assert(robots.text.includes("Sitemap: https://adakansoftware.com/sitemap.xml"), "/robots.txt: must declare the production sitemap")
 
+const securityContact = await request("/.well-known/security.txt")
+assert(securityContact.status === 200, `/.well-known/security.txt: expected 200, received ${securityContact.status}`)
+assert(securityContact.text.includes("Contact: mailto:info@adakansoftware.com"), "/.well-known/security.txt: must publish the security contact")
+assert(securityContact.text.includes("Canonical: https://adakansoftware.com/.well-known/security.txt"), "/.well-known/security.txt: must publish its canonical URL")
+
 const sitemap = await request("/sitemap.xml")
 assert(sitemap.status === 200, `/sitemap.xml: expected 200, received ${sitemap.status}`)
 assert(sitemap.text.includes("https://adakansoftware.com/services"), "/sitemap.xml: must include Turkish services URL")
