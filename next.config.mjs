@@ -8,6 +8,7 @@ const isProduction = process.env.NODE_ENV === "production"
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   outputFileTracingRoot: projectRoot,
+  poweredByHeader: false,
   allowedDevOrigins: ["127.0.0.1"],
   experimental: {
     cpus: 2,
