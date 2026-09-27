@@ -68,10 +68,11 @@ export async function GET(request: Request) {
   const diagnostics = getContactServiceDiagnostics()
   const contactConfigurationIssues = getContactRuntimeConfigurationIssues()
   const contactRuntimeMode = getContactRuntimeMode()
+  const emailPipelineActive = contactRuntimeMode === "email" || contactRuntimeMode === "development"
   const proxyRateLimit = includeDiagnostics ? getProxyRateLimitDiagnostics() : null
-  const pipeline = includeDiagnostics ? await getContactPipelineDiagnostics() : null
-  const stateStatus = await getContactStateStoreStatus()
-  const workerRuntime = stateStatus.available
+  const pipeline = includeDiagnostics && emailPipelineActive ? await getContactPipelineDiagnostics() : null
+  const stateStatus = emailPipelineActive ? await getContactStateStoreStatus() : null
+  const workerRuntime = stateStatus?.available
     ? await getContactStateStore().readWorkerRuntimeState()
     : {
       workerId: null,
@@ -79,13 +80,22 @@ export async function GET(request: Request) {
       lastReplayAt: null,
       lastBatchSize: null,
       lastOutcome: null,
-      lastError: getSafeContactStateError(stateStatus),
+      lastError: stateStatus ? getSafeContactStateError(stateStatus) : null,
     }
-  const stateCapabilities = stateStatus.capabilities
+  const stateCapabilities = stateStatus?.capabilities ?? {
+    backend: "database" as const,
+    sharedStoreReady: true,
+    distributedStoreConfigured: true,
+    implementedBackends: ["file", "redis"] as const,
+    requestedBackendImplemented: true,
+    requestedBackendReady: true,
+    redisUrlConfigured: false,
+  }
   const hasQueueAlerts = pipeline?.alerts.length ? pipeline.alerts.length > 0 : false
   const workerHeartbeatAgeMs =
     workerRuntime.lastHeartbeatAt === null ? null : Date.now() - workerRuntime.lastHeartbeatAt
-  const automaticReplayConfigured = Boolean(process.env.CONTACT_CRON_SECRET?.trim() || process.env.CRON_SECRET?.trim())
+  const automaticReplayConfigured = emailPipelineActive
+    && Boolean(process.env.CONTACT_CRON_SECRET?.trim() || process.env.CRON_SECRET?.trim())
   const workerHealthy = !automaticReplayConfigured
     || (workerHeartbeatAgeMs !== null && workerHeartbeatAgeMs <= contactPolicy.queueAlertAgeMs)
   const status =
@@ -94,7 +104,7 @@ export async function GET(request: Request) {
         contactConfigurationIssues.length > 0
         || hasQueueAlerts
         || !workerHealthy
-        || !stateStatus.available
+        || (emailPipelineActive && !stateStatus?.available)
       )
       ? "degraded"
       : "ok"
@@ -120,12 +130,12 @@ export async function GET(request: Request) {
               replayEndpointProtected: true,
               signedAdminProtection: hasSignedAdminProtection(),
               signedAdminNonceProtection: hasSignedAdminNonceProtection(),
-              sharedAdminNonceProtection: hasSignedAdminNonceProtection() && stateStatus.available,
+              sharedAdminNonceProtection: hasSignedAdminNonceProtection() && Boolean(stateStatus?.available),
               automaticReplayAvailable: automaticReplayConfigured,
               automaticReplayHealthy: workerHealthy,
               requestedStateBackendImplemented: stateCapabilities.requestedBackendImplemented,
               requestedStateBackendReady: stateCapabilities.requestedBackendReady,
-              stateBackendAvailable: stateStatus.available,
+              stateBackendAvailable: stateStatus?.available ?? true,
               queueHealthy: !hasQueueAlerts,
             },
             diagnostics,
@@ -134,8 +144,8 @@ export async function GET(request: Request) {
             pipeline,
             state: {
               ...stateCapabilities,
-              available: stateStatus.available,
-              error: getSafeContactStateError(stateStatus),
+              available: stateStatus?.available ?? true,
+              error: stateStatus ? getSafeContactStateError(stateStatus) : null,
             },
             worker: {
               ...workerRuntime,
