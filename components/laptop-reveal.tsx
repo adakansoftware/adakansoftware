@@ -18,47 +18,6 @@ import {
 
 const themes: LaptopTheme[] = ["light", "dark"]
 
-type LaptopSprite = ReturnType<typeof laptopSpriteFrame>
-
-function useStableLaptopSprite(targetSprite: LaptopSprite) {
-  const targetRef = useRef(targetSprite)
-  const [displayedSprite, setDisplayedSprite] = useState(targetSprite)
-  targetRef.current = targetSprite
-
-  useEffect(() => {
-    if (displayedSprite.source === targetSprite.source) return
-
-    let active = true
-    const requestedSource = targetSprite.source
-    const image = new Image()
-    image.decoding = "async"
-    image.src = requestedSource
-
-    const decodeSprite = async () => {
-      try {
-        await image.decode()
-      } catch {
-        if (!image.complete || image.naturalWidth === 0) return
-      }
-
-      if (active && targetRef.current.source === requestedSource) {
-        setDisplayedSprite(targetRef.current)
-      }
-    }
-
-    void decodeSprite()
-
-    return () => {
-      active = false
-      image.src = ""
-    }
-  }, [displayedSprite.source, targetSprite.source])
-
-  return displayedSprite.source === targetSprite.source
-    ? targetSprite
-    : displayedSprite
-}
-
 export function LaptopReveal({ locale }: { locale: Locale }) {
   const sectionRef = useRef<HTMLElement>(null)
   const motionRef = useRef({ frame: 1, messageProgress: 0 })
@@ -159,25 +118,25 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
     const section = sectionRef.current
     if (!section) return
-    const pendingImages = new Set<HTMLImageElement>()
+    const retainedSprites = new Set<HTMLImageElement>()
 
     const loadSprites = () => {
       for (const theme of themes) {
         for (let sheet = 0; sheet < LAPTOP_SHEET_COUNT; sheet += 1) {
           const image = new window.Image()
           image.decoding = "async"
-          pendingImages.add(image)
-          const releaseImage = () => {
-            image.onload = null
-            image.onerror = null
-            pendingImages.delete(image)
-          }
-          image.onload = releaseImage
-          image.onerror = releaseImage
+          retainedSprites.add(image)
           image.src = laptopSpriteFrame(
             sheet * LAPTOP_FRAMES_PER_SHEET + 1,
             theme,
           ).source
+          void (async () => {
+            try {
+              await image.decode()
+            } catch {
+              // The visible layer can still use a normally loaded cached image.
+            }
+          })()
         }
       }
     }
@@ -194,21 +153,19 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
     return () => {
       observer.disconnect()
-      for (const image of pendingImages) {
+      for (const image of retainedSprites) {
         image.onload = null
         image.onerror = null
         image.src = ""
       }
-      pendingImages.clear()
+      retainedSprites.clear()
     }
   }, [reduceMotion])
 
   const visibleFrame = reduceMotion ? LAPTOP_FRAME_COUNT : motion.frame
   const messageProgress = reduceMotion ? 1 : motion.messageProgress
-  const targetLightSprite = laptopSpriteFrame(visibleFrame, "light")
-  const targetDarkSprite = laptopSpriteFrame(visibleFrame, "dark")
-  const lightSprite = useStableLaptopSprite(targetLightSprite)
-  const darkSprite = useStableLaptopSprite(targetDarkSprite)
+  const lightSprite = laptopSpriteFrame(visibleFrame, "light")
+  const darkSprite = laptopSpriteFrame(visibleFrame, "dark")
   const headline = locale === "tr"
     ? ["Fikri ürüne.", "Ürünü etkiye."]
     : ["Ideas to products.", "Products to impact."]
