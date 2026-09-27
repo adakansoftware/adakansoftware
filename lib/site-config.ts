@@ -3,7 +3,7 @@ import type { Locale } from "@/lib/i18n"
 export const siteConfig = {
   name: "Adakan Software",
   url: "https://adakansoftware.com",
-  email: "merhaba@adakan.com.tr",
+  email: "info@adakansoftware.com",
   location: {
     tr: "İstanbul, Türkiye",
     en: "Istanbul, Turkey",
