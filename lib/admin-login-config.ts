@@ -1,4 +1,5 @@
 const minimumSessionSecretLength = 32
+const minimumAdminPasswordLength = 16
 
 export function hasAdminLoginConfiguration(input: {
   email: string | undefined
@@ -9,7 +10,7 @@ export function hasAdminLoginConfiguration(input: {
 
   return Boolean(
     input.email?.trim()
-    && input.password?.trim()
+    && (input.password?.length ?? 0) >= minimumAdminPasswordLength
     && sessionSecret.length >= minimumSessionSecretLength,
   )
 }

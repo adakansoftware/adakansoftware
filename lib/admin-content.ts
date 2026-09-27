@@ -45,7 +45,9 @@ export function parseContentPayload(kind: ContentKind, value: unknown): ParseRes
   const image = parseImageUrl(payload[imageField])
   if (image === undefined) return { ok: false, message: "Geçerli bir görsel URL’si girin." }
 
-  if (typeof payload.color !== "string" || !payload.color.trim()) return { ok: false, message: "Geçerli bir renk girin." }
+  if (typeof payload.color !== "string" || !/^#[0-9a-f]{6}$/i.test(payload.color.trim())) {
+    return { ok: false, message: "Geçerli bir renk girin." }
+  }
   if (typeof payload.published !== "boolean" || typeof payload.archived !== "boolean") return { ok: false, message: "Yayın durumu geçersiz." }
   const sortOrder = payload.sort_order
   if (!Number.isInteger(sortOrder) || (sortOrder as number) < 0) return { ok: false, message: "Sıra numarası geçersiz." }
@@ -57,7 +59,7 @@ export function parseContentPayload(kind: ContentKind, value: unknown): ParseRes
     category_en: text.category_en,
     description_tr: text.description_tr,
     description_en: text.description_en,
-    color: payload.color.trim(),
+    color: payload.color.trim().toLowerCase(),
     cover_image: kind === "projects" ? image : null,
     logo_image: kind === "logo_works" ? image : null,
     published: payload.published,

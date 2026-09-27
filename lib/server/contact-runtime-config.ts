@@ -51,6 +51,10 @@ function isValidRedisUrl(value: string | undefined) {
 function getEmailPipelineConfigurationIssues() {
   const issues: string[] = []
 
+  if (!isValidDatabaseUrl(process.env.DATABASE_URL)) {
+    issues.push("DATABASE_URL must be a valid PostgreSQL URL for durable contact persistence")
+  }
+
   if (!isValidResendApiKey(process.env.RESEND_API_KEY)) {
     issues.push("RESEND_API_KEY must be a valid production Resend API key")
   }
