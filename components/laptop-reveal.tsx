@@ -18,6 +18,47 @@ import {
 
 const themes: LaptopTheme[] = ["light", "dark"]
 
+type LaptopSprite = ReturnType<typeof laptopSpriteFrame>
+
+function useStableLaptopSprite(targetSprite: LaptopSprite) {
+  const targetRef = useRef(targetSprite)
+  const [displayedSprite, setDisplayedSprite] = useState(targetSprite)
+  targetRef.current = targetSprite
+
+  useEffect(() => {
+    if (displayedSprite.source === targetSprite.source) return
+
+    let active = true
+    const requestedSource = targetSprite.source
+    const image = new Image()
+    image.decoding = "async"
+    image.src = requestedSource
+
+    const decodeSprite = async () => {
+      try {
+        await image.decode()
+      } catch {
+        if (!image.complete || image.naturalWidth === 0) return
+      }
+
+      if (active && targetRef.current.source === requestedSource) {
+        setDisplayedSprite(targetRef.current)
+      }
+    }
+
+    void decodeSprite()
+
+    return () => {
+      active = false
+      image.src = ""
+    }
+  }, [displayedSprite.source, targetSprite.source])
+
+  return displayedSprite.source === targetSprite.source
+    ? targetSprite
+    : displayedSprite
+}
+
 export function LaptopReveal({ locale }: { locale: Locale }) {
   const sectionRef = useRef<HTMLElement>(null)
   const motionRef = useRef({ frame: 1, messageProgress: 0 })
@@ -164,8 +205,10 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
   const visibleFrame = reduceMotion ? LAPTOP_FRAME_COUNT : motion.frame
   const messageProgress = reduceMotion ? 1 : motion.messageProgress
-  const lightSprite = laptopSpriteFrame(visibleFrame, "light")
-  const darkSprite = laptopSpriteFrame(visibleFrame, "dark")
+  const targetLightSprite = laptopSpriteFrame(visibleFrame, "light")
+  const targetDarkSprite = laptopSpriteFrame(visibleFrame, "dark")
+  const lightSprite = useStableLaptopSprite(targetLightSprite)
+  const darkSprite = useStableLaptopSprite(targetDarkSprite)
   const headline = locale === "tr"
     ? ["Fikri ürüne.", "Ürünü etkiye."]
     : ["Ideas to products.", "Products to impact."]

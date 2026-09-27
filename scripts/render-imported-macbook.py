@@ -140,8 +140,8 @@ scene.view_settings.look = "AgX - Medium High Contrast"
 scene.world.use_nodes = True
 world_background = scene.world.node_tree.nodes.get("Background")
 if THEME == "light":
-    world_background.inputs["Color"].default_value = (0.91, 0.91, 0.93, 1.0)
-    world_background.inputs["Strength"].default_value = 0.8
+    world_background.inputs["Color"].default_value = (1.0, 1.0, 1.0, 1.0)
+    world_background.inputs["Strength"].default_value = 1.2
 else:
     world_background.inputs["Color"].default_value = (0.0, 0.0, 0.0, 1.0)
     world_background.inputs["Strength"].default_value = 0.01
