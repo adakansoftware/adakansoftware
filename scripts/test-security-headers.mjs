@@ -45,6 +45,13 @@ for (const tag of scriptTags) {
 for (const path of ["/.env", "/.well-known/.env", "/%252eenv"]) {
   const sensitivePath = await secureFetch(path)
   assert.equal(sensitivePath.status, 404, path)
+  assert.equal(sensitivePath.headers.get("x-content-type-options"), "nosniff", `${path} nosniff`)
+  assert.equal(sensitivePath.headers.get("x-frame-options"), "DENY", `${path} frame denial`)
+  assert.equal(
+    sensitivePath.headers.get("strict-transport-security"),
+    "max-age=63072000; includeSubDomains; preload",
+    `${path} HSTS`,
+  )
 }
 
 const healthResponse = await secureFetch("/api/health")

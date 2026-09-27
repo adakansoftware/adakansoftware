@@ -18,6 +18,10 @@ export function shouldUseSharedAdminRateLimit(environment: AdminRateLimitEnviron
   return hasSharedRateLimitConfiguration(environment)
 }
 
+export function hasAdminLoginRateLimitProtection(environment: AdminRateLimitEnvironment = process.env) {
+  return environment.NODE_ENV !== "production" || shouldUseSharedAdminRateLimit(environment)
+}
+
 function recentFailures(ip: string, now: number) {
   const recent = (failuresByIp.get(ip) ?? []).filter(
     (timestamp) => now - timestamp < WINDOW_MS,

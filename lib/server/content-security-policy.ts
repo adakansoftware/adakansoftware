@@ -16,7 +16,7 @@ export function buildContentSecurityPolicy(nonce: string, isProduction: boolean)
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data:",
-    "connect-src 'self' https://vitals.vercel-insights.com https://vercel.live",
+    "connect-src 'self'",
     "frame-src 'none'",
     "worker-src 'self' blob:",
     "manifest-src 'self'",

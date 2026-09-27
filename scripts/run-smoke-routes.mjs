@@ -13,6 +13,11 @@ const testScript = process.argv[2] ?? process.env.SMOKE_TEST_SCRIPT ?? "./test-s
 const server = spawn(process.execPath, [nextBin, serverMode, "--hostname", "127.0.0.1", "--port", port], {
   env: {
     ...process.env,
+    DATABASE_URL: "",
+    REDIS_URL: "",
+    RESEND_API_KEY: "",
+    RESEND_FROM_DOMAIN: "",
+    CONTACT_STATE_BACKEND: "file",
     CONTACT_ADMIN_KEY: process.env.CONTACT_ADMIN_KEY ?? "test-admin-key",
     CONTACT_ADMIN_SIGNING_SECRET: process.env.CONTACT_ADMIN_SIGNING_SECRET ?? "test-admin-signing-secret",
     CONTACT_CRON_SECRET: process.env.CONTACT_CRON_SECRET ?? "test-cron-secret",

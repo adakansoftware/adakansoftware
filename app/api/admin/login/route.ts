@@ -6,6 +6,7 @@ import { getTrustedClientIp } from "@/lib/server/client-ip"
 import { createRequestId, isAllowedOrigin, jsonResponse, optionsResponse } from "@/lib/server/http"
 import {
   clearAdminLoginFailures,
+  hasAdminLoginRateLimitProtection,
   recordAdminLoginFailure,
   shouldRejectAdminLogin,
 } from "@/lib/server/admin-login-rate-limit"
@@ -21,6 +22,10 @@ export async function POST(request: Request) {
   const requestError = getAdminSessionMutationRequestError(request, isAllowedOrigin)
   if (requestError) {
     return jsonResponse({ ok: false }, { status: requestError, requestId })
+  }
+
+  if (!hasAdminLoginRateLimitProtection()) {
+    return jsonResponse({ ok: false }, { status: 503, requestId })
   }
 
   const clientIp = getTrustedClientIp(request.headers)

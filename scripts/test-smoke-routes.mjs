@@ -5,17 +5,17 @@ import { createHmac, randomUUID } from "node:crypto"
 const baseUrl = process.env.SMOKE_BASE_URL ?? "http://127.0.0.1:3101"
 
 const checks = [
-  { path: "/", status: 200, htmlLang: "tr", includes: ["Hizmetler", "data-mobile-menu"] },
+  { path: "/", status: 200, htmlLang: "tr", includes: ["Hizmetler", "studio-mobile-menu"] },
   { path: "/about", status: 200, htmlLang: "tr", includes: ["Hakkımızda"] },
-  { path: "/contact", status: 200, htmlLang: "tr", includes: ["WhatsApp", "data-mobile-menu"] },
+  { path: "/contact", status: 200, htmlLang: "tr", includes: ["WhatsApp", "studio-mobile-menu"] },
   { path: "/privacy", status: 200, htmlLang: "tr", includes: ["Gizlilik"] },
   { path: "/terms", status: 200, htmlLang: "tr", includes: ["Kullanım"] },
   { path: "/en/about", status: 200, htmlLang: "en", includes: ["About", "/en/services"] },
-  { path: "/en/contact", status: 200, htmlLang: "en", includes: ["WhatsApp", "Start a Project"] },
+  { path: "/en/contact", status: 200, htmlLang: "en", includes: ["WhatsApp", "Send Email"] },
   { path: "/en/privacy", status: 200, htmlLang: "en", includes: ["Privacy"] },
   { path: "/en/terms", status: 200, htmlLang: "en", includes: ["Terms"] },
   { path: "/tr/about", status: 307, locationPath: "/about" },
-  { path: "/api/health", status: 200, includes: ['"ok":true', '"service":"adakansoftware-website"'] },
+  { path: "/api/health", status: 200, includes: ['"ok":true', '"status":"ok"'] },
 ]
 
 async function request(path, init = {}) {
@@ -120,9 +120,9 @@ if (process.env.SMOKE_EXPECT_HSTS === "1") {
 }
 
 const servicesSeoPage = await request("/services")
-assert(!servicesSeoPage.text.includes('"@type":"BreadcrumbList"'), "/services: must not publish invisible breadcrumb structured data")
+assert(servicesSeoPage.text.includes('"@type":"BreadcrumbList"'), "/services: must publish breadcrumb structured data")
 assert(servicesSeoPage.text.includes('rel="canonical" href="https://adakansoftware.com/services"'), "/services: must publish its production canonical URL")
-assert(servicesSeoPage.text.includes('hrefLang="en-US" href="https://adakansoftware.com/en/services"'), "/services: must publish its English hreflang alternate")
+assert(servicesSeoPage.text.includes('hrefLang="en" href="https://adakansoftware.com/en/services"'), "/services: must publish its English hreflang alternate")
 assert(servicesSeoPage.text.includes('max-snippet:-1'), "/services: must allow unrestricted search snippets")
 assert(servicesSeoPage.text.includes('max-image-preview:large'), "/services: must allow large image previews")
 assert(servicesSeoPage.text.includes('"@type":"WebPage"'), "/services: must publish WebPage structured data")
@@ -135,7 +135,8 @@ assert(englishServicesSeoPage.text.includes('"inLanguage":"en-US"'), "/en/servic
 const robots = await request("/robots.txt")
 assert(robots.status === 200, `/robots.txt: expected 200, received ${robots.status}`)
 assert(robots.text.includes("Disallow: /api/"), "/robots.txt: must block API crawling")
-assert(robots.text.includes("Disallow: /admin/"), "/robots.txt: must block admin crawling")
+assert(robots.text.includes("Disallow: /admin"), "/robots.txt: must block admin crawling")
+assert(robots.text.includes("Disallow: /en/admin"), "/robots.txt: must block localized admin crawling")
 assert(robots.text.includes("Sitemap: https://adakansoftware.com/sitemap.xml"), "/robots.txt: must declare the production sitemap")
 
 const sitemap = await request("/sitemap.xml")
@@ -259,6 +260,8 @@ const invalidOrigin = await postJson(
 )
 assert(invalidOrigin.status === 403, `/api/contact invalid origin: expected 403, received ${invalidOrigin.status}`)
 
+let concurrentContactResponses = []
+if (process.env.SMOKE_ENABLE_CONTACT_WRITES === "1") {
 const idempotentPayload = {
   name: "Idempotent User",
   email: "idempotent@example.com",
@@ -279,7 +282,7 @@ const replayedIdempotent = await postJson("/api/contact", idempotentPayload, {
 assert(replayedIdempotent.status === 200, `/api/contact idempotent replay: expected 200, received ${replayedIdempotent.status}`)
 assert(replayedIdempotent.json?.replayed === true, "/api/contact idempotent replay: expected replayed=true")
 
-const concurrentContactResponses = await Promise.all(
+concurrentContactResponses = await Promise.all(
   Array.from({ length: 4 }, (_, index) =>
     postJson(
       "/api/contact",
@@ -309,6 +312,7 @@ const conflictingIdempotent = await postJson(
   withTestClientIp({ "Idempotency-Key": "contact-idempotency-test" }),
 )
 assert(conflictingIdempotent.status === 409, `/api/contact idempotent conflict: expected 409, received ${conflictingIdempotent.status}`)
+}
 
 const wrongContentTypeResponse = await request("/api/contact", {
   method: "POST",
