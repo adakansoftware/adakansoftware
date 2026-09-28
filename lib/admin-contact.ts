@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { getContactDataProtector } from "./server/contact-data-protection.ts"
 
 const contactRequestUpdateSchema = z.object({
   id: z.string().uuid(),
@@ -73,6 +74,16 @@ export function toContactRequest(row: unknown): AdminContactRequest | null {
     adminNote: adminNote ?? "",
     createdAt: getTimestampValue(values.created_at),
   }
+}
+
+export async function decryptContactRequestRow(row: Record<string, unknown>) {
+  const protector = getContactDataProtector()
+  if (!protector) return row
+  const decrypted = { ...row }
+  for (const key of ["name", "email", "phone", "project", "admin_note"] as const) {
+    if (typeof decrypted[key] === "string") decrypted[key] = await protector.decrypt(decrypted[key] as string)
+  }
+  return decrypted
 }
 
 export function filterContactRequests(requests: AdminContactRequest[], query: string) {

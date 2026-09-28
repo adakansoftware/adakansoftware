@@ -24,6 +24,16 @@ function hasStrongSecret(value: string | undefined) {
   return !isPlaceholderValue(value) && value!.trim().length >= MINIMUM_SECRET_LENGTH
 }
 
+function hasValidEncryptionKey(value: string | undefined) {
+  if (!value || !/^[A-Za-z0-9_-]{43}$/u.test(value.trim())) return false
+  try {
+    const normalized = value.trim().replaceAll("-", "+").replaceAll("_", "/")
+    return atob(`${normalized}=`).length === 32
+  } catch {
+    return false
+  }
+}
+
 function isValidDatabaseUrl(value: string | undefined) {
   if (isPlaceholderValue(value)) return false
 
@@ -53,6 +63,10 @@ function getEmailPipelineConfigurationIssues() {
 
   if (!isValidDatabaseUrl(process.env.DATABASE_URL)) {
     issues.push("DATABASE_URL must be a valid PostgreSQL URL for durable contact persistence")
+  }
+
+  if (!hasValidEncryptionKey(process.env.CONTACT_DATA_ENCRYPTION_KEY)) {
+    issues.push("CONTACT_DATA_ENCRYPTION_KEY must be a base64url encoded 256-bit key")
   }
 
   if (!isValidResendApiKey(process.env.RESEND_API_KEY)) {
@@ -89,6 +103,7 @@ function getEmailPipelineConfigurationIssues() {
 function isDatabaseInboxConfigured() {
   return isValidDatabaseUrl(process.env.DATABASE_URL)
     && hasStrongSecret(process.env.ADMIN_SESSION_SECRET)
+    && hasValidEncryptionKey(process.env.CONTACT_DATA_ENCRYPTION_KEY)
 }
 
 export function getContactRuntimeMode(environment = process.env.NODE_ENV) {
@@ -110,6 +125,7 @@ export function getContactRuntimeConfigurationIssues(environment = process.env.N
   return [
     ...getEmailPipelineConfigurationIssues(),
     "DATABASE_URL and an ADMIN_SESSION_SECRET of at least 32 characters are required for database-only contact delivery",
+    "CONTACT_DATA_ENCRYPTION_KEY must be a base64url encoded 256-bit key for durable contact storage",
   ]
 }
 

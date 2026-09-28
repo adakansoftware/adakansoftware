@@ -1,4 +1,8 @@
+import { cookies } from "next/headers"
+
 import { cookieName } from "@/lib/admin-auth"
+import { readAdminSession } from "@/lib/admin-session"
+import { getAdminSessionStore } from "@/lib/admin-session-store"
 import { getAdminSessionMutationRequestError } from "@/lib/admin-session-request"
 import { createRequestId, isAllowedOrigin, jsonResponse, optionsResponse } from "@/lib/server/http"
 
@@ -15,7 +19,20 @@ export async function POST(request: Request) {
     return jsonResponse({ ok: false }, { status: requestError, requestId })
   }
 
-  const response = jsonResponse({ ok: true }, { requestId })
+  const value = (await cookies()).get(cookieName)?.value
+  const session = value
+    ? readAdminSession(value, process.env.ADMIN_EMAIL, process.env.ADMIN_SESSION_SECRET ?? "", Date.now())
+    : null
+  let revoked = true
+  if (session) {
+    try {
+      await getAdminSessionStore().revoke(session.sessionId)
+    } catch {
+      revoked = false
+    }
+  }
+
+  const response = jsonResponse({ ok: revoked }, { status: revoked ? 200 : 503, requestId })
   response.cookies.set(cookieName, "", { httpOnly: true, sameSite: "strict", secure: process.env.NODE_ENV === "production", path: "/", maxAge: 0 })
   return response
 }

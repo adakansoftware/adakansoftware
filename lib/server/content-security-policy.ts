@@ -13,7 +13,8 @@ export function buildContentSecurityPolicy(nonce: string, isProduction: boolean)
     "object-src 'none'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isProduction ? "" : " 'unsafe-eval'"}`,
     "script-src-attr 'none'",
-    "style-src 'self' 'unsafe-inline'",
+    `style-src 'self' 'nonce-${nonce}'`,
+    "style-src-attr 'unsafe-inline'",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data:",
     "connect-src 'self'",
@@ -22,4 +23,8 @@ export function buildContentSecurityPolicy(nonce: string, isProduction: boolean)
     "manifest-src 'self'",
     ...(isProduction ? ["upgrade-insecure-requests"] : []),
   ].join("; ")
+}
+
+export function buildTrustedTypesReportOnlyPolicy() {
+  return "default-src 'self'; require-trusted-types-for 'script'; trusted-types default nextjs#bundler"
 }

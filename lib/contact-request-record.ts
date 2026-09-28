@@ -1,3 +1,5 @@
+import { getContactDataProtector } from "./server/contact-data-protection.ts"
+
 export type ContactRequestWriteInput = {
   name: string
   email: string
@@ -12,9 +14,17 @@ type SqlClient = {
 
 export function createContactRequestRecorder(sql: SqlClient) {
   return async function recordContactRequest(submission: ContactRequestWriteInput) {
+    const protector = getContactDataProtector()
+    const protect = (value: string) => protector ? protector.encrypt(value) : Promise.resolve(value)
     await sql.query(
       "insert into contact_requests (name, email, phone, project, locale) values ($1, $2, $3, $4, $5)",
-      [submission.name, submission.email, submission.phone ?? null, submission.project, submission.locale],
+      [
+        await protect(submission.name),
+        await protect(submission.email),
+        submission.phone ? await protect(submission.phone) : null,
+        await protect(submission.project),
+        submission.locale,
+      ],
     )
   }
 }

@@ -15,6 +15,8 @@
     "test:secrets": "node scripts/check-secrets.mjs && node --test scripts/check-secrets.test.mjs",
     "audit:production": "npm audit --omit=dev --audit-level=high",
     "db:apply-schema": "node --env-file=.env.local scripts/apply-neon-schema.mjs",
+    "db:encrypt-contact-data": "node --experimental-strip-types --env-file=.env.local scripts/migrate-contact-data-encryption.mjs",
+    "security:migrate-env": "node --experimental-strip-types --env-file=.env.local scripts/migrate-security-environment.mjs",
     "test:admin-security": "node --experimental-strip-types --test lib/admin-contact.test.mjs lib/admin-content.test.mjs lib/admin-content-request.test.mjs lib/admin-login-config.test.mjs lib/admin-session.test.mjs lib/admin-session-request.test.mjs lib/contact-request-store.test.mjs lib/content-source-status.test.mjs lib/server/admin-login-rate-limit.test.mjs lib/server/contact-state-store-status.test.mjs lib/server/secret-policy.test.mjs",
     "test:seo": "node --experimental-strip-types --test --test-isolation=none lib/public-routes.test.mjs lib/structured-data.test.mjs lib/seo-routes.test.mjs",
     "test:smoke": "node scripts/run-smoke-routes.mjs",

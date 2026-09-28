@@ -52,7 +52,7 @@ npm run test:smoke
 
 Run the production smoke check before starting a development smoke server, so
 it uses the fresh production build. The boundary smoke check expects a configured
-test administrator (`ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`).
+test administrator (`ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`).
 It sends only invalid submissions and unauthenticated content requests.
 
 The full `test:smoke` suite creates contact records and replays the outbox. Run it

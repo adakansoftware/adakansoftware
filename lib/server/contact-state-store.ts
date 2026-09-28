@@ -5,6 +5,7 @@ import { createClient, WatchError, type RedisClientType } from "redis"
 import type { ContactSubmission } from "@/lib/server/contact-service"
 import { readJsonFile, updateJsonFile, writeJsonFile } from "@/lib/server/json-file-store"
 import { createReservationOperations, type ContactReservations } from "./contact-reservations.ts"
+import { getContactDataProtector } from "./contact-data-protection.ts"
 
 export type ContactOutboxStatus = "pending" | "delivered" | "skipped" | "failed" | "dead-letter"
 export type ContactStateBackend = "file" | "redis" | "postgres"
@@ -253,18 +254,58 @@ function normalizeOutboxEntries(entries: ContactOutboxEntry[]) {
   }))
 }
 
+async function protectOutboxEntries(entries: ContactOutboxEntry[]) {
+  const protector = getContactDataProtector()
+  if (!protector) return entries
+  return Promise.all(entries.map(async (entry) => ({
+    ...entry,
+    email: await protector.encrypt(entry.email),
+    submission: entry.submission
+      ? {
+          ...entry.submission,
+          name: await protector.encrypt(entry.submission.name),
+          email: await protector.encrypt(entry.submission.email),
+          phone: entry.submission.phone ? await protector.encrypt(entry.submission.phone) : undefined,
+          project: await protector.encrypt(entry.submission.project),
+        }
+      : undefined,
+  })))
+}
+
+async function unprotectOutboxEntries(entries: ContactOutboxEntry[]) {
+  const protector = getContactDataProtector()
+  if (!protector) return normalizeOutboxEntries(entries)
+  const decrypted = await Promise.all(entries.map(async (entry) => ({
+    ...entry,
+    email: await protector.decrypt(entry.email),
+    submission: entry.submission
+      ? {
+          ...entry.submission,
+          name: await protector.decrypt(entry.submission.name),
+          email: await protector.decrypt(entry.submission.email),
+          phone: entry.submission.phone ? await protector.decrypt(entry.submission.phone) : undefined,
+          project: await protector.decrypt(entry.submission.project),
+        }
+      : undefined,
+  })))
+  return normalizeOutboxEntries(decrypted)
+}
+
 const fileContactStateStore: ContactStateStore = {
   backend: "file",
   ...createReservationOperations((updater) => updateJsonFile<ContactReservations>(RESERVATIONS_FILE_PATH, {}, updater)),
   async readOutboxEntries() {
     const entries = await readJsonFile<ContactOutboxEntry[]>(OUTBOX_FILE_PATH, [])
-    return normalizeOutboxEntries(entries)
+    return unprotectOutboxEntries(entries)
   },
   async writeOutboxEntries(entries) {
-    await writeJsonFile(OUTBOX_FILE_PATH, entries)
+    await writeJsonFile(OUTBOX_FILE_PATH, await protectOutboxEntries(entries))
   },
   async updateOutboxEntries(updater) {
-    await updateJsonFile<ContactOutboxEntry[]>(OUTBOX_FILE_PATH, [], async (entries) => updater(normalizeOutboxEntries(entries)))
+    await updateJsonFile<ContactOutboxEntry[]>(OUTBOX_FILE_PATH, [], async (entries) => {
+      const updated = await updater(await unprotectOutboxEntries(entries))
+      return protectOutboxEntries(updated)
+    })
   },
   async readIdempotencyRecords() {
     return readJsonFile<Array<[string, ContactIdempotencyRecord]>>(IDEMPOTENCY_FILE_PATH, [])
@@ -373,13 +414,16 @@ const redisContactStateStore: ContactStateStore = {
   ...createReservationOperations((updater) => updateRedisJson<ContactReservations>("reservations", {}, updater)),
   async readOutboxEntries() {
     const entries = await readRedisJson<ContactOutboxEntry[]>("outbox", [])
-    return normalizeOutboxEntries(entries)
+    return unprotectOutboxEntries(entries)
   },
   async writeOutboxEntries(entries) {
-    await writeRedisJson("outbox", entries)
+    await writeRedisJson("outbox", await protectOutboxEntries(entries))
   },
   async updateOutboxEntries(updater) {
-    await updateRedisJson<ContactOutboxEntry[]>("outbox", [], async (entries) => updater(normalizeOutboxEntries(entries)))
+    await updateRedisJson<ContactOutboxEntry[]>("outbox", [], async (entries) => {
+      const updated = await updater(await unprotectOutboxEntries(entries))
+      return protectOutboxEntries(updated)
+    })
   },
   async readIdempotencyRecords() {
     return readRedisJson<Array<[string, ContactIdempotencyRecord]>>("idempotency", [])

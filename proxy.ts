@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 import { defaultLocale, isLocale, localeHeaderName, stripLocalePrefix } from "@/lib/i18n"
 import { getProxyRateLimitPolicy, isProxyRateLimited } from "@/lib/server/proxy-rate-limit"
 import { getTrustedClientIp } from "@/lib/server/client-ip"
-import { buildContentSecurityPolicy, createCspNonce, cspNonceHeaderName } from "@/lib/server/content-security-policy"
+import { buildContentSecurityPolicy, buildTrustedTypesReportOnlyPolicy, createCspNonce, cspNonceHeaderName } from "@/lib/server/content-security-policy"
 import { isSensitiveDotPath } from "@/lib/server/sensitive-path"
 import { getCanonicalRedirectUrl } from "@/lib/server/transport-security"
 import { siteConfig } from "@/lib/site-config"
@@ -14,6 +14,7 @@ const PUBLIC_FILE = /\.[^/]+$/
 function withSecurityHeaders(response: NextResponse, contentSecurityPolicy: string) {
   response.headers.set("X-Proxy-Cache", "bypass")
   response.headers.set("Content-Security-Policy", contentSecurityPolicy)
+  response.headers.set("Content-Security-Policy-Report-Only", buildTrustedTypesReportOnlyPolicy())
   return response
 }
 

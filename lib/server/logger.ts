@@ -9,9 +9,11 @@ type LogPayload = LogContext & {
 }
 
 const SENSITIVE_KEY = /(authorization|cookie|email|password|secret|token|api[_-]?key|phone)/i
+const CREDENTIAL_URL = /\b((?:postgres(?:ql)?|redis(?:s)?):\/\/)[^@\s]+@/giu
 
 function sanitizeLogValue(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(sanitizeLogValue)
+  if (typeof value === "string") return value.replace(CREDENTIAL_URL, "$1[REDACTED]@")
   if (!value || typeof value !== "object") return value
 
   return Object.fromEntries(

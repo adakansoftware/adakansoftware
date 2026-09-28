@@ -48,3 +48,13 @@ create table if not exists security_rate_limits (
 );
 
 create index if not exists security_rate_limits_window_started_at_idx on security_rate_limits (window_started_at);
+
+create table if not exists admin_sessions (
+  session_id_hash text primary key check (length(session_id_hash) = 64),
+  email text not null,
+  expires_at timestamptz not null,
+  revoked_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists admin_sessions_expires_at_idx on admin_sessions (expires_at);

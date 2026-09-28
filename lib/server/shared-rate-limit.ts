@@ -8,7 +8,7 @@ type Query = (query: string, parameters: unknown[]) => Promise<Record<string, un
 type SharedRateLimitEnvironment = {
   NODE_ENV?: string
   DATABASE_URL?: string
-  ADMIN_SESSION_SECRET?: string
+  RATE_LIMIT_HASH_SECRET?: string
 }
 
 const consumeQuery = `
@@ -46,7 +46,7 @@ function rowWindowStart(row: Record<string, unknown> | undefined, fallback: numb
 export function hasSharedRateLimitConfiguration(environment: SharedRateLimitEnvironment = process.env) {
   return environment.NODE_ENV === "production"
     && Boolean(environment.DATABASE_URL?.trim())
-    && hasMinimumSecretLength(environment.ADMIN_SESSION_SECRET)
+    && hasMinimumSecretLength(environment.RATE_LIMIT_HASH_SECRET)
 }
 
 export function createSharedRateLimitStore({ query, secret }: { query: Query; secret: string }) {
@@ -88,7 +88,7 @@ export function createSharedRateLimitStore({ query, secret }: { query: Query; se
 }
 
 export function getSharedRateLimitStore() {
-  const secret = process.env.ADMIN_SESSION_SECRET ?? ""
+  const secret = process.env.RATE_LIMIT_HASH_SECRET ?? ""
   const sql = getNeonSql()
   return createSharedRateLimitStore({
     secret,

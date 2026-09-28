@@ -31,34 +31,35 @@ export async function POST(request: Request) {
   const clientIp = getTrustedClientIp(request.headers)
   const now = Date.now()
 
-  if (await shouldRejectAdminLogin(clientIp, now)) {
+  const credentials = await readAdminLoginCredentials(request)
+  const rateLimitEmail = credentials.ok ? credentials.email : ""
+  if (await shouldRejectAdminLogin(clientIp, now, rateLimitEmail)) {
     return jsonResponse({ ok: false }, { status: 429, requestId })
   }
 
   if (!hasAdminLoginConfiguration({
     email: process.env.ADMIN_EMAIL,
-    password: process.env.ADMIN_PASSWORD,
+    passwordHash: process.env.ADMIN_PASSWORD_HASH,
     sessionSecret: process.env.ADMIN_SESSION_SECRET,
   })) {
     return jsonResponse({ ok: false }, { status: 503, requestId })
   }
 
-  const credentials = await readAdminLoginCredentials(request)
   if (!credentials.ok) {
     await recordAdminLoginFailure(clientIp, now)
     return jsonResponse({ ok: false }, { status: credentials.status, requestId })
   }
   const { email, password } = credentials
-  if (!matchesAdminCredentials(email, password, {
+  if (!await matchesAdminCredentials(email, password, {
     email: process.env.ADMIN_EMAIL,
-    password: process.env.ADMIN_PASSWORD,
+    passwordHash: process.env.ADMIN_PASSWORD_HASH,
   })) {
-    await recordAdminLoginFailure(clientIp, now)
+    await recordAdminLoginFailure(clientIp, now, email)
     return jsonResponse({ ok: false }, { status: 401, requestId })
   }
 
   await clearAdminLoginFailures(clientIp)
   const response = jsonResponse({ ok: true, email }, { requestId })
-  response.cookies.set(cookieName, adminCookie(), { httpOnly: true, sameSite: "strict", secure: process.env.NODE_ENV === "production", path: "/", maxAge: adminSessionMaxAgeSeconds })
+  response.cookies.set(cookieName, await adminCookie(), { httpOnly: true, sameSite: "strict", secure: process.env.NODE_ENV === "production", path: "/", maxAge: adminSessionMaxAgeSeconds })
   return response
 }
