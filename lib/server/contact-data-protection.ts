@@ -29,7 +29,6 @@ export function createContactDataProtector(encodedKey: string) {
 
   return {
     async encrypt(value: string) {
-      if (isEncryptedContactValue(value)) return value
       const iv = crypto.getRandomValues(new Uint8Array(12))
       const ciphertext = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, await keyPromise, encoder.encode(value))
       return `${prefix}${encode(iv)}:${encode(new Uint8Array(ciphertext))}`

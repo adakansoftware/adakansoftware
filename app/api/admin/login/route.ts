@@ -6,9 +6,8 @@ import { getTrustedClientIp } from "@/lib/server/client-ip"
 import { createRequestId, isAllowedOrigin, jsonResponse, optionsResponse } from "@/lib/server/http"
 import {
   clearAdminLoginFailures,
+  consumeAdminLoginAttempt,
   hasAdminLoginRateLimitProtection,
-  recordAdminLoginFailure,
-  shouldRejectAdminLogin,
 } from "@/lib/server/admin-login-rate-limit"
 
 const ALLOW_HEADER_VALUE = "POST, OPTIONS"
@@ -33,7 +32,7 @@ export async function POST(request: Request) {
 
   const credentials = await readAdminLoginCredentials(request)
   const rateLimitEmail = credentials.ok ? credentials.email : ""
-  if (await shouldRejectAdminLogin(clientIp, now, rateLimitEmail)) {
+  if (await consumeAdminLoginAttempt(clientIp, now, rateLimitEmail)) {
     return jsonResponse({ ok: false }, { status: 429, requestId })
   }
 
@@ -46,7 +45,6 @@ export async function POST(request: Request) {
   }
 
   if (!credentials.ok) {
-    await recordAdminLoginFailure(clientIp, now)
     return jsonResponse({ ok: false }, { status: credentials.status, requestId })
   }
   const { email, password } = credentials
@@ -54,11 +52,10 @@ export async function POST(request: Request) {
     email: process.env.ADMIN_EMAIL,
     passwordHash: process.env.ADMIN_PASSWORD_HASH,
   })) {
-    await recordAdminLoginFailure(clientIp, now, email)
     return jsonResponse({ ok: false }, { status: 401, requestId })
   }
 
-  await clearAdminLoginFailures(clientIp)
+  await clearAdminLoginFailures(clientIp, email)
   const response = jsonResponse({ ok: true, email }, { requestId })
   response.cookies.set(cookieName, await adminCookie(), { httpOnly: true, sameSite: "strict", secure: process.env.NODE_ENV === "production", path: "/", maxAge: adminSessionMaxAgeSeconds })
   return response

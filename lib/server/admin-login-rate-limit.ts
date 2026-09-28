@@ -59,7 +59,7 @@ export async function shouldRejectAdminLogin(ip: string, now: number, email = ""
   return await isAdminLoginRateLimited(ip, now) || await isAdminAccountRateLimited(email, now)
 }
 
-export async function recordAdminLoginFailure(ip: string, now: number, email = "") {
+export async function consumeAdminLoginAttempt(ip: string, now: number, email = "") {
   if (shouldUseSharedAdminRateLimit()) {
     const store = getSharedRateLimitStore()
     const ipResult = await store.consume(
@@ -84,16 +84,23 @@ export async function recordAdminLoginFailure(ip: string, now: number, email = "
     const accountFailures = recentFailures("admin-login-account", account, ACCOUNT_WINDOW_MS, now)
     accountFailures.push(now)
     failures.set(`admin-login-account:${account}`, accountFailures)
-    accountLimited = accountFailures.length >= ACCOUNT_MAX_FAILURES
+    accountLimited = accountFailures.length > ACCOUNT_MAX_FAILURES
   }
-  return ipFailures.length >= MAX_FAILURES || accountLimited
+  return ipFailures.length > MAX_FAILURES || accountLimited
 }
 
-export async function clearAdminLoginFailures(ip: string) {
+export async function recordAdminLoginFailure(ip: string, now: number, email = "") {
+  return consumeAdminLoginAttempt(ip, now, email)
+}
+
+export async function clearAdminLoginFailures(ip: string, email = "") {
   if (shouldUseSharedAdminRateLimit()) {
-    await getSharedRateLimitStore().clear("admin-login", ip)
+    const store = getSharedRateLimitStore()
+    await store.clear("admin-login", ip)
+    if (email.trim()) await store.clear("admin-login-account", email.trim().toLowerCase())
     return
   }
 
   failures.delete(`admin-login-ip:${ip}`)
+  if (email.trim()) failures.delete(`admin-login-account:${email.trim().toLowerCase()}`)
 }

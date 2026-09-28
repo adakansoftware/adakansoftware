@@ -10,10 +10,19 @@ type LogPayload = LogContext & {
 
 const SENSITIVE_KEY = /(authorization|cookie|email|password|secret|token|api[_-]?key|phone)/i
 const CREDENTIAL_URL = /\b((?:postgres(?:ql)?|redis(?:s)?):\/\/)[^@\s]+@/giu
+const BEARER_CREDENTIAL = /\b(Bearer\s+)[A-Za-z0-9._~+/=-]+/giu
+const INLINE_SECRET_ASSIGNMENT = /\b((?:api[_-]?key|token|secret|password)\s*[=:]\s*)[^\s,;]+/giu
+
+function sanitizeLogString(value: string) {
+  return value
+    .replace(CREDENTIAL_URL, "$1[REDACTED]@")
+    .replace(BEARER_CREDENTIAL, "$1[REDACTED]")
+    .replace(INLINE_SECRET_ASSIGNMENT, "$1[REDACTED]")
+}
 
 function sanitizeLogValue(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(sanitizeLogValue)
-  if (typeof value === "string") return value.replace(CREDENTIAL_URL, "$1[REDACTED]@")
+  if (typeof value === "string") return sanitizeLogString(value)
   if (!value || typeof value !== "object") return value
 
   return Object.fromEntries(

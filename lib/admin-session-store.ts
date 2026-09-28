@@ -12,7 +12,10 @@ export function createAdminSessionStore(query: Query) {
   return {
     async create(sessionId: string, email: string, expiresAt: number) {
       await query(
-        `insert into admin_sessions (session_id_hash, email, expires_at)
+        `with expired as (
+           delete from admin_sessions where expires_at <= now()
+         )
+         insert into admin_sessions (session_id_hash, email, expires_at)
          values ($1, $2, to_timestamp($3 / 1000.0))`,
         [sessionIdHash(sessionId), email, expiresAt],
       )

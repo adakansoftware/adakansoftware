@@ -12,6 +12,10 @@ type SharedRateLimitEnvironment = {
 }
 
 const consumeQuery = `
+  with expired as (
+    delete from security_rate_limits
+    where window_started_at <= to_timestamp($5 / 1000.0)
+  )
   insert into security_rate_limits (scope, identifier_hash, window_started_at, request_count)
   values ($1, $2, to_timestamp($3 / 1000.0), 1)
   on conflict (scope, identifier_hash) do update set
@@ -58,7 +62,7 @@ export function createSharedRateLimitStore({ query, secret }: { query: Query; se
 
   return {
     async consume(scope: string, identifier: string, windowMs: number, maxRequests: number, now = Date.now()) {
-      const rows = await query(consumeQuery, [scope, key(scope, identifier), now, now - windowMs])
+      const rows = await query(consumeQuery, [scope, key(scope, identifier), now, now - windowMs, now - 24 * 60 * 60_000])
       const count = rowCount(rows[0])
       const windowStartedAt = rowWindowStart(rows[0], now)
       return {
