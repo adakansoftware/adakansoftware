@@ -4,6 +4,7 @@ import { ArrowRight, ArrowUpRight, MessageCircle } from "lucide-react"
 import { AboutCards } from "@/components/about-cards"
 import { ContactForm } from "@/components/contact-form"
 import { CTASection } from "@/components/cta-section"
+import { LogoBrandKitPanel } from "@/components/logo-brand-kit-panel"
 import { LogoServiceCards } from "@/components/logo-service-cards"
 import { LogoShowcase } from "@/components/logo-showcase"
 import { PortfolioLogoCard } from "@/components/portfolio-logo-card"
@@ -279,12 +280,7 @@ export async function LogoPageContent({ locale }: { locale: Locale }) {
                     : "We plan versions that work across real touchpoints: website, social media, proposal decks, and print."}
                 </p>
               </div>
-              <div className="relative aspect-square overflow-hidden rounded-2xl border border-border/50 bg-card/30">
-                <div className="absolute inset-0 grid-pattern opacity-20" />
-                <div className="absolute inset-8 flex items-center justify-center rounded-full border border-accent/25 bg-accent/10">
-                  <span className="font-aquire text-[clamp(4rem,12vw,7rem)] leading-none text-accent">A</span>
-                </div>
-              </div>
+              <LogoBrandKitPanel locale={locale} />
             </div>
           </div>
         </div>
