@@ -1,4 +1,5 @@
-import { pbkdf2 } from "node:crypto"
+import { pbkdf2Async } from "@noble/hashes/pbkdf2.js"
+import { sha256 } from "@noble/hashes/sha2.js"
 
 const encoder = new TextEncoder()
 const algorithm = "pbkdf2-sha256"
@@ -49,14 +50,10 @@ function constantTimeEqual(left: Uint8Array, right: Uint8Array) {
 }
 
 async function derivePassword(password: string, salt: Uint8Array, iterations: number) {
-  return await new Promise<Uint8Array>((resolve, reject) => {
-    pbkdf2(password, salt, iterations, digestLength, "sha256", (error, derivedKey) => {
-      if (error) {
-        reject(error)
-        return
-      }
-      resolve(new Uint8Array(derivedKey))
-    })
+  return await pbkdf2Async(sha256, encoder.encode(password), salt, {
+    c: iterations,
+    dkLen: digestLength,
+    asyncTick: 10,
   })
 }
 
