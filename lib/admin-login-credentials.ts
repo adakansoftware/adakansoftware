@@ -1,13 +1,10 @@
-import { pbkdf2Async } from "@noble/hashes/pbkdf2.js"
-import { sha256 } from "@noble/hashes/sha2.js"
-
 const encoder = new TextEncoder()
 const algorithm = "pbkdf2-sha256"
 const digestLength = 32
 const saltLength = 16
-const productionIterations = 600_000
+const productionIterations = 100_000
 const minimumIterations = 100_000
-const maximumIterations = 5_000_000
+const maximumIterations = 100_000
 
 function encodeBase64Url(bytes: Uint8Array) {
   let binary = ""
@@ -50,11 +47,13 @@ function constantTimeEqual(left: Uint8Array, right: Uint8Array) {
 }
 
 async function derivePassword(password: string, salt: Uint8Array, iterations: number) {
-  return await pbkdf2Async(sha256, encoder.encode(password), salt, {
-    c: iterations,
-    dkLen: digestLength,
-    asyncTick: 10,
-  })
+  const key = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveBits"])
+  const bits = await crypto.subtle.deriveBits(
+    { name: "PBKDF2", hash: "SHA-256", salt: salt as BufferSource, iterations },
+    key,
+    digestLength * 8,
+  )
+  return new Uint8Array(bits)
 }
 
 export function isAdminPasswordHash(value: string | undefined) {
