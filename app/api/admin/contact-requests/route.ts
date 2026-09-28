@@ -1,9 +1,10 @@
-import { decryptContactRequestRow, parseContactRequestUpdate, toContactRequest } from "@/lib/admin-contact"
+import { parseContactRequestUpdate, toContactRequest } from "@/lib/admin-contact"
 import { isAdmin } from "@/lib/admin-auth"
 import { adminContentMaxBodyBytes, getAdminContentRequestError, readBoundedJsonObject } from "@/lib/admin-content-request"
 import { getNeonSql } from "@/lib/neon"
 import { createRequestId, isAllowedOrigin, jsonResponse, optionsResponse } from "@/lib/server/http"
 import { getContactDataProtector } from "@/lib/server/contact-data-protection"
+import { decryptContactRequestRow } from "@/lib/server/admin-contact-data"
 
 const ALLOW_HEADER_VALUE = "GET, PATCH, OPTIONS"
 

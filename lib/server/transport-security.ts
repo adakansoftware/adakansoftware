@@ -13,11 +13,7 @@ export function getCanonicalRedirectUrl(
     || url.hostname === `www.${canonical.hostname}`
   if (protocol !== "http" && !isAlternateHost) return null
 
-  if (isAlternateHost) {
-    url.protocol = canonical.protocol
-    url.host = canonical.host
-  } else {
-    url.protocol = "https:"
-  }
+  url.protocol = canonical.protocol
+  url.host = canonical.host
   return url
 }
