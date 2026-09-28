@@ -1,4 +1,4 @@
-import { createHmac, randomUUID, timingSafeEqual } from "node:crypto"
+import { createHmac, timingSafeEqual } from "node:crypto"
 
 import { NextResponse } from "next/server"
 
@@ -6,6 +6,7 @@ import { getTrustedClientIp } from "@/lib/server/client-ip"
 import { getContactStateStore } from "@/lib/server/contact-state-store"
 import { isAllowedOrigin } from "@/lib/server/origin"
 import { hasMinimumSecretLength } from "@/lib/server/secret-policy"
+import { createRequestId } from "@/lib/server/request-id"
 
 const SIGNED_ADMIN_TOLERANCE_MS = 5 * 60_000
 
@@ -18,14 +19,7 @@ function matchesSecret(candidate: string | null | undefined, secret: string | un
 }
 
 
-export function createRequestId(request: Request) {
-  const incomingId = request.headers.get("x-request-id")?.trim()
-  if (incomingId && incomingId.length <= 120) {
-    return incomingId
-  }
-
-  return randomUUID()
-}
+export { createRequestId }
 
 export function jsonResponse(
   body: unknown,
