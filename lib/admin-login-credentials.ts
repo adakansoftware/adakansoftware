@@ -1,3 +1,5 @@
+import { pbkdf2 } from "node:crypto"
+
 const encoder = new TextEncoder()
 const algorithm = "pbkdf2-sha256"
 const digestLength = 32
@@ -47,13 +49,15 @@ function constantTimeEqual(left: Uint8Array, right: Uint8Array) {
 }
 
 async function derivePassword(password: string, salt: Uint8Array, iterations: number) {
-  const key = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveBits"])
-  const bits = await crypto.subtle.deriveBits(
-    { name: "PBKDF2", hash: "SHA-256", salt: salt as BufferSource, iterations },
-    key,
-    digestLength * 8,
-  )
-  return new Uint8Array(bits)
+  return await new Promise<Uint8Array>((resolve, reject) => {
+    pbkdf2(password, salt, iterations, digestLength, "sha256", (error, derivedKey) => {
+      if (error) {
+        reject(error)
+        return
+      }
+      resolve(new Uint8Array(derivedKey))
+    })
+  })
 }
 
 export function isAdminPasswordHash(value: string | undefined) {
