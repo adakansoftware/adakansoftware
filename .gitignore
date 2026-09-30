@@ -21,6 +21,7 @@ tsconfig.tsbuildinfo
 .DS_Store
 .data/
 .worktrees/
+.superpowers/
 dev-server.log
 prod-server.log
 prod-server*.log
