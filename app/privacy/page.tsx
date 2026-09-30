@@ -1,8 +1,8 @@
-import { LegalPageContent } from "@/components/static-page-routes"
+import { PrivacyPage } from "@/components/privacy-page"
 import { createRouteMetadata } from "@/lib/metadata"
 
 export const metadata = createRouteMetadata("privacy", "tr", "/privacy")
 
-export default function PrivacyPage() {
-  return <LegalPageContent locale="tr" type="privacy" />
+export default function PrivacyRoute() {
+  return <PrivacyPage locale="tr" />
 }

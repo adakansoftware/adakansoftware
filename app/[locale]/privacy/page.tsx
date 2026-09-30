@@ -1,4 +1,4 @@
-import { LegalPageContent } from "@/components/static-page-routes"
+import { PrivacyPage } from "@/components/privacy-page"
 import { createRouteMetadata } from "@/lib/metadata"
 import { getPrefixedLocaleStaticParams, getPrefixedRouteLocale } from "@/lib/route-locale"
 
@@ -21,5 +21,5 @@ export default async function PrivacyRoute({
   params: Promise<{ locale: string }>
 }) {
   const locale = await getPrefixedRouteLocale(params)
-  return <LegalPageContent locale={locale} type="privacy" />
+  return <PrivacyPage locale={locale} />
 }

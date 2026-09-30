@@ -52,7 +52,7 @@ export const footerContent = {
     companyTitle: "Şirket",
     servicesTitle: "Hizmetler",
     rights: "Tüm hakları saklıdır.",
-    privacy: "Gizlilik",
+    privacy: "KVKK ve Gizlilik",
     terms: "Kullanım Şartları",
     company: [
       { name: "Hakkımızda", href: "/about" },
