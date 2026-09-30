@@ -17,7 +17,7 @@ export function createContactRequestRecorder(sql: SqlClient) {
     const protector = getContactDataProtector()
     const protect = (value: string) => protector ? protector.encrypt(value) : Promise.resolve(value)
     await sql.query(
-      "insert into contact_requests (name, email, phone, project, locale) values ($1, $2, $3, $4, $5)",
+      "insert into contact_requests (name, email, phone, project, locale, retention_until) values ($1, $2, $3, $4, $5, now() + interval '24 months')",
       [
         await protect(submission.name),
         await protect(submission.email),

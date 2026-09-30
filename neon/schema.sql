@@ -39,6 +39,35 @@ create table if not exists contact_requests (
 
 create index if not exists contact_requests_status_created_at_idx on contact_requests (status, created_at desc);
 
+alter table contact_requests
+  add column if not exists retention_until timestamptz,
+  add column if not exists retention_hold boolean not null default false;
+
+update contact_requests
+set retention_until = updated_at + interval '24 months'
+where retention_until is null;
+
+alter table contact_requests
+  alter column retention_until set default (now() + interval '24 months'),
+  alter column retention_until set not null;
+
+create index if not exists contact_requests_retention_idx
+  on contact_requests (retention_until)
+  where retention_hold = false;
+
+create table if not exists contact_deletion_audits (
+  id uuid primary key default gen_random_uuid(),
+  run_id uuid not null,
+  actor text not null check (length(actor) between 1 and 80),
+  reason text not null check (reason in ('retention_expired', 'manual_request')),
+  deleted_count integer not null check (deleted_count >= 0),
+  executed_at timestamptz not null default now(),
+  expires_at timestamptz not null default (now() + interval '3 years')
+);
+
+create index if not exists contact_deletion_audits_expires_at_idx
+  on contact_deletion_audits (expires_at);
+
 create table if not exists security_rate_limits (
   scope text not null,
   identifier_hash text not null check (length(identifier_hash) = 64),
