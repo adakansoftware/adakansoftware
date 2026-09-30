@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import { contactRequestContactHref, contactRequestStatusLabel, filterContactRequests, filterContactRequestsByStatus, formatContactRequestDate, hasActiveContactFilters, replaceContactRequest, type AdminContactRequest, type ContactRequestStatus } from "@/lib/admin-contact"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import { contactRequestContactHref, contactRequestStatusLabel, filterContactRequests, filterContactRequestsByStatus, formatContactRequestDate, hasActiveContactFilters, removeContactRequest, replaceContactRequest, type AdminContactRequest, type ContactRequestStatus } from "@/lib/admin-contact"
 
 type Status = ContactRequestStatus
 type ContactRequest = AdminContactRequest
@@ -15,6 +16,7 @@ export function AdminContactInbox() {
   const [selected, setSelected] = useState<ContactRequest | null>(null)
   const [status, setStatus] = useState<Status>("new")
   const [note, setNote] = useState("")
+  const [retentionHold, setRetentionHold] = useState(false)
   const [message, setMessage] = useState("")
   const [busy, setBusy] = useState(false)
   const [query, setQuery] = useState("")
@@ -47,6 +49,7 @@ export function AdminContactInbox() {
     setSelected(request)
     setStatus(request.status)
     setNote(request.adminNote)
+    setRetentionHold(request.retentionHold)
     setMessage("")
   }
 
@@ -58,7 +61,7 @@ export function AdminContactInbox() {
       const response = await fetch("/api/admin/contact-requests", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: selected.id, status, adminNote: note }),
+        body: JSON.stringify({ id: selected.id, status, adminNote: note, retentionHold }),
       })
       const updated = await response.json() as ContactRequest
       if (!response.ok) throw new Error("İletişim talebi güncellenemedi.")
@@ -67,6 +70,26 @@ export function AdminContactInbox() {
       setMessage("Kaydedildi.")
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "İletişim talebi güncellenemedi.")
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const erase = async () => {
+    if (!selected) return
+    setBusy(true)
+    setMessage("")
+    try {
+      const response = await fetch("/api/admin/contact-requests", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: selected.id, confirmation: "DELETE" }),
+      })
+      if (!response.ok) throw new Error("Kişisel veri silinemedi.")
+      setRequests((current) => removeContactRequest(current, selected.id))
+      setSelected(null)
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Kişisel veri silinemedi.")
     } finally {
       setBusy(false)
     }
@@ -91,7 +114,7 @@ export function AdminContactInbox() {
           {!isLoading && !loadError && !visibleRequests.length && <p className="rounded-xl border border-dashed border-border/60 p-5 text-sm text-muted-foreground">{requests.length ? "Aramanla eşleşen iletişim talebi yok." : "Henüz iletişim talebi yok."}</p>}
         </div>
         <div className="rounded-2xl border border-border/50 bg-card/25 p-5 sm:p-7">
-          {selected ? <><div className="flex items-start justify-between gap-3"><div><p className="text-sm text-muted-foreground"><a className="underline underline-offset-2 hover:text-foreground" href={contactRequestContactHref("email", selected.email) ?? undefined}>{selected.email}</a>{selected.phone ? <><span aria-hidden="true"> · </span><a className="underline underline-offset-2 hover:text-foreground" href={contactRequestContactHref("phone", selected.phone) ?? undefined}>{selected.phone}</a></> : ""}</p><h3 className="mt-2 text-xl font-bold">{selected.name}</h3></div><Button size="sm" variant="ghost" onClick={() => setSelected(null)}>Kapat</Button></div><p className="mt-5 whitespace-pre-wrap text-sm leading-relaxed">{selected.project}</p><label className="mt-6 block text-sm font-medium">Durum<select className="mt-2 h-10 w-full rounded-md border border-border/60 bg-background/50 px-3" value={status} onChange={(event) => setStatus(event.target.value as Status)}>{(["new", "in_progress", "completed"] as const).map((value) => <option key={value} value={value}>{contactRequestStatusLabel(value)}</option>)}</select></label><label className="mt-4 block text-sm font-medium">Özel not<textarea maxLength={2000} className="mt-2 min-h-24 w-full rounded-md border border-border/60 bg-background/50 p-3" value={note} onChange={(event) => setNote(event.target.value)} /><span className="mt-1 block text-right text-xs font-normal text-muted-foreground">{note.length}/2000</span></label>{message && <p className="mt-4 text-sm text-muted-foreground">{message}</p>}<Button className="mt-5" onClick={() => void save()} disabled={busy}>{busy ? "Kaydediliyor" : "Talebi güncelle"}</Button></> : <p className="text-sm text-muted-foreground">Ayrıntıları görmek için bir talep seçin.</p>}
+          {selected ? <><div className="flex items-start justify-between gap-3"><div><p className="text-sm text-muted-foreground"><a className="underline underline-offset-2 hover:text-foreground" href={contactRequestContactHref("email", selected.email) ?? undefined}>{selected.email}</a>{selected.phone ? <><span aria-hidden="true"> · </span><a className="underline underline-offset-2 hover:text-foreground" href={contactRequestContactHref("phone", selected.phone) ?? undefined}>{selected.phone}</a></> : ""}</p><h3 className="mt-2 text-xl font-bold">{selected.name}</h3></div><Button size="sm" variant="ghost" onClick={() => setSelected(null)}>Kapat</Button></div><p className="mt-5 whitespace-pre-wrap text-sm leading-relaxed">{selected.project}</p><label className="mt-6 block text-sm font-medium">Durum<select className="mt-2 h-10 w-full rounded-md border border-border/60 bg-background/50 px-3" value={status} onChange={(event) => setStatus(event.target.value as Status)}>{(["new", "in_progress", "completed"] as const).map((value) => <option key={value} value={value}>{contactRequestStatusLabel(value)}</option>)}</select></label><label className="mt-4 block text-sm font-medium">Özel not<textarea maxLength={2000} className="mt-2 min-h-24 w-full rounded-md border border-border/60 bg-background/50 p-3" value={note} onChange={(event) => setNote(event.target.value)} /><span className="mt-1 block text-right text-xs font-normal text-muted-foreground">{note.length}/2000</span></label><label className="mt-4 flex items-start gap-3 rounded-xl border border-border/60 p-3 text-sm"><input className="mt-1" type="checkbox" checked={retentionHold} onChange={(event) => setRetentionHold(event.target.checked)} /><span><strong className="block font-medium">Saklama süresini durdur</strong><span className="text-muted-foreground">Yasal veya aktif süreç nedeniyle otomatik silmeyi bekletir.</span></span></label>{message && <p className="mt-4 text-sm text-muted-foreground">{message}</p>}<div className="mt-5 flex flex-wrap gap-3"><Button onClick={() => void save()} disabled={busy}>{busy ? "Kaydediliyor" : "Talebi güncelle"}</Button><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive" disabled={busy}>Kişisel veriyi kalıcı sil</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Kişisel veri kalıcı olarak silinsin mi?</AlertDialogTitle><AlertDialogDescription>{selected.name} kişisine ait iletişim kaydı geri alınamayacak şekilde silinecek. Denetim kaydında yalnızca işlem zamanı ve toplam silinen kayıt sayısı tutulur.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Vazgeç</AlertDialogCancel><AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={() => void erase()}>Kalıcı olarak sil</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div></> : <p className="text-sm text-muted-foreground">Ayrıntıları görmek için bir talep seçin.</p>}
         </div>
       </div>
     </section>

@@ -4,6 +4,12 @@ const contactRequestUpdateSchema = z.object({
   id: z.string().uuid(),
   status: z.enum(["new", "in_progress", "completed"]),
   adminNote: z.string().trim().max(2_000),
+  retentionHold: z.boolean(),
+})
+
+const contactRequestDeletionSchema = z.object({
+  id: z.string().uuid(),
+  confirmation: z.literal("DELETE"),
 })
 
 export type ContactRequestStatus = z.infer<typeof contactRequestUpdateSchema>["status"]
@@ -18,6 +24,8 @@ export type AdminContactRequest = {
   status: ContactRequestStatus
   adminNote: string
   createdAt: string | null
+  retentionUntil: string | null
+  retentionHold: boolean
 }
 
 const contactStatuses = new Set<ContactRequestStatus>(["new", "in_progress", "completed"])
@@ -72,6 +80,8 @@ export function toContactRequest(row: unknown): AdminContactRequest | null {
     status: status as ContactRequestStatus,
     adminNote: adminNote ?? "",
     createdAt: getTimestampValue(values.created_at),
+    retentionUntil: getTimestampValue(values.retention_until),
+    retentionHold: values.retention_hold === true,
   }
 }
 
@@ -103,6 +113,10 @@ export function replaceContactRequest(requests: AdminContactRequest[], updatedRe
   return requests.map((request) => request.id === updatedRequest.id ? updatedRequest : request)
 }
 
+export function removeContactRequest(requests: AdminContactRequest[], id: string) {
+  return requests.filter((request) => request.id !== id)
+}
+
 export function contactRequestContactHref(kind: "email" | "phone", value: string | null) {
   if (!value) return null
   if (kind === "email") return `mailto:${value}`
@@ -115,4 +129,11 @@ export function parseContactRequestUpdate(payload: unknown) {
   return result.success
     ? { ok: true as const, data: result.data }
     : { ok: false as const, message: "Geçersiz iletişim talebi." }
+}
+
+export function parseContactRequestDeletion(payload: unknown) {
+  const result = contactRequestDeletionSchema.safeParse(payload)
+  return result.success
+    ? { ok: true as const, data: result.data }
+    : { ok: false as const, message: "Geçersiz silme talebi." }
 }

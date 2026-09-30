@@ -23,6 +23,8 @@
     "test:smoke:boundaries": "node --env-file=.dev.vars scripts/run-smoke-routes.mjs ./test-request-boundaries.mjs",
     "test:smoke:production": "node --env-file=.dev.vars scripts/run-smoke-routes.mjs ./test-security-headers.mjs --production",
     "ops:contact:worker": "node scripts/contact-replay-worker.mjs",
+    "ops:kvkk:cleanup:dry": "node --experimental-strip-types --env-file=.dev.vars scripts/cleanup-contact-data.mjs --dry-run",
+    "ops:kvkk:cleanup:apply": "node --experimental-strip-types --env-file=.dev.vars scripts/cleanup-contact-data.mjs --apply",
     "build:cloudflare": "opennextjs-cloudflare build",
     "deploy": "wrangler deploy",
     "preview:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare preview"
