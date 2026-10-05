@@ -67,10 +67,8 @@ export function clamp(value: number, minimum: number, maximum: number) {
 
 export function resolveLaptopViewportHeight(
   sectionHeight: number,
-  browserViewportHeight: number,
 ) {
-  const stableStoryViewportHeight = sectionHeight / LAPTOP_STORY_VIEWPORTS
-  return Math.min(browserViewportHeight, stableStoryViewportHeight)
+  return sectionHeight / LAPTOP_STORY_VIEWPORTS
 }
 
 export function laptopFrameSource(frame: number, theme: LaptopTheme) {

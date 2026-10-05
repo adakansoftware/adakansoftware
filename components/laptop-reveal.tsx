@@ -57,10 +57,7 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
       return calculateLaptopMotion({
         sectionTop: section.getBoundingClientRect().top,
         sectionHeight: section.offsetHeight,
-        viewportHeight: resolveLaptopViewportHeight(
-          section.offsetHeight,
-          window.innerHeight,
-        ),
+        viewportHeight: resolveLaptopViewportHeight(section.offsetHeight),
       })
     }
 

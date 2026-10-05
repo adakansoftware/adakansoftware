@@ -144,6 +144,9 @@
 .dark .studio-theme .section-frame { background: #111419; border-color: #30343a; }
 .dark .studio-laptop-screen-message { background: linear-gradient(145deg, rgb(1 5 14 / .82), rgb(2 8 20 / .58)); color: white; }
 .dark .studio-laptop-screen-capabilities { color: #a1a1a6; }
+@media (max-width: 1024px) {
+  .studio-laptop-story { min-height: 250vmax; }
+}
 @media (max-width: 900px) {
   .studio-nav { gap: 20px; }
   .studio-desktop-nav { display: none; }
