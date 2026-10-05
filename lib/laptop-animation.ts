@@ -10,6 +10,11 @@ export const LAPTOP_SPRITE_VERSION = "4"
 
 export type LaptopTheme = "light" | "dark"
 
+export type LaptopSprite = {
+  source: string
+  backgroundPosition: string
+}
+
 type LaptopMotionInput = {
   sectionTop: number
   sectionHeight: number
@@ -73,7 +78,7 @@ export function laptopFrameSource(frame: number, theme: LaptopTheme) {
   return `/laptop-frames/${theme}/laptop-${String(safeFrame).padStart(4, "0")}.webp?v=${LAPTOP_FRAME_VERSION}`
 }
 
-export function laptopSpriteFrame(frame: number, theme: LaptopTheme) {
+export function laptopSpriteFrame(frame: number, theme: LaptopTheme): LaptopSprite {
   const safeFrame = clamp(Math.round(frame), 1, LAPTOP_FRAME_COUNT)
   const frameIndex = safeFrame - 1
   const sheet = Math.floor(frameIndex / LAPTOP_FRAMES_PER_SHEET) + 1
@@ -85,6 +90,18 @@ export function laptopSpriteFrame(frame: number, theme: LaptopTheme) {
     source: `/laptop-sprites/${theme}/sheet-${String(sheet).padStart(2, "0")}.webp?v=${LAPTOP_SPRITE_VERSION}`,
     backgroundPosition: `${column * 50}% ${row * 100}%`,
   }
+}
+
+export function resolveLaptopSprite(
+  current: LaptopSprite,
+  target: LaptopSprite,
+  decodedSources: ReadonlySet<string>,
+) {
+  if (current.source === target.source || decodedSources.has(target.source)) {
+    return target
+  }
+
+  return current
 }
 
 export function calculateLaptopMotion({

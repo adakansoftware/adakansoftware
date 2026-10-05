@@ -12,11 +12,26 @@ import {
   LAPTOP_FRAMES_PER_SHEET,
   LAPTOP_SHEET_COUNT,
   laptopSpriteFrame,
+  resolveLaptopSprite,
   resolveLaptopViewportHeight,
+  type LaptopSprite,
   type LaptopTheme,
 } from "@/lib/laptop-animation"
 
 const themes: LaptopTheme[] = ["light", "dark"]
+
+function useDecodedLaptopSprite(
+  target: LaptopSprite,
+  decodedSources: ReadonlySet<string>,
+) {
+  const [displayed, setDisplayed] = useState(target)
+
+  useEffect(() => {
+    setDisplayed((current) => resolveLaptopSprite(current, target, decodedSources))
+  }, [decodedSources, target.backgroundPosition, target.source])
+
+  return displayed.source === target.source ? target : displayed
+}
 
 export function LaptopReveal({ locale }: { locale: Locale }) {
   const sectionRef = useRef<HTMLElement>(null)
@@ -24,6 +39,9 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
   const targetMotionRef = useRef({ frame: 1, messageProgress: 0 })
   const reduceMotion = useReducedMotion()
   const [motion, setMotion] = useState({ frame: 1, messageProgress: 0 })
+  const [decodedSpriteSources, setDecodedSpriteSources] = useState<ReadonlySet<string>>(
+    () => new Set(),
+  )
 
   useEffect(() => {
     if (reduceMotion) return
@@ -119,6 +137,17 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     const section = sectionRef.current
     if (!section) return
     const retainedSprites = new Set<HTMLImageElement>()
+    let active = true
+
+    const markDecoded = (source: string) => {
+      if (!active) return
+      setDecodedSpriteSources((current) => {
+        if (current.has(source)) return current
+        const next = new Set(current)
+        next.add(source)
+        return next
+      })
+    }
 
     const loadSprites = () => {
       for (const theme of themes) {
@@ -126,15 +155,17 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
           const image = new window.Image()
           image.decoding = "async"
           retainedSprites.add(image)
-          image.src = laptopSpriteFrame(
+          const source = laptopSpriteFrame(
             sheet * LAPTOP_FRAMES_PER_SHEET + 1,
             theme,
           ).source
+          image.src = source
           void (async () => {
             try {
               await image.decode()
+              markDecoded(source)
             } catch {
-              // The visible layer can still use a normally loaded cached image.
+              if (image.complete && image.naturalWidth > 0) markDecoded(source)
             }
           })()
         }
@@ -152,6 +183,7 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     observer.observe(section)
 
     return () => {
+      active = false
       observer.disconnect()
       for (const image of retainedSprites) {
         image.onload = null
@@ -164,8 +196,10 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
   const visibleFrame = reduceMotion ? LAPTOP_FRAME_COUNT : motion.frame
   const messageProgress = reduceMotion ? 1 : motion.messageProgress
-  const lightSprite = laptopSpriteFrame(visibleFrame, "light")
-  const darkSprite = laptopSpriteFrame(visibleFrame, "dark")
+  const targetLightSprite = laptopSpriteFrame(visibleFrame, "light")
+  const targetDarkSprite = laptopSpriteFrame(visibleFrame, "dark")
+  const lightSprite = useDecodedLaptopSprite(targetLightSprite, decodedSpriteSources)
+  const darkSprite = useDecodedLaptopSprite(targetDarkSprite, decodedSpriteSources)
   const headline = locale === "tr"
     ? ["Fikri ürüne.", "Ürünü etkiye."]
     : ["Ideas to products.", "Products to impact."]

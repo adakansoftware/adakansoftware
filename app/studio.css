@@ -193,6 +193,11 @@
   .studio-page-header { padding-block: 60px 48px; }
   .studio-page-header > p { font-size: 16px; }
 }
+@media (orientation: landscape) and (max-height: 500px) {
+  .studio-laptop-sticky { padding: 12px 16px 8px; }
+  .studio-laptop-heading h2 { margin-top: 8px; font-size: clamp(26px, 4.6vw, 36px); }
+  .studio-laptop-product { width: auto; height: calc(100svh - 180px); max-width: 94vw; margin-top: 4px; }
+}
 @media (max-width: 370px) {
   .studio-container { width: calc(100% - 28px); }
   .studio-brand { gap: 6px; font-size: 15.5px; letter-spacing: -.45px; }
