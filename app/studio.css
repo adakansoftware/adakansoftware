@@ -207,6 +207,10 @@
   .studio-laptop-heading p { font-size: 10px; }
   .studio-laptop-heading h2 { margin-top: 4px; font-size: clamp(22px, 4vw, 30px); }
   .studio-laptop-product { width: auto; height: min(calc(100svh - 134px), 270px); max-width: 96vw; margin-top: -4px; }
+  .studio-laptop-screen-message { padding: 5% 6%; }
+  .studio-laptop-screen-overline { font-size: clamp(4.5px, .78cqw, 7px); }
+  .studio-laptop-screen-words strong { font-size: clamp(11px, 3.45cqw, 28px); }
+  .studio-laptop-screen-capabilities { font-size: clamp(4.5px, .68cqw, 6.5px); letter-spacing: .08em; }
 }
 @media (max-width: 370px) {
   .studio-container { width: calc(100% - 28px); }
