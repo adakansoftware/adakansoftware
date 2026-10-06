@@ -8,6 +8,7 @@ import {
   advanceLaptopMotion,
   calculateLaptopMotion,
   clamp,
+  followsLaptopScrollIntent,
   hasLaptopViewportOrientationChanged,
   LAPTOP_FRAME_COUNT,
   LAPTOP_FRAMES_PER_SHEET,
@@ -54,6 +55,11 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     let isReorienting = false
     let ignoreViewportScrollUntil = 0
     let orientationSettleTimer = 0
+    let intendedScrollDirection = 0
+    let scrollIntentUntil = 0
+    let lastTouchY: number | null = null
+    const isTouchViewport = navigator.maxTouchPoints > 0
+      || window.matchMedia("(pointer: coarse)").matches
     let viewport = { width: window.innerWidth, height: window.innerHeight }
     const readTargetMotion = () => {
       const section = sectionRef.current
@@ -99,8 +105,20 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
     const requestFrameUpdate = () => {
       if (isReorienting) return
-      if (performance.now() < ignoreViewportScrollUntil) return
-      targetMotionRef.current = readTargetMotion()
+      const now = performance.now()
+      if (now < ignoreViewportScrollUntil) return
+      const nextTarget = readTargetMotion()
+
+      if (isTouchViewport) {
+        if (!intendedScrollDirection || now > scrollIntentUntil) return
+        if (!followsLaptopScrollIntent(
+          targetMotionRef.current,
+          nextTarget,
+          intendedScrollDirection,
+        )) return
+      }
+
+      targetMotionRef.current = nextTarget
       if (document.hidden) return
       if (!animationFrame) animationFrame = window.requestAnimationFrame(animateToTarget)
     }
@@ -121,6 +139,9 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
       if (orientationChanged) {
         isReorienting = true
         ignoreViewportScrollUntil = performance.now() + 1000
+        intendedScrollDirection = 0
+        scrollIntentUntil = 0
+        lastTouchY = null
         targetMotionRef.current = motionRef.current
         if (animationFrame) window.cancelAnimationFrame(animationFrame)
         animationFrame = 0
@@ -132,8 +153,34 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
       }
     }
 
-    const handleDirectInteraction = () => {
+    const handleTouchStart = (event: TouchEvent) => {
       ignoreViewportScrollUntil = 0
+      lastTouchY = event.touches[0]?.clientY ?? null
+      intendedScrollDirection = 0
+    }
+
+    const handleTouchMove = (event: TouchEvent) => {
+      const touchY = event.touches[0]?.clientY
+      if (touchY === undefined || lastTouchY === null) return
+      const deltaY = lastTouchY - touchY
+      lastTouchY = touchY
+      if (Math.abs(deltaY) < 1) return
+
+      ignoreViewportScrollUntil = 0
+      intendedScrollDirection = Math.sign(deltaY)
+      scrollIntentUntil = performance.now() + 1800
+    }
+
+    const handleTouchEnd = () => {
+      lastTouchY = null
+      if (intendedScrollDirection) scrollIntentUntil = performance.now() + 1800
+    }
+
+    const handleWheel = (event: WheelEvent) => {
+      ignoreViewportScrollUntil = 0
+      if (Math.abs(event.deltaY) < 1) return
+      intendedScrollDirection = Math.sign(event.deltaY)
+      scrollIntentUntil = performance.now() + 500
     }
 
     const handleVisibilityChange = () => {
@@ -153,17 +200,21 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     commitMotion(initialMotion)
     window.addEventListener("scroll", requestFrameUpdate, { passive: true })
     window.addEventListener("resize", handleResize)
-    window.addEventListener("touchstart", handleDirectInteraction, { passive: true })
-    window.addEventListener("pointerdown", handleDirectInteraction, { passive: true })
-    window.addEventListener("wheel", handleDirectInteraction, { passive: true })
+    window.addEventListener("touchstart", handleTouchStart, { passive: true })
+    window.addEventListener("touchmove", handleTouchMove, { passive: true })
+    window.addEventListener("touchend", handleTouchEnd, { passive: true })
+    window.addEventListener("touchcancel", handleTouchEnd, { passive: true })
+    window.addEventListener("wheel", handleWheel, { passive: true })
     document.addEventListener("visibilitychange", handleVisibilityChange)
 
     return () => {
       window.removeEventListener("scroll", requestFrameUpdate)
       window.removeEventListener("resize", handleResize)
-      window.removeEventListener("touchstart", handleDirectInteraction)
-      window.removeEventListener("pointerdown", handleDirectInteraction)
-      window.removeEventListener("wheel", handleDirectInteraction)
+      window.removeEventListener("touchstart", handleTouchStart)
+      window.removeEventListener("touchmove", handleTouchMove)
+      window.removeEventListener("touchend", handleTouchEnd)
+      window.removeEventListener("touchcancel", handleTouchEnd)
+      window.removeEventListener("wheel", handleWheel)
       document.removeEventListener("visibilitychange", handleVisibilityChange)
       if (animationFrame) window.cancelAnimationFrame(animationFrame)
       if (orientationSettleTimer) window.clearTimeout(orientationSettleTimer)

@@ -26,6 +26,19 @@ export type LaptopMotion = {
   messageProgress: number
 }
 
+export function followsLaptopScrollIntent(
+  current: LaptopMotion,
+  next: LaptopMotion,
+  intendedDirection: number,
+) {
+  if (!intendedDirection) return false
+  const frameDelta = next.frame - current.frame
+  const messageDelta = next.messageProgress - current.messageProgress
+  const targetDelta = Math.abs(frameDelta) >= 0.01 ? frameDelta : messageDelta
+  return Math.abs(targetDelta) < 0.001
+    || Math.sign(targetDelta) === Math.sign(intendedDirection)
+}
+
 type LaptopViewport = {
   width: number
   height: number
