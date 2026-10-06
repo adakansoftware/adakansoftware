@@ -52,6 +52,7 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     let animationFrame = 0
     let previousAnimationTime = 0
     let isReorienting = false
+    let ignoreViewportScrollUntil = 0
     let orientationSettleTimer = 0
     let viewport = { width: window.innerWidth, height: window.innerHeight }
     const readTargetMotion = () => {
@@ -98,6 +99,7 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
     const requestFrameUpdate = () => {
       if (isReorienting) return
+      if (performance.now() < ignoreViewportScrollUntil) return
       targetMotionRef.current = readTargetMotion()
       if (document.hidden) return
       if (!animationFrame) animationFrame = window.requestAnimationFrame(animateToTarget)
@@ -118,6 +120,7 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
       if (orientationChanged) {
         isReorienting = true
+        ignoreViewportScrollUntil = performance.now() + 1000
         targetMotionRef.current = motionRef.current
         if (animationFrame) window.cancelAnimationFrame(animationFrame)
         animationFrame = 0
@@ -126,10 +129,11 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
       if (isReorienting) {
         settleOrientation()
-        return
       }
+    }
 
-      requestFrameUpdate()
+    const handleDirectInteraction = () => {
+      ignoreViewportScrollUntil = 0
     }
 
     const handleVisibilityChange = () => {
@@ -149,15 +153,18 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     commitMotion(initialMotion)
     window.addEventListener("scroll", requestFrameUpdate, { passive: true })
     window.addEventListener("resize", handleResize)
+    window.addEventListener("touchstart", handleDirectInteraction, { passive: true })
+    window.addEventListener("pointerdown", handleDirectInteraction, { passive: true })
+    window.addEventListener("wheel", handleDirectInteraction, { passive: true })
     document.addEventListener("visibilitychange", handleVisibilityChange)
-    const resizeObserver = new ResizeObserver(handleResize)
-    resizeObserver.observe(observedSection)
 
     return () => {
       window.removeEventListener("scroll", requestFrameUpdate)
       window.removeEventListener("resize", handleResize)
+      window.removeEventListener("touchstart", handleDirectInteraction)
+      window.removeEventListener("pointerdown", handleDirectInteraction)
+      window.removeEventListener("wheel", handleDirectInteraction)
       document.removeEventListener("visibilitychange", handleVisibilityChange)
-      resizeObserver.disconnect()
       if (animationFrame) window.cancelAnimationFrame(animationFrame)
       if (orientationSettleTimer) window.clearTimeout(orientationSettleTimer)
     }
