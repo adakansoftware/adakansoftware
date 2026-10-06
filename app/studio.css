@@ -205,12 +205,12 @@
 @media (orientation: landscape) and (max-height: 500px) {
   .studio-laptop-sticky { padding: 8px 12px 4px; }
   .studio-laptop-heading p { font-size: 10px; }
-  .studio-laptop-heading h2 { margin-top: 4px; font-size: clamp(22px, 4vw, 30px); }
-  .studio-laptop-product { width: auto; height: min(calc(100svh - 134px), 270px); max-width: 96vw; margin-top: -4px; }
-  .studio-laptop-screen-message { padding: 5% 6%; }
-  .studio-laptop-screen-overline { font-size: clamp(4.5px, .78cqw, 7px); }
-  .studio-laptop-screen-words strong { font-size: clamp(11px, 3.45cqw, 28px); }
-  .studio-laptop-screen-capabilities { font-size: clamp(4.5px, .68cqw, 6.5px); letter-spacing: .08em; }
+  .studio-laptop-heading h2 { margin-top: 4px; font-size: clamp(20px, 3.4vw, 27px); }
+  .studio-laptop-product { width: min(92vw, calc(200svh - 20px), 760px); height: auto; max-width: none; margin-top: -18svh; }
+  .studio-laptop-screen-message { padding: 4.5% 5.5%; }
+  .studio-laptop-screen-overline { font-size: clamp(4px, .64cqw, 6px); }
+  .studio-laptop-screen-words strong { font-size: clamp(10px, 2.9cqw, 21px); }
+  .studio-laptop-screen-capabilities { font-size: clamp(4px, .56cqw, 5.5px); letter-spacing: .08em; }
 }
 @media (max-width: 370px) {
   .studio-container { width: calc(100% - 28px); }
