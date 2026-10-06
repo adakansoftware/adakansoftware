@@ -8,6 +8,7 @@ import {
   advanceLaptopMotion,
   calculateLaptopMotion,
   clamp,
+  hasLaptopViewportOrientationChanged,
   LAPTOP_FRAME_COUNT,
   LAPTOP_FRAMES_PER_SHEET,
   LAPTOP_SHEET_COUNT,
@@ -50,6 +51,9 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
 
     let animationFrame = 0
     let previousAnimationTime = 0
+    let isReorienting = false
+    let orientationSettleTimer = 0
+    let viewport = { width: window.innerWidth, height: window.innerHeight }
     const readTargetMotion = () => {
       const section = sectionRef.current
       if (!section) return targetMotionRef.current
@@ -93,9 +97,39 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     }
 
     const requestFrameUpdate = () => {
+      if (isReorienting) return
       targetMotionRef.current = readTargetMotion()
       if (document.hidden) return
       if (!animationFrame) animationFrame = window.requestAnimationFrame(animateToTarget)
+    }
+
+    const settleOrientation = () => {
+      if (orientationSettleTimer) window.clearTimeout(orientationSettleTimer)
+      orientationSettleTimer = window.setTimeout(() => {
+        isReorienting = false
+        orientationSettleTimer = 0
+      }, 500)
+    }
+
+    const handleResize = () => {
+      const nextViewport = { width: window.innerWidth, height: window.innerHeight }
+      const orientationChanged = hasLaptopViewportOrientationChanged(viewport, nextViewport)
+      viewport = nextViewport
+
+      if (orientationChanged) {
+        isReorienting = true
+        targetMotionRef.current = motionRef.current
+        if (animationFrame) window.cancelAnimationFrame(animationFrame)
+        animationFrame = 0
+        previousAnimationTime = 0
+      }
+
+      if (isReorienting) {
+        settleOrientation()
+        return
+      }
+
+      requestFrameUpdate()
     }
 
     const handleVisibilityChange = () => {
@@ -114,17 +148,18 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
     targetMotionRef.current = initialMotion
     commitMotion(initialMotion)
     window.addEventListener("scroll", requestFrameUpdate, { passive: true })
-    window.addEventListener("resize", requestFrameUpdate)
+    window.addEventListener("resize", handleResize)
     document.addEventListener("visibilitychange", handleVisibilityChange)
-    const resizeObserver = new ResizeObserver(requestFrameUpdate)
+    const resizeObserver = new ResizeObserver(handleResize)
     resizeObserver.observe(observedSection)
 
     return () => {
       window.removeEventListener("scroll", requestFrameUpdate)
-      window.removeEventListener("resize", requestFrameUpdate)
+      window.removeEventListener("resize", handleResize)
       document.removeEventListener("visibilitychange", handleVisibilityChange)
       resizeObserver.disconnect()
       if (animationFrame) window.cancelAnimationFrame(animationFrame)
+      if (orientationSettleTimer) window.clearTimeout(orientationSettleTimer)
     }
   }, [reduceMotion])
 
@@ -169,19 +204,10 @@ export function LaptopReveal({ locale }: { locale: Locale }) {
       }
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return
-        observer.disconnect()
-        loadSprites()
-      },
-      { rootMargin: "100% 0px" },
-    )
-    observer.observe(section)
+    loadSprites()
 
     return () => {
       active = false
-      observer.disconnect()
       for (const image of retainedSprites) {
         image.onload = null
         image.onerror = null

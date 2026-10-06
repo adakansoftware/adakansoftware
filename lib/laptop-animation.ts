@@ -26,7 +26,12 @@ export type LaptopMotion = {
   messageProgress: number
 }
 
-const LAPTOP_MOBILE_FRAMES_PER_SECOND = 20
+type LaptopViewport = {
+  width: number
+  height: number
+}
+
+const LAPTOP_MOBILE_FRAMES_PER_SECOND = 30
 const LAPTOP_MOBILE_MESSAGE_DURATION_MS = 1600
 
 function moveTowards(current: number, target: number, maximumDistance: number) {
@@ -63,6 +68,13 @@ export function advanceLaptopMotion(
 
 export function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(Math.max(value, minimum), maximum)
+}
+
+export function hasLaptopViewportOrientationChanged(
+  previous: LaptopViewport,
+  next: LaptopViewport,
+) {
+  return (previous.width > previous.height) !== (next.width > next.height)
 }
 
 export function resolveLaptopViewportHeight(

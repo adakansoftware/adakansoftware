@@ -38,7 +38,9 @@
 .studio-laptop-heading p { color: #86868b; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
 .studio-laptop-heading h2 { margin-top: 12px; font-size: clamp(32px, 4.6vw, 64px); font-weight: 600; line-height: 1.05; letter-spacing: -.05em; }
 .studio-laptop-product { position: relative; width: min(888px, 90vw); aspect-ratio: 16 / 9; margin-top: clamp(8px, 2vh, 18px); container-type: inline-size; }
-.studio-laptop-frame { position: absolute; inset: 0; background-repeat: no-repeat; background-size: 300% 200%; }
+.studio-laptop-frame { position: absolute; inset: 0; background-repeat: no-repeat; background-size: 300% 200%; backface-visibility: hidden; transform: translateZ(0); will-change: background-position; }
+.studio-laptop-frame-light { background-color: #d6d6d6; }
+.studio-laptop-frame-dark { background-color: #000; }
 .studio-laptop-frame-dark { visibility: hidden; }
 .dark .studio-laptop-frame-light { visibility: hidden; }
 .dark .studio-laptop-frame-dark { visibility: visible; }
@@ -145,7 +147,7 @@
 .dark .studio-laptop-screen-message { background: linear-gradient(145deg, rgb(1 5 14 / .82), rgb(2 8 20 / .58)); color: white; }
 .dark .studio-laptop-screen-capabilities { color: #a1a1a6; }
 @media (max-width: 1024px) {
-  .studio-laptop-story { min-height: 250vmax; }
+  .studio-laptop-story { min-height: 250vmax; min-height: 250lvmax; transition: none; }
 }
 @media (max-width: 900px) {
   .studio-nav { gap: 20px; }
