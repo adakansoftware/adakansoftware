@@ -19,6 +19,9 @@ jobs:
     timeout-minutes: 5
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
       - name: Verify production health
         shell: bash
         run: |
@@ -34,6 +37,9 @@ jobs:
                   if (payload.ok !== true || payload.status !== "ok") process.exit(1);
                 });
               '
+
+      - name: Verify rendered production routes
+        run: node scripts/verify-live-site.mjs
 
       - name: Verify security disclosure
         run: |

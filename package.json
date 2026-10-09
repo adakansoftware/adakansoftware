@@ -26,7 +26,8 @@
     "ops:kvkk:cleanup:dry": "node --experimental-strip-types --env-file=.dev.vars scripts/cleanup-contact-data.mjs --dry-run",
     "ops:kvkk:cleanup:apply": "node --experimental-strip-types --env-file=.dev.vars scripts/cleanup-contact-data.mjs --apply",
     "build:cloudflare": "opennextjs-cloudflare build",
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy && npm run verify:live",
+    "verify:live": "node scripts/verify-live-site.mjs",
     "preview:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare preview"
   },
   "dependencies": {
