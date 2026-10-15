@@ -26,17 +26,24 @@ export type LaptopMotion = {
   messageProgress: number
 }
 
-export function followsLaptopScrollIntent(
+export function resolveLaptopScrollTarget(
   current: LaptopMotion,
-  next: LaptopMotion,
-  intendedDirection: number,
-) {
-  if (!intendedDirection) return false
-  const frameDelta = next.frame - current.frame
-  const messageDelta = next.messageProgress - current.messageProgress
-  const targetDelta = Math.abs(frameDelta) >= 0.01 ? frameDelta : messageDelta
-  return Math.abs(targetDelta) < 0.001
-    || Math.sign(targetDelta) === Math.sign(intendedDirection)
+  candidate: LaptopMotion,
+  scrollDelta: number,
+): LaptopMotion {
+  if (Math.abs(scrollDelta) < 0.5) return current
+
+  if (scrollDelta > 0) {
+    return {
+      frame: Math.max(current.frame, candidate.frame),
+      messageProgress: Math.max(current.messageProgress, candidate.messageProgress),
+    }
+  }
+
+  return {
+    frame: Math.min(current.frame, candidate.frame),
+    messageProgress: Math.min(current.messageProgress, candidate.messageProgress),
+  }
 }
 
 type LaptopViewport = {
