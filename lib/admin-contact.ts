@@ -1,14 +1,14 @@
 import { z } from "zod"
 
 const contactRequestUpdateSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   status: z.enum(["new", "in_progress", "completed"]),
   adminNote: z.string().trim().max(2_000),
   retentionHold: z.boolean(),
 })
 
 const contactRequestDeletionSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   confirmation: z.literal("DELETE"),
 })
 

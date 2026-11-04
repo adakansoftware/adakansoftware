@@ -17,7 +17,7 @@ import { withLocale, type Locale } from "@/lib/i18n"
 
 const formSchema = z.object({
   name: z.string().trim().min(2).max(80),
-  email: z.string().trim().email().max(120),
+  email: z.string().trim().pipe(z.email().max(120)),
   phone: z.string().trim().max(40).optional(),
   project: z.string().trim().min(10).max(4000),
   website: z.string().optional(),
