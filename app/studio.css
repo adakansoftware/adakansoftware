@@ -37,21 +37,17 @@
 .studio-laptop-heading { position: relative; z-index: 6; max-width: 760px; text-align: center; }
 .studio-laptop-heading p { color: #86868b; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
 .studio-laptop-heading h2 { margin-top: 12px; font-size: clamp(32px, 4.6vw, 64px); font-weight: 600; line-height: 1.05; letter-spacing: -.05em; }
-.studio-laptop-product { position: relative; width: min(888px, 90vw); aspect-ratio: 16 / 9; margin-top: clamp(8px, 2vh, 18px); container-type: inline-size; }
-.studio-laptop-frame { position: absolute; inset: 0; background-repeat: no-repeat; background-size: 300% 200%; backface-visibility: hidden; transform: translateZ(0); will-change: background-position; }
-.studio-laptop-frame-light { background-color: #d6d6d6; }
-.studio-laptop-frame-dark { background-color: #000; }
-.studio-laptop-frame-dark { visibility: hidden; }
-.dark .studio-laptop-frame-light { visibility: hidden; }
-.dark .studio-laptop-frame-dark { visibility: visible; }
-.studio-laptop-screen-message { position: absolute; z-index: 2; top: 15.8%; left: 25.5%; display: flex; width: 49%; height: 56.3%; flex-direction: column; justify-content: center; overflow: hidden; padding: 6.5% 7.5%; clip-path: polygon(1.5% 0, 98.5% 0, 100% 100%, 0 100%); background: linear-gradient(90deg, rgb(1 6 15 / .72) 0%, rgb(2 9 22 / .42) 62%, transparent 100%); color: #f5f7fb; text-align: left; transition: opacity .12s linear; }
+.studio-laptop-product { position: relative; width: min(888px, 90vw); aspect-ratio: 16 / 9; margin-top: clamp(8px, 2vh, 18px); container-type: inline-size; background-color: #d6d6d6; }
+.dark .studio-laptop-product { background-color: #000; }
+.studio-laptop-frame { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.studio-laptop-screen-message { position: absolute; z-index: 2; top: 15.8%; left: 25.5%; display: flex; width: 49%; height: 56.3%; flex-direction: column; justify-content: center; overflow: hidden; padding: 6.5% 7.5%; clip-path: polygon(1.5% 0, 98.5% 0, 100% 100%, 0 100%); background: linear-gradient(90deg, rgb(1 6 15 / .72) 0%, rgb(2 9 22 / .42) 62%, transparent 100%); color: #f5f7fb; text-align: left; opacity: 0; }
 .studio-laptop-screen-message::after { position: absolute; right: 7%; bottom: 18%; width: 42%; aspect-ratio: 1; border-radius: 50%; background: #1677ff; content: ""; filter: blur(38px); opacity: .13; pointer-events: none; }
-.studio-laptop-screen-overline { position: relative; z-index: 1; display: flex; align-items: center; gap: 5%; margin-bottom: 8%; color: #c8d0dc; font-size: clamp(6px, .92cqw, 8px); font-weight: 650; letter-spacing: .18em; text-transform: uppercase; transition: opacity .12s linear, transform .12s linear; }
+.studio-laptop-screen-overline { position: relative; z-index: 1; display: flex; align-items: center; gap: 5%; margin-bottom: 8%; color: #c8d0dc; font-size: clamp(6px, .92cqw, 8px); font-weight: 650; letter-spacing: .18em; text-transform: uppercase; opacity: 0; }
 .studio-laptop-screen-overline i { width: clamp(4px, .7cqw, 6px); aspect-ratio: 1; flex: none; border-radius: 50%; background: #2997ff; box-shadow: 0 0 12px rgb(41 151 255 / .9); }
 .studio-laptop-screen-words { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 2%; }
-.studio-laptop-screen-words strong { display: block; font-size: clamp(15px, 4.05cqw, 36px); font-weight: 640; line-height: .98; letter-spacing: -.052em; text-wrap: nowrap; transition: opacity .12s linear, filter .12s linear, transform .12s linear; will-change: opacity, filter, transform; }
+.studio-laptop-screen-words strong { display: block; font-size: clamp(15px, 4.05cqw, 36px); font-weight: 640; line-height: .98; letter-spacing: -.052em; text-wrap: nowrap; opacity: 0; will-change: opacity, transform; }
 .studio-laptop-screen-words strong:nth-child(2) { background: linear-gradient(90deg, #65b9ff 0%, #2997ff 58%, #76c8ff 100%); background-clip: text; color: transparent; -webkit-background-clip: text; }
-.studio-laptop-screen-capabilities { position: relative; z-index: 1; display: flex; align-items: center; gap: 5%; margin-top: 10%; color: #aab4c2; font-size: clamp(5.5px, .82cqw, 7.5px); font-weight: 570; letter-spacing: .11em; text-transform: uppercase; transition: opacity .12s linear, transform .12s linear; }
+.studio-laptop-screen-capabilities { position: relative; z-index: 1; display: flex; align-items: center; gap: 5%; margin-top: 10%; color: #aab4c2; font-size: clamp(5.5px, .82cqw, 7.5px); font-weight: 570; letter-spacing: .11em; text-transform: uppercase; opacity: 0; }
 .studio-laptop-screen-capabilities::before { width: 12%; height: 1px; background: rgb(170 180 194 / .72); content: ""; }
 .studio-button { display: inline-flex; justify-content: center; align-items: center; gap: 14px; min-height: 48px; padding: 12px 25px; border-radius: 100px; background: #0066cc; color: white; font-size: 14px; font-weight: 500; transition: background .2s; }
 .studio-button:hover { background: #005bb8; }
@@ -224,5 +220,5 @@
   .studio-laptop-story, .studio-laptop-sticky { min-height: 0; }
   .studio-laptop-story { min-height: 0; }
   .studio-laptop-sticky { position: relative; top: auto; height: auto; padding-block: 72px 42px; }
-  .studio-laptop-screen-message, .studio-laptop-screen-overline, .studio-laptop-screen-words strong, .studio-laptop-screen-capabilities { transition: none; }
+  .studio-laptop-screen-message, .studio-laptop-screen-overline, .studio-laptop-screen-words strong, .studio-laptop-screen-capabilities { opacity: 1; }
 }
