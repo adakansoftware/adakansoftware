@@ -2,9 +2,9 @@ const encoder = new TextEncoder()
 const algorithm = "pbkdf2-sha256"
 const digestLength = 32
 const saltLength = 16
-const productionIterations = 100_000
+const productionIterations = 600_000
 const minimumIterations = 100_000
-const maximumIterations = 100_000
+const maximumIterations = 2_100_000
 
 function encodeBase64Url(bytes: Uint8Array) {
   let binary = ""
