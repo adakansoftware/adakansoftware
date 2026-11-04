@@ -18,6 +18,10 @@ for (const [header, expected] of [
   ["x-content-type-options", "nosniff"],
   ["x-frame-options", "DENY"],
   ["referrer-policy", "strict-origin-when-cross-origin"],
+  ["permissions-policy", "camera=(), microphone=(), geolocation=(), browsing-topics=()"],
+  ["cross-origin-opener-policy", "same-origin"],
+  ["cross-origin-resource-policy", "same-origin"],
+  ["x-dns-prefetch-control", "off"],
   ["x-permitted-cross-domain-policies", "none"],
   ["origin-agent-cluster", "?1"],
 ]) {
@@ -34,6 +38,8 @@ assert.ok(nonce, "script nonce")
 assert.ok(scriptDirective.includes("'strict-dynamic'"), "strict-dynamic")
 assert.ok(!scriptDirective.includes("'unsafe-inline'"), "script-src excludes unsafe-inline")
 assert.ok(!scriptDirective.includes("'unsafe-eval'"), "script-src excludes unsafe-eval")
+const imgDirective = csp.split("; ").find((directive) => directive.startsWith("img-src ")) ?? ""
+assert.equal(imgDirective, "img-src 'self' data: blob:", "tightened img-src")
 
 const html = await response.text()
 const scriptTags = [...html.matchAll(/<script\b[^>]*>/gi)].map((match) => match[0])
@@ -53,6 +59,28 @@ for (const path of ["/.env", "/.well-known/.env", "/%252eenv"]) {
     `${path} HSTS`,
   )
 }
+
+const staticAssetPath = html.match(/(?:src|href)="(\/_next\/static\/[^"]+)"/)?.[1]
+assert.ok(staticAssetPath, "static asset reference on homepage")
+const staticAssetResponse = await secureFetch(staticAssetPath)
+assert.equal(staticAssetResponse.status, 200, staticAssetPath)
+for (const [header, expected] of [
+  ["x-content-type-options", "nosniff"],
+  ["x-frame-options", "DENY"],
+  ["referrer-policy", "strict-origin-when-cross-origin"],
+  ["permissions-policy", "camera=(), microphone=(), geolocation=(), browsing-topics=()"],
+  ["cross-origin-opener-policy", "same-origin"],
+  ["cross-origin-resource-policy", "same-origin"],
+  ["x-dns-prefetch-control", "off"],
+  ["x-permitted-cross-domain-policies", "none"],
+  ["origin-agent-cluster", "?1"],
+]) {
+  assert.equal(staticAssetResponse.headers.get(header), expected, `${staticAssetPath} ${header}`)
+}
+
+const adminRedirect = await secureFetch("/admin", { redirect: "manual" })
+assert.equal(adminRedirect.status, 307, "/admin redirect")
+assert.equal(new URL(adminRedirect.headers.get("location") ?? "", baseUrl).pathname, "/admin/login", "/admin redirect target")
 
 const healthResponse = await secureFetch("/api/health")
 assert.equal(healthResponse.status, 200, "/api/health")

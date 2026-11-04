@@ -15,7 +15,7 @@ export function buildContentSecurityPolicy(nonce: string, isProduction: boolean)
     "script-src-attr 'none'",
     `style-src 'self' 'nonce-${nonce}'`,
     "style-src-attr 'unsafe-inline'",
-    "img-src 'self' data: blob: https:",
+    "img-src 'self' data: blob:",
     "font-src 'self' data:",
     "connect-src 'self'",
     "frame-src 'none'",
