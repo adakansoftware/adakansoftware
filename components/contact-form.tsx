@@ -1,12 +1,13 @@
 "use client"
 
-import { useId, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowRight, CheckCircle } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import Link from "next/link"
+import Script from "next/script"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -104,13 +105,48 @@ const copy = {
   }
 >
 
+type TurnstileApi = {
+  render: (container: HTMLElement, options: Record<string, unknown>) => string
+  reset: (widgetId?: string) => void
+}
+
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim()
+
 export function ContactForm({ locale }: { locale: Locale }) {
   const t = copy[locale]
   const formId = useId()
   const [deliveryState, setDeliveryState] = useState<ContactDeliveryState | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const turnstileContainerRef = useRef<HTMLDivElement>(null)
+  const turnstileWidgetIdRef = useRef<string | null>(null)
   const prefersReducedMotion = useReducedMotion()
+
+  const renderTurnstile = () => {
+    if (!turnstileSiteKey || turnstileWidgetIdRef.current !== null || !turnstileContainerRef.current) return
+    const turnstile = (window as { turnstile?: TurnstileApi }).turnstile
+    if (!turnstile) return
+
+    turnstileWidgetIdRef.current = turnstile.render(turnstileContainerRef.current, {
+      sitekey: turnstileSiteKey,
+      callback: (token: string) => setTurnstileToken(token),
+      "error-callback": () => setTurnstileToken(null),
+      "expired-callback": () => setTurnstileToken(null),
+    })
+  }
+
+  const resetTurnstile = () => {
+    setTurnstileToken(null)
+    const turnstile = (window as { turnstile?: TurnstileApi }).turnstile
+    if (turnstile && turnstileWidgetIdRef.current !== null) {
+      turnstile.reset(turnstileWidgetIdRef.current)
+    }
+  }
+
+  useEffect(() => {
+    renderTurnstile()
+  })
 
   const {
     register,
@@ -132,7 +168,7 @@ export function ContactForm({ locale }: { locale: Locale }) {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, locale }),
+        body: JSON.stringify({ ...data, locale, turnstileToken: turnstileToken ?? undefined }),
       })
 
       const result = getContactDeliveryState(await response.json())
@@ -141,6 +177,7 @@ export function ContactForm({ locale }: { locale: Locale }) {
       }
 
       reset({ name: "", email: "", phone: "", project: "", website: "" })
+      resetTurnstile()
       setDeliveryState(result)
     } catch (error) {
       setSubmitError(
@@ -260,6 +297,16 @@ export function ContactForm({ locale }: { locale: Locale }) {
             <p role="alert" aria-live="polite" className="text-sm text-destructive">
               {submitError}
             </p>
+          ) : null}
+          {turnstileSiteKey ? (
+            <>
+              <Script
+                src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+                strategy="afterInteractive"
+                onLoad={renderTurnstile}
+              />
+              <div ref={turnstileContainerRef} aria-label="Cloudflare Turnstile verification" />
+            </>
           ) : null}
           <div className="space-y-1 text-xs leading-5 text-muted-foreground">
             <p>

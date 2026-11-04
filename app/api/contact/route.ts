@@ -34,6 +34,7 @@ import {
 } from "@/lib/server/http"
 import { logServerEvent } from "@/lib/server/logger"
 import { recordContactRequest } from "@/lib/contact-request-store"
+import { verifyTurnstileToken } from "@/lib/server/turnstile-verification"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -149,6 +150,15 @@ async function handleContactPost(request: Request, requestId: string, owner: str
     )
   }
   const body = parsedBody.body
+
+  const turnstile = await verifyTurnstileToken(body.turnstileToken, clientIp)
+  if (!turnstile.ok) {
+    logServerEvent("warn", "contact.turnstile.rejected", {
+      requestId,
+      clientIp,
+    })
+    return jsonResponse({ ok: false, error: "Verification failed" }, { status: 403, requestId })
+  }
 
   if (hasSpamTrapValue(body)) {
     return jsonResponse({ ok: true, accepted: true }, { requestId })

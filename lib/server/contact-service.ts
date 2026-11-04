@@ -31,6 +31,7 @@ const contactSchema = z.strictObject({
   project: z.string().trim().min(10).max(4000).transform(normalizeWhitespace),
   locale: z.enum(["tr", "en"]).optional(),
   website: z.preprocess(normalizeOptionalString, z.string().max(200).optional()),
+  turnstileToken: z.string().max(2048).optional(),
 })
 
 const requestTimestampsByIp = new Map<string, number[]>()
