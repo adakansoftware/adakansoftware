@@ -20,6 +20,12 @@ const credentialNamePattern = "[A-Za-z][A-Za-z0-9_]*?(?:api[_-]?key|secret|token
 const quotedAssignmentPattern = new RegExp(`(?:^|[^A-Za-z0-9])${credentialNamePattern}\\s*[:=]\\s*["']([A-Za-z0-9_./+=-]{16,})["']`, "i")
 const environmentAssignmentPattern = new RegExp(`^(?:export\\s+)?${credentialNamePattern}\\s*=\\s*([A-Za-z0-9_./+=-]{16,})\\s*$`, "i")
 const placeholderPattern = /^(?:change-this|your-|re_your_|example|placeholder|test-|dummy|local-|worker-local-)/i
+// Public, documented Cloudflare Turnstile test secret keys (always pass / always fail / token already spent).
+const turnstileTestKeys = new Set([
+  "1x0000000000000000000000000000000AA",
+  "2x000000000000000000000000000000AA",
+  "3x000000000000000000000000000000FF",
+])
 
 export function findSecretCandidates(content, file) {
   const candidates = []
@@ -30,7 +36,12 @@ export function findSecretCandidates(content, file) {
     }
 
     const assignment = line.match(quotedAssignmentPattern) ?? line.match(environmentAssignmentPattern)
-    if (assignment && !placeholderPattern.test(assignment[1]) && !assignment[1].startsWith("process.env.")) {
+    if (
+      assignment &&
+      !placeholderPattern.test(assignment[1]) &&
+      !turnstileTestKeys.has(assignment[1]) &&
+      !assignment[1].startsWith("process.env.")
+    ) {
       candidates.push({ file, line: index + 1, kind: "credential assignment" })
     }
   }

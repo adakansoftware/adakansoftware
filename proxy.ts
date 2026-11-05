@@ -1,6 +1,8 @@
 import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 
+import { getAdminCookieName } from "@/lib/admin-cookie"
+import { readAdminSession } from "@/lib/admin-session"
 import { defaultLocale, isLocale, localeHeaderName, stripLocalePrefix } from "@/lib/i18n"
 import { getProxyRateLimitPolicy, isProxyRateLimited } from "@/lib/server/proxy-rate-limit"
 import { getTrustedClientIp } from "@/lib/server/client-ip"
@@ -84,6 +86,25 @@ export function proxy(request: NextRequest) {
     PUBLIC_FILE.test(pathname)
   ) {
     return withSecurityHeaders(NextResponse.next(), contentSecurityPolicy)
+  }
+
+  if (pathname === "/admin" || (pathname.startsWith("/admin/") && pathname !== "/admin/login")) {
+    const sessionValue = request.cookies.get(getAdminCookieName())?.value
+    const session = sessionValue
+      ? readAdminSession(
+          sessionValue,
+          process.env.ADMIN_EMAIL,
+          process.env.ADMIN_SESSION_SECRET ?? "",
+          Date.now(),
+        )
+      : null
+
+    if (!session) {
+      const redirectUrl = request.nextUrl.clone()
+      redirectUrl.pathname = "/admin/login"
+      redirectUrl.search = ""
+      return withSecurityHeaders(NextResponse.redirect(redirectUrl), contentSecurityPolicy)
+    }
   }
 
   const [, firstSegment] = pathname.split("/")

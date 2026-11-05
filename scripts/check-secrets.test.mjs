@@ -31,6 +31,15 @@ test("does not flag placeholders or environment-variable references", () => {
   assert.deepEqual(candidates, [])
 })
 
+test("does not flag documented Cloudflare Turnstile test secret keys", () => {
+  const candidates = findSecretCandidates(
+    'process.env.TURNSTILE_SECRET_KEY = "1x0000000000000000000000000000000AA"',
+    "lib/server/turnstile-verification.test.mjs",
+  )
+
+  assert.deepEqual(candidates, [])
+})
+
 test("finds generic credential assignments with underscore and camelCase names", () => {
   const value = ["qwertyuiop", "asdfghjklzxcvbnm"].join("")
   const candidates = findSecretCandidates(
