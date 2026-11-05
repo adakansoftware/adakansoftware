@@ -1,8 +1,12 @@
 /* global URL, fetch, process, setTimeout */
 
 import { spawn } from "node:child_process"
+import { existsSync } from "node:fs"
 import { once } from "node:events"
 import { fileURLToPath } from "node:url"
+
+const devVars = fileURLToPath(new URL("../.dev.vars", import.meta.url))
+if (existsSync(devVars)) process.loadEnvFile(devVars)
 
 const port = process.env.SMOKE_PORT ?? "3101"
 const baseUrl = process.env.SMOKE_BASE_URL ?? `http://127.0.0.1:${port}`
