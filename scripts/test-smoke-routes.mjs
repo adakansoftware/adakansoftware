@@ -202,7 +202,7 @@ for (const [path, allow] of [
   ["/api/admin/logout", "POST, OPTIONS"],
   ["/api/admin/session", "GET, OPTIONS"],
   ["/api/admin/content", "GET, POST, PATCH, DELETE, OPTIONS"],
-  ["/api/admin/contact-requests", "GET, PATCH, OPTIONS"],
+  ["/api/admin/contact-requests", "GET, PATCH, DELETE, OPTIONS"],
 ]) {
   const response = await request(path, { method: "OPTIONS" })
   assert(response.status === 204, `${path}: expected 204, received ${response.status}`)

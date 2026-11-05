@@ -1,22 +1,24 @@
 "use client"
 
-import { useId, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowRight, CheckCircle } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import Link from "next/link"
+import Script from "next/script"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { getContactDeliveryState, type ContactDeliveryState } from "@/lib/contact-submission-feedback"
-import type { Locale } from "@/lib/i18n"
+import { withLocale, type Locale } from "@/lib/i18n"
 
 const formSchema = z.object({
   name: z.string().trim().min(2).max(80),
-  email: z.string().trim().email().max(120),
+  email: z.string().trim().pipe(z.email().max(120)),
   phone: z.string().trim().max(40).optional(),
   project: z.string().trim().min(10).max(4000),
   website: z.string().optional(),
@@ -46,6 +48,10 @@ const copy = {
       project: "En az 10 karakter",
     },
     rateLimited: "Çok sık deneme algılandı. Lütfen kısa bir süre sonra tekrar deneyin.",
+    privacyLead: "Bu formdaki kişisel verileriniz talebinizi yanıtlamak amacıyla işlenir. Ayrıntılar için",
+    privacyLink: "KVKK Aydınlatma Metni",
+    privacyTail: "sayfasını inceleyebilirsiniz.",
+    sensitiveDataWarning: "Lütfen proje alanında parola, ödeme bilgisi, kimlik belgesi, sağlık verisi veya başka hassas bilgi paylaşmayın.",
   },
   en: {
     name: "Full Name",
@@ -68,6 +74,10 @@ const copy = {
       project: "At least 10 characters",
     },
     rateLimited: "Too many attempts detected. Please try again shortly.",
+    privacyLead: "Personal data in this form is processed to respond to your request. See the",
+    privacyLink: "Privacy Notice",
+    privacyTail: "for details.",
+    sensitiveDataWarning: "Do not include passwords, payment details, identity documents, health data, or other sensitive information in the project field.",
   },
 } as const satisfies Record<
   Locale,
@@ -88,8 +98,19 @@ const copy = {
     projectPlaceholder: string
     errors: { name: string; email: string; project: string }
     rateLimited: string
+    privacyLead: string
+    privacyLink: string
+    privacyTail: string
+    sensitiveDataWarning: string
   }
 >
+
+type TurnstileApi = {
+  render: (container: HTMLElement, options: Record<string, unknown>) => string
+  reset: (widgetId?: string) => void
+}
+
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim()
 
 export function ContactForm({ locale }: { locale: Locale }) {
   const t = copy[locale]
@@ -97,7 +118,35 @@ export function ContactForm({ locale }: { locale: Locale }) {
   const [deliveryState, setDeliveryState] = useState<ContactDeliveryState | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const turnstileContainerRef = useRef<HTMLDivElement>(null)
+  const turnstileWidgetIdRef = useRef<string | null>(null)
   const prefersReducedMotion = useReducedMotion()
+
+  const renderTurnstile = () => {
+    if (!turnstileSiteKey || turnstileWidgetIdRef.current !== null || !turnstileContainerRef.current) return
+    const turnstile = (window as { turnstile?: TurnstileApi }).turnstile
+    if (!turnstile) return
+
+    turnstileWidgetIdRef.current = turnstile.render(turnstileContainerRef.current, {
+      sitekey: turnstileSiteKey,
+      callback: (token: string) => setTurnstileToken(token),
+      "error-callback": () => setTurnstileToken(null),
+      "expired-callback": () => setTurnstileToken(null),
+    })
+  }
+
+  const resetTurnstile = () => {
+    setTurnstileToken(null)
+    const turnstile = (window as { turnstile?: TurnstileApi }).turnstile
+    if (turnstile && turnstileWidgetIdRef.current !== null) {
+      turnstile.reset(turnstileWidgetIdRef.current)
+    }
+  }
+
+  useEffect(() => {
+    renderTurnstile()
+  })
 
   const {
     register,
@@ -119,7 +168,7 @@ export function ContactForm({ locale }: { locale: Locale }) {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, locale }),
+        body: JSON.stringify({ ...data, locale, turnstileToken: turnstileToken ?? undefined }),
       })
 
       const result = getContactDeliveryState(await response.json())
@@ -128,6 +177,7 @@ export function ContactForm({ locale }: { locale: Locale }) {
       }
 
       reset({ name: "", email: "", phone: "", project: "", website: "" })
+      resetTurnstile()
       setDeliveryState(result)
     } catch (error) {
       setSubmitError(
@@ -248,6 +298,26 @@ export function ContactForm({ locale }: { locale: Locale }) {
               {submitError}
             </p>
           ) : null}
+          {turnstileSiteKey ? (
+            <>
+              <Script
+                src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+                strategy="afterInteractive"
+                onLoad={renderTurnstile}
+              />
+              <div ref={turnstileContainerRef} aria-label="Cloudflare Turnstile verification" />
+            </>
+          ) : null}
+          <div className="space-y-1 text-xs leading-5 text-muted-foreground">
+            <p>
+              {t.privacyLead}{" "}
+              <Link className="underline underline-offset-4 hover:text-foreground" href={withLocale("/privacy", locale)}>
+                {t.privacyLink}
+              </Link>{" "}
+              {t.privacyTail}
+            </p>
+            <p>{t.sensitiveDataWarning}</p>
+          </div>
           <Button
             type="submit"
             disabled={isSubmitting}

@@ -45,7 +45,7 @@ export const publicRoutes = [
   { path: "/demos", metadataKey: "demos", llms: true, lastModified: siteContentRevision, images: ["/demos/tableflow-pos-dashboard.png", "/projects/optimized/z-grup-insaat-cover.webp", "/demos/adakan-dental-clinic.png", "/projects/optimized/sallihogullari-hafriyat-cover.webp"] },
   { path: "/istanbul-yazilim-sirketi", localizedPaths: { tr: "/istanbul-yazilim-sirketi", en: "/istanbul-software-company" }, metadataKey: "istanbulSoftwareCompany", llms: true, lastModified: siteContentRevision },
   { path: "/logo", metadataKey: "logo", llms: true, lastModified: siteContentRevision, images: ["/projects/optimized/z-grup-logo.webp", "/projects/optimized/salihogullari-hafriyat-logo.webp", "/projects/optimized/adakan-hafriyat-insaat-logo.webp", "/projects/optimized/adakan-software-logo.webp"] },
-  { path: "/privacy", metadataKey: "privacy", llms: false, lastModified: siteContentRevision },
+  { path: "/privacy", metadataKey: "privacy", llms: false, lastModified: "2026-09-30" },
   { path: "/pricing", metadataKey: "pricing", llms: true, lastModified: siteContentRevision },
   { path: "/projects", metadataKey: "projects", llms: true, lastModified: siteContentRevision, images: ["/projects/optimized/z-grup-insaat-cover.webp", "/projects/optimized/sallihogullari-hafriyat-cover.webp", "/projects/optimized/z-grup-logo.webp", "/projects/optimized/salihogullari-hafriyat-logo.webp", "/projects/optimized/adakan-hafriyat-insaat-logo.webp", "/projects/optimized/adakan-software-logo.webp"] },
   ...caseStudyPublicRoutes,

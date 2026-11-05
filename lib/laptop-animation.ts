@@ -7,8 +7,18 @@ export const LAPTOP_MESSAGE_DURATION = 0.16
 export const LAPTOP_STORY_VIEWPORTS = 2.5
 export const LAPTOP_FRAME_VERSION = "5"
 export const LAPTOP_SPRITE_VERSION = "4"
+export const LAPTOP_TOUCH_FRAMES_PER_SECOND = 30
+export const LAPTOP_DESKTOP_FRAMES_PER_SECOND = 60
+export const LAPTOP_SPRITE_GRID = { columns: 3, rows: 2 }
+export const LAPTOP_SPRITE_FRAME_WIDTH = 960
+export const LAPTOP_SPRITE_FRAME_HEIGHT = 540
 
 export type LaptopTheme = "light" | "dark"
+
+export type LaptopSprite = {
+  source: string
+  backgroundPosition: string
+}
 
 type LaptopMotionInput = {
   sectionTop: number
@@ -21,7 +31,31 @@ export type LaptopMotion = {
   messageProgress: number
 }
 
-const LAPTOP_MOBILE_FRAMES_PER_SECOND = 20
+export function resolveLaptopScrollTarget(
+  current: LaptopMotion,
+  candidate: LaptopMotion,
+  scrollDelta: number,
+): LaptopMotion {
+  if (Math.abs(scrollDelta) < 0.5) return current
+
+  if (scrollDelta > 0) {
+    return {
+      frame: Math.max(current.frame, candidate.frame),
+      messageProgress: Math.max(current.messageProgress, candidate.messageProgress),
+    }
+  }
+
+  return {
+    frame: Math.min(current.frame, candidate.frame),
+    messageProgress: Math.min(current.messageProgress, candidate.messageProgress),
+  }
+}
+
+type LaptopViewport = {
+  width: number
+  height: number
+}
+
 const LAPTOP_MOBILE_MESSAGE_DURATION_MS = 1600
 
 function moveTowards(current: number, target: number, maximumDistance: number) {
@@ -34,12 +68,13 @@ export function advanceLaptopMotion(
   current: LaptopMotion,
   target: LaptopMotion,
   deltaMs = 1000 / 60,
+  framesPerSecond = LAPTOP_DESKTOP_FRAMES_PER_SECOND,
 ): LaptopMotion {
   const elapsedMs = clamp(deltaMs, 0, 50)
   const nextFrame = moveTowards(
     current.frame,
     target.frame,
-    LAPTOP_MOBILE_FRAMES_PER_SECOND * elapsedMs / 1000,
+    framesPerSecond * elapsedMs / 1000,
   )
   const visibleMessageTarget = nextFrame >= LAPTOP_FRAME_COUNT
     ? target.messageProgress
@@ -60,12 +95,17 @@ export function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(Math.max(value, minimum), maximum)
 }
 
+export function hasLaptopViewportOrientationChanged(
+  previous: LaptopViewport,
+  next: LaptopViewport,
+) {
+  return (previous.width > previous.height) !== (next.width > next.height)
+}
+
 export function resolveLaptopViewportHeight(
   sectionHeight: number,
-  browserViewportHeight: number,
 ) {
-  const stableStoryViewportHeight = sectionHeight / LAPTOP_STORY_VIEWPORTS
-  return Math.min(browserViewportHeight, stableStoryViewportHeight)
+  return sectionHeight / LAPTOP_STORY_VIEWPORTS
 }
 
 export function laptopFrameSource(frame: number, theme: LaptopTheme) {
@@ -73,18 +113,51 @@ export function laptopFrameSource(frame: number, theme: LaptopTheme) {
   return `/laptop-frames/${theme}/laptop-${String(safeFrame).padStart(4, "0")}.webp?v=${LAPTOP_FRAME_VERSION}`
 }
 
-export function laptopSpriteFrame(frame: number, theme: LaptopTheme) {
+export function laptopSpriteFrame(frame: number, theme: LaptopTheme): LaptopSprite {
   const safeFrame = clamp(Math.round(frame), 1, LAPTOP_FRAME_COUNT)
   const frameIndex = safeFrame - 1
   const sheet = Math.floor(frameIndex / LAPTOP_FRAMES_PER_SHEET) + 1
   const positionInSheet = frameIndex % LAPTOP_FRAMES_PER_SHEET
-  const column = positionInSheet % 3
-  const row = Math.floor(positionInSheet / 3)
+  const column = positionInSheet % LAPTOP_SPRITE_GRID.columns
+  const row = Math.floor(positionInSheet / LAPTOP_SPRITE_GRID.columns)
 
   return {
     source: `/laptop-sprites/${theme}/sheet-${String(sheet).padStart(2, "0")}.webp?v=${LAPTOP_SPRITE_VERSION}`,
     backgroundPosition: `${column * 50}% ${row * 100}%`,
   }
+}
+
+export type LaptopSpriteFrameRect = {
+  sourceX: number
+  sourceY: number
+  width: number
+  height: number
+}
+
+export function laptopSpriteFrameRect(frame: number): LaptopSpriteFrameRect {
+  const safeFrame = clamp(Math.round(frame), 1, LAPTOP_FRAME_COUNT)
+  const positionInSheet = (safeFrame - 1) % LAPTOP_FRAMES_PER_SHEET
+  const column = positionInSheet % LAPTOP_SPRITE_GRID.columns
+  const row = Math.floor(positionInSheet / LAPTOP_SPRITE_GRID.columns)
+
+  return {
+    sourceX: column * LAPTOP_SPRITE_FRAME_WIDTH,
+    sourceY: row * LAPTOP_SPRITE_FRAME_HEIGHT,
+    width: LAPTOP_SPRITE_FRAME_WIDTH,
+    height: LAPTOP_SPRITE_FRAME_HEIGHT,
+  }
+}
+
+export function resolveLaptopSprite(
+  current: LaptopSprite,
+  target: LaptopSprite,
+  decodedSources: ReadonlySet<string>,
+) {
+  if (current.source === target.source || decodedSources.has(target.source)) {
+    return target
+  }
+
+  return current
 }
 
 export function calculateLaptopMotion({

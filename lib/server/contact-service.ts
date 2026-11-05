@@ -24,14 +24,15 @@ function normalizeOptionalString(value: unknown) {
   return normalized || undefined
 }
 
-const contactSchema = z.object({
+const contactSchema = z.strictObject({
   name: z.string().trim().min(2).max(80).transform(normalizeWhitespace),
-  email: z.string().trim().email().max(120).transform((value) => value.toLowerCase()),
+  email: z.string().trim().toLowerCase().pipe(z.email().max(120)),
   phone: z.preprocess(normalizeOptionalString, z.string().max(40).optional()),
   project: z.string().trim().min(10).max(4000).transform(normalizeWhitespace),
   locale: z.enum(["tr", "en"]).optional(),
   website: z.preprocess(normalizeOptionalString, z.string().max(200).optional()),
-}).strict()
+  turnstileToken: z.string().max(2048).optional(),
+})
 
 const requestTimestampsByIp = new Map<string, number[]>()
 

@@ -1,19 +1,14 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { redirect } from "next/navigation"
 
 import { AdminContentManager } from "@/components/admin/admin-content-manager"
+import { isAdmin } from "@/lib/admin-auth"
 
-export default function AdminPage() {
-  const router = useRouter()
-  const [email, setEmail] = useState<string | null>(null)
-  useEffect(() => {
-    void fetch("/api/admin/session", { cache: "no-store" }).then(async (response) => {
-      const result = await response.json() as { ok: boolean; email?: string }
-      if (!response.ok || !result.ok) return router.replace("/admin/login")
-      setEmail(result.email ?? "Yönetici")
-    }).catch(() => router.replace("/admin/login"))
-  }, [router])
-  return email ? <AdminContentManager email={email} /> : <main className="grid min-h-screen place-items-center text-sm text-muted-foreground">Yükleniyor…</main>
+export const dynamic = "force-dynamic"
+
+export default async function AdminPage() {
+  if (!(await isAdmin())) {
+    redirect("/admin/login")
+  }
+
+  return <AdminContentManager email={process.env.ADMIN_EMAIL ?? "Yönetici"} />
 }

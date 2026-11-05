@@ -528,12 +528,13 @@ export function getContactStateStore(): ContactStateStore {
   throw new Error(`CONTACT_STATE_BACKEND=${backend} is configured, but the ${backend} ContactStateStore adapter is not implemented yet.`)
 }
 
-export function getContactStateStoreCapabilities() {
+export function getContactStateStoreCapabilities(environment: string | undefined = process.env.NODE_ENV) {
   const backend = getConfiguredContactStateBackend()
+  const isProduction = environment === "production"
   const redisUrlConfigured = Boolean(process.env.REDIS_URL?.trim())
   const requestedBackendImplemented = backend === "file" || backend === "redis"
   const requestedBackendReady =
-    backend === "file" || (backend === "redis" && redisUrlConfigured)
+    (backend === "file" && !isProduction) || (backend === "redis" && redisUrlConfigured)
 
   return {
     backend,
@@ -546,8 +547,8 @@ export function getContactStateStoreCapabilities() {
   }
 }
 
-export async function getContactStateStoreStatus(): Promise<ContactStateStoreStatus> {
-  const capabilities = getContactStateStoreCapabilities()
+export async function getContactStateStoreStatus(environment: string | undefined = process.env.NODE_ENV): Promise<ContactStateStoreStatus> {
+  const capabilities = getContactStateStoreCapabilities(environment)
 
   if (!capabilities.requestedBackendImplemented) {
     return {
@@ -558,21 +559,30 @@ export async function getContactStateStoreStatus(): Promise<ContactStateStoreSta
     }
   }
 
+  if (capabilities.backend === "file") {
+    if (environment === "production") {
+      return {
+        backend: capabilities.backend,
+        capabilities,
+        available: false,
+        error: "file backend is not supported in production",
+      }
+    }
+
+    return {
+      backend: capabilities.backend,
+      capabilities,
+      available: true,
+      error: null,
+    }
+  }
+
   if (!capabilities.requestedBackendReady) {
     return {
       backend: capabilities.backend,
       capabilities,
       available: false,
       error: "Selected contact state backend is not configured",
-    }
-  }
-
-  if (capabilities.backend === "file") {
-    return {
-      backend: capabilities.backend,
-      capabilities,
-      available: true,
-      error: null,
     }
   }
 
