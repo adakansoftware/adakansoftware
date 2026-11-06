@@ -6,6 +6,7 @@ export function createCspNonce() {
 
 export function buildContentSecurityPolicy(nonce: string, isProduction: boolean) {
   const turnstileConfigured = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim())
+  const analyticsConfigured = (process.env.CF_ANALYTICS_TOKEN ?? "").trim() !== ""
 
   return [
     "default-src 'self'",
@@ -19,7 +20,7 @@ export function buildContentSecurityPolicy(nonce: string, isProduction: boolean)
     "style-src-attr 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self' data:",
-    `connect-src 'self'${turnstileConfigured ? " https://challenges.cloudflare.com" : ""}`,
+    `connect-src 'self'${turnstileConfigured ? " https://challenges.cloudflare.com" : ""}${analyticsConfigured ? " https://cloudflareinsights.com" : ""}`,
     `frame-src ${turnstileConfigured ? "https://challenges.cloudflare.com" : "'none'"}`,
     "worker-src 'self' blob:",
     "manifest-src 'self'",
