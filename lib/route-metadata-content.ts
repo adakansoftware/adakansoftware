@@ -188,12 +188,12 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
   },
   testimonials: {
     tr: {
-      title: "Referans Çalışmalar",
-      description: "Adakan Software web sitesi ve marka kimliği çalışmalarını inceleyin.",
+      title: "Referanslar",
+      description: "Adakan Software referansları ve vaka çalışmaları. İş ortaklarımızdan gelen geri bildirimler ve teslim edilen projeler.",
     },
     en: {
-      title: "Selected Work",
-      description: "Explore website and brand identity projects by Adakan Software.",
+      title: "Testimonials",
+      description: "References and case studies from Adakan Software. Partner feedback and delivered projects.",
     },
   },
 }
