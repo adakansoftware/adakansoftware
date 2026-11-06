@@ -1,6 +1,6 @@
-import { Instagram } from "lucide-react"
 import type { ReactNode } from "react"
 
+import { InstagramIcon } from "@/components/brand-icons"
 import { getWhatsAppHref, whatsAppCopy } from "@/lib/contact-links"
 import type { Locale } from "@/lib/i18n"
 
@@ -21,7 +21,7 @@ export function WhatsAppButton({ locale }: { locale: Locale }) {
         href={instagramHref}
         label="Instagram"
         tone="instagram"
-        icon={<Instagram className="h-5 w-5" aria-hidden="true" />}
+        icon={<InstagramIcon className="h-5 w-5" />}
       />
       <SocialBubble
         href={getWhatsAppHref(locale)}

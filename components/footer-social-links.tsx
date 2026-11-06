@@ -1,14 +1,13 @@
 "use client"
 
-import { Github, Instagram, Linkedin, Twitter } from "lucide-react"
-
+import { GithubIcon, InstagramIcon, LinkedinIcon, TwitterIcon } from "@/components/brand-icons"
 import { MagneticButton } from "@/components/magnetic-button"
 
 const socialIcons = {
-  GitHub: Github,
-  X: Twitter,
-  LinkedIn: Linkedin,
-  Instagram: Instagram,
+  GitHub: GithubIcon,
+  X: TwitterIcon,
+  LinkedIn: LinkedinIcon,
+  Instagram: InstagramIcon,
 } as const
 
 type SocialLink = {
