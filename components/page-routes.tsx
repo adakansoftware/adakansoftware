@@ -50,6 +50,23 @@ export function ApproachPageContent({ locale }: { locale: Locale }) {
     <>
       <PageJsonLd locale={locale} path="/approach" />
       <PageHeader locale={locale} {...content.header} />
+      <section className="relative pb-16">
+        <div className="section-shell space-y-6">
+          <div className="max-w-2xl">
+            <h2 className="text-2xl font-bold">{content.processTitle}</h2>
+            <p className="mt-3 text-muted-foreground">{content.processIntro}</p>
+          </div>
+          <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {content.process.map((step) => (
+              <li key={step.phase} className="rounded-2xl border border-border/50 bg-card/25 p-6 backdrop-blur-md">
+                <span className="text-xs font-semibold text-accent">{step.phase}</span>
+                <h3 className="mt-2 text-lg font-bold">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
       <PhilosophySection locale={locale} />
       <CTASection locale={locale} />
     </>

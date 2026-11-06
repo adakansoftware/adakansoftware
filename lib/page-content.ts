@@ -81,6 +81,9 @@ type LogoContent = {
 
 type ApproachContent = {
   header: HeaderContent
+  processTitle: string
+  processIntro: string
+  process: Array<{ phase: string; title: string; description: string }>
 }
 
 const aboutPageContent: Record<Locale, AboutContent> = {
@@ -146,6 +149,41 @@ const approachPageContent: Record<Locale, ApproachContent> = {
       secondaryHref: "/services",
       secondaryLabel: "Hizmetleri Gör",
     },
+    processTitle: "Bir proje nasıl ilerler",
+    processIntro:
+      "Her proje farklıdır ama çalışma ritmi aynıdır. Kapsam netleşmeden tasarım, tasarım onaylanmadan kod başlamaz; her adımda ne teslim edildiğini bilirsin.",
+    process: [
+      {
+        phase: "01",
+        title: "Tanışma ve kapsam",
+        description: "Hedefini, hedef kitleni ve başarı ölçütünü konuşuruz. Çıkan net kapsam dokümanı, teklifin ve takvimin temelidir.",
+      },
+      {
+        phase: "02",
+        title: "Strateji ve plan",
+        description: "Sayfa akışı, içerik öncelikleri ve teknik kararlar bu aşamada kesinleşir. Onaylanmadan üretim başlamaz.",
+      },
+      {
+        phase: "03",
+        title: "Tasarım",
+        description: "Önce yön, sonra detay. Tipografi, renk ve düzen kararları markaya bağlı kalır; her ekran gönderilmeden önce test edilir.",
+      },
+      {
+        phase: "04",
+        title: "Geliştirme",
+        description: "Tasarım birebir koda taşınır. Performans, erişilebilirlik ve SEO proje sonunda değil, her adımda kontrol edilir.",
+      },
+      {
+        phase: "05",
+        title: "Yayın ve devir",
+        description: "Yayın öncesi kontroller, yönetim paneli eğitimi ve devir dokümanı. Sitenin sahibi sensin; bize bağlı kalmazsın.",
+      },
+      {
+        phase: "06",
+        title: "Yayın sonrası",
+        description: "İlk aylarda düzeltmeler dahildir. İstersen içerik güncellemesi ve bakım için devam ederiz; istersen kendi yolunda gider.",
+      },
+    ],
   },
   en: {
     header: {
@@ -158,6 +196,41 @@ const approachPageContent: Record<Locale, ApproachContent> = {
       secondaryHref: "/en/services",
       secondaryLabel: "View Services",
     },
+    processTitle: "How a project runs",
+    processIntro:
+      "Every project is different, but the rhythm is the same. No design before the scope is clear, no code before the design is approved; you always know what is being delivered.",
+    process: [
+      {
+        phase: "01",
+        title: "Introduction and scope",
+        description: "We discuss your goals, audience, and success criteria. The resulting scope document anchors the offer and the timeline.",
+      },
+      {
+        phase: "02",
+        title: "Strategy and plan",
+        description: "Page flow, content priorities, and technical decisions are settled here. Production does not start before approval.",
+      },
+      {
+        phase: "03",
+        title: "Design",
+        description: "Direction first, detail second. Typography, color, and layout decisions stay true to the brand; every screen is tested before it is sent.",
+      },
+      {
+        phase: "04",
+        title: "Development",
+        description: "The design is translated to code faithfully. Performance, accessibility, and SEO are checked at every step, not at the end.",
+      },
+      {
+        phase: "05",
+        title: "Launch and handover",
+        description: "Pre-launch checks, admin training, and handover documentation. You own the site; you are not tied to us.",
+      },
+      {
+        phase: "06",
+        title: "After launch",
+        description: "Fixes are included in the first months. Continue with us for content and maintenance if you wish, or run it on your own.",
+      },
+    ],
   },
 }
 
