@@ -13,9 +13,8 @@ import { PageJsonLd } from "@/components/page-json-ld"
 import { PhilosophySection } from "@/components/philosophy-section"
 import { ProjectListingCards } from "@/components/project-listing-cards"
 import { ServiceDetailCards } from "@/components/service-detail-cards"
-import { TestimonialsSection } from "@/components/testimonials-section"
 import { getWhatsAppHref } from "@/lib/contact-links"
-import type { Locale } from "@/lib/i18n"
+import { withLocale, type Locale } from "@/lib/i18n"
 import {
   getAboutPageContent,
   getApproachPageContent,
@@ -23,6 +22,7 @@ import {
   getLogoPageContent,
   getProjectsPageContent,
   getServicesPageContent,
+  getTestimonialsPageContent,
 } from "@/lib/page-content"
 import { getServices } from "@/lib/site-data"
 import { getManagedLogoWorks, getManagedProjects } from "@/lib/content"
@@ -50,6 +50,23 @@ export function ApproachPageContent({ locale }: { locale: Locale }) {
     <>
       <PageJsonLd locale={locale} path="/approach" />
       <PageHeader locale={locale} {...content.header} />
+      <section className="relative pb-16">
+        <div className="section-shell space-y-6">
+          <div className="max-w-2xl">
+            <h2 className="text-2xl font-bold">{content.processTitle}</h2>
+            <p className="mt-3 text-muted-foreground">{content.processIntro}</p>
+          </div>
+          <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {content.process.map((step) => (
+              <li key={step.phase} className="rounded-2xl border border-border/50 bg-card/25 p-6 backdrop-blur-md">
+                <span className="text-xs font-semibold text-accent">{step.phase}</span>
+                <h3 className="mt-2 text-lg font-bold">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
       <PhilosophySection locale={locale} />
       <CTASection locale={locale} />
     </>
@@ -364,11 +381,40 @@ export function ContactPageContent({ locale }: { locale: Locale }) {
 }
 
 export function TestimonialsPageContent({ locale }: { locale: Locale }) {
+  const content = getTestimonialsPageContent(locale)
 
   return (
     <>
       <PageJsonLd locale={locale} path="/testimonials" />
-      <TestimonialsSection locale={locale} />
+      <PageHeader locale={locale} {...content.header} />
+      <section className="relative pb-32">
+        <div className="section-shell max-w-3xl">
+          <div className="rounded-2xl border border-border/50 bg-card/25 p-8 backdrop-blur-md">
+            <h2 className="text-2xl font-bold">
+              {locale === "tr" ? "Yorum yerine iş" : "Work instead of words"}
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              {locale === "tr"
+                ? "Genç bir stüdyoyuz; referans sayfamız henüz yazılı müşteri yorumlarıyla dolu değil. Bu yüzden ne yaptığımızı sözle değil, teslim ettiğimiz işlerle göstermeyi tercih ediyoruz. Vaka çalışmalarımızda süreç, verilen kararlar ve sonuçlar şeffaf biçimde yer alır."
+                : "We are a young studio; this page does not have a wall of written quotes yet. So instead of telling, we prefer to show: our case studies lay out the process, the decisions, and the outcome in the open."}
+            </p>
+            <p className="mt-3 text-muted-foreground">
+              {locale === "tr"
+                ? "Çalıştığımız iş ortaklarından yazılı izinli referanslar geldikçe bu sayfaya ekleyeceğiz. Ara sıra tekrar bakmanız yeterli."
+                : "As partners send written, approved references, we will add them here. It is worth checking back once in a while."}
+            </p>
+            <div className="mt-6">
+              <Link
+                href={withLocale("/projects", locale)}
+                className="group inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/5 px-6 py-3 text-sm font-medium text-accent transition-colors hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+              >
+                {locale === "tr" ? "Vaka çalışmalarını gör" : "View case studies"}
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
       <CTASection locale={locale} />
     </>
   )
