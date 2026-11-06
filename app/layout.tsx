@@ -6,6 +6,7 @@ import { JsonLd } from "@/components/json-ld"
 import { Navbar } from "@/components/navbar"
 import { getRequestLocale } from "@/lib/request-locale"
 import { cspNonceHeaderName } from "@/lib/server/content-security-policy"
+import { cloudflareAnalyticsToken, isWebAnalyticsEnabled } from "@/lib/server/web-analytics"
 import { rootMetadataCopy, siteConfig } from "@/lib/site-config"
 import "./globals.css"
 
@@ -106,6 +107,14 @@ export default async function RootLayout({
     <html lang={locale} className="bg-background" suppressHydrationWarning>
       <head>
         <script nonce={nonce} dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {isWebAnalyticsEnabled() && (
+          <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            nonce={nonce}
+            data-cf-beacon={JSON.stringify({ token: cloudflareAnalyticsToken })}
+          />
+        )}
       </head>
       <body className="studio-theme font-sans antialiased">
         <JsonLd locale={locale} />

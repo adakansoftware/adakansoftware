@@ -19,6 +19,11 @@ export type PrivacyPageCopy = {
 
 export const kvkkContactEmail = "kvkk@adakansoftware.com" as const
 
+export const privacyStorageCopy = {
+  tr: "Bu sitede reklam, davranışsal profil oluşturma veya üçüncü taraf analiz araçları kullanılmaz. Yalnızca açık/koyu tema tercihiniz cihazınızdaki yerel depolamada tutulur. Gelecekte zorunlu olmayan takip teknolojileri eklenirse ayrıca açık bir tercih sunulur.",
+  en: "The site does not use advertising, behavioral profiling, or third-party analytics. Only your light or dark theme preference is stored in your device's local storage. A separate choice will be provided before any future non-essential tracking technology is introduced.",
+} as const
+
 export const privacyPageContent = {
   tr: {
     title: "Kişisel verileriniz",
@@ -118,9 +123,7 @@ export const privacyPageContent = {
       {
         id: "storage",
         title: "11. Çerezler ve yerel depolama",
-        paragraphs: [
-          "Bu sitede reklam, davranışsal profil oluşturma veya üçüncü taraf analiz araçları kullanılmaz. Yalnızca açık/koyu tema tercihiniz cihazınızdaki yerel depolamada tutulur. Gelecekte zorunlu olmayan takip teknolojileri eklenirse ayrıca açık bir tercih sunulur.",
-        ],
+        paragraphs: [privacyStorageCopy.tr],
       },
       {
         id: "updates",
@@ -229,9 +232,7 @@ export const privacyPageContent = {
       {
         id: "storage",
         title: "11. Cookies and local storage",
-        paragraphs: [
-          "The site does not use advertising, behavioral profiling, or third-party analytics. Only your light or dark theme preference is stored in your device's local storage. A separate choice will be provided before any future non-essential tracking technology is introduced.",
-        ],
+        paragraphs: [privacyStorageCopy.en],
       },
       {
         id: "updates",

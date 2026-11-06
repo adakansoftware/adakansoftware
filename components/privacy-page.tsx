@@ -5,9 +5,15 @@ import { PageHeader } from "@/components/page-header"
 import { PageJsonLd } from "@/components/page-json-ld"
 import type { Locale } from "@/lib/i18n"
 import { privacyPageContent, type PrivacyPageCopy } from "@/lib/privacy-content"
+import { privacyStorageParagraphs } from "@/lib/server/web-analytics"
 
 export function PrivacyPage({ locale }: { locale: Locale }) {
-  const copy: PrivacyPageCopy = privacyPageContent[locale]
+  const copy: PrivacyPageCopy = {
+    ...privacyPageContent[locale],
+    sections: privacyPageContent[locale].sections.map((section) =>
+      section.id === "storage" ? { ...section, paragraphs: privacyStorageParagraphs(locale) } : section,
+    ),
+  }
 
   return (
     <>
