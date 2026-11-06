@@ -5,6 +5,7 @@ import { PageJsonLd } from "@/components/page-json-ld"
 import { PricingSection } from "@/components/pricing-section"
 import { isLocale } from "@/lib/i18n"
 import { createRouteMetadata } from "@/lib/metadata"
+import { getPricingPageContent } from "@/lib/page-content"
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
@@ -15,5 +16,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function LocalizedPricingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
-  return <><PageJsonLd locale={locale} path="/pricing" /><PageHeader locale={locale} title="Clear scope," gradientText="clear investment" description="Choose the right starting point and let’s define your project scope together." /><PricingSection locale={locale} /></>
+  const header = getPricingPageContent(locale)
+  return <><PageJsonLd locale={locale} path="/pricing" /><PageHeader locale={locale} title={header.title} gradientText={header.gradientText} description={header.description} /><PricingSection locale={locale} /></>
 }

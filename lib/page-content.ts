@@ -390,6 +390,19 @@ const logoPageContent: Record<Locale, LogoContent> = {
   },
 }
 
+const pricingPageContent: Record<Locale, HeaderContent> = {
+  tr: {
+    title: "Net kapsam,",
+    gradientText: "net yatırım",
+    description: "Doğru başlangıç noktasını seçin; proje kapsamını birlikte netleştirelim.",
+  },
+  en: {
+    title: "Clear scope,",
+    gradientText: "clear investment",
+    description: "Choose the right starting point and let’s define your project scope together.",
+  },
+}
+
 const testimonialsPageContent: Record<Locale, TestimonialsContent> = {
   tr: {
     header: {
@@ -441,4 +454,8 @@ export function getLogoPageContent(locale: Locale) {
 
 export function getTestimonialsPageContent(locale: Locale) {
   return testimonialsPageContent[locale]
+}
+
+export function getPricingPageContent(locale: Locale) {
+  return pricingPageContent[locale]
 }
