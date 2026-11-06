@@ -44,6 +44,24 @@ export const careersPageContent = {
     sectionTitle: "Portfolyo paylaşımı",
     sectionDescription:
       "Kısa bir tanıtım, seçilmiş işleriniz ve hangi rolde değer katmak istediğiniz yeterli.",
+    steps: [
+      {
+        title: "Gönder",
+        description: "Kısa bir tanıtım ve seçilmiş işler yeterli. CV şart değil; işin kendisi konuşur.",
+      },
+      {
+        title: "İnceleme",
+        description: "Başvuruları bir hafta içinde gözden geçirir, sonuçtan bağımsız yanıt veririz.",
+      },
+      {
+        title: "Konuşma",
+        description: "Uzun mülakat listeleri yok. İşler, beklentiler ve çalışma şekli üzerinden sohbet ederiz.",
+      },
+      {
+        title: "Deneme işi",
+        description: "Küçük ücretli bir işle başlarız. İki taraf da uygunsa yoluna devam ederiz.",
+      },
+    ],
   },
   en: {
     title: "We work with people",
@@ -57,6 +75,24 @@ export const careersPageContent = {
     sectionTitle: "Portfolio submissions",
     sectionDescription:
       "A short introduction, selected work, and the role where you want to contribute are enough.",
+    steps: [
+      {
+        title: "Send",
+        description: "A short introduction and selected work are enough. No CV required; the work speaks for itself.",
+      },
+      {
+        title: "Review",
+        description: "We review submissions within a week and reply either way.",
+      },
+      {
+        title: "Conversation",
+        description: "No long interview loops. We talk through your work, expectations, and how we work.",
+      },
+      {
+        title: "Trial project",
+        description: "We start with a small paid project. If it works for both sides, we continue.",
+      },
+    ],
   },
 } as const satisfies Record<
   Locale,
@@ -70,6 +106,7 @@ export const careersPageContent = {
     secondaryLabel: string
     sectionTitle: string
     sectionDescription: string
+    steps: Array<{ title: string; description: string }>
   }
 >
 

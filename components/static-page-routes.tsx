@@ -125,6 +125,20 @@ export function CareersPageContent({ locale }: { locale: Locale }) {
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
             </a>
           </div>
+
+          <div className="rounded-2xl border border-border/50 bg-card/25 p-8 backdrop-blur-md">
+            <h2 className="text-2xl font-bold">{copy.sectionTitle}</h2>
+            <p className="mt-3 max-w-2xl text-muted-foreground">{copy.sectionDescription}</p>
+            <ol className="mt-6 grid gap-4 md:grid-cols-4">
+              {copy.steps.map((step, index) => (
+                <li key={step.title} className="rounded-xl border border-border/50 bg-card/25 p-4">
+                  <span className="text-xs font-semibold text-accent">{String(index + 1).padStart(2, "0")}</span>
+                  <h3 className="mt-2 text-sm font-bold">{step.title}</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{step.description}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </section>
       <CTASection locale={locale} />
