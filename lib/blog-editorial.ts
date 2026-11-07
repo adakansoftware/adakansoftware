@@ -4,10 +4,11 @@ import type { Locale } from "./i18n.ts"
 type EditorialSource = { name: string; href: string }
 
 const relatedKeys: Record<BlogPostKey, BlogPostKey[]> = {
-  "custom-software-guide": ["website-vs-web-app", "corporate-website-cost"],
+  "custom-software-guide": ["website-vs-web-app", "business-automation-guide"],
   "corporate-website-cost": ["website-vs-web-app", "nextjs-seo-performance"],
   "nextjs-seo-performance": ["corporate-website-cost", "custom-software-guide"],
-  "website-vs-web-app": ["custom-software-guide", "corporate-website-cost"],
+  "website-vs-web-app": ["custom-software-guide", "business-automation-guide"],
+  "business-automation-guide": ["custom-software-guide", "website-vs-web-app"],
 }
 
 const sourceUrls = {
@@ -35,6 +36,10 @@ const sources: Record<BlogPostKey, Record<Locale, EditorialSource[]>> = {
   "website-vs-web-app": {
     tr: [{ name: "MDN: Progressive web uygulamaları", href: sourceUrls.mdnPwa }, { name: "OWASP Uygulama Güvenliği Doğrulama Standardı", href: sourceUrls.owaspAsvs }],
     en: [{ name: "MDN: Progressive web apps", href: sourceUrls.mdnPwa }, { name: "OWASP Application Security Verification Standard", href: sourceUrls.owaspAsvs }],
+  },
+  "business-automation-guide": {
+    tr: [{ name: "Google: Faydalı ve güvenilir içerik oluşturma", href: sourceUrls.helpfulContent }, { name: "MDN: Progressive web uygulamaları", href: sourceUrls.mdnPwa }],
+    en: [{ name: "Google: Creating helpful, reliable content", href: sourceUrls.helpfulContent }, { name: "MDN: Progressive web apps", href: sourceUrls.mdnPwa }],
   },
 }
 

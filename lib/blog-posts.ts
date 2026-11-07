@@ -5,6 +5,7 @@ export const blogPostKeys = [
   "corporate-website-cost",
   "nextjs-seo-performance",
   "website-vs-web-app",
+  "business-automation-guide",
 ] as const
 
 export type BlogPostKey = (typeof blogPostKeys)[number]
@@ -31,6 +32,14 @@ export type BlogPost = {
 }
 
 const releaseDate = "2026-09-25"
+
+const postDates: Record<BlogPostKey, string> = {
+  "custom-software-guide": releaseDate,
+  "corporate-website-cost": releaseDate,
+  "nextjs-seo-performance": releaseDate,
+  "website-vs-web-app": releaseDate,
+  "business-automation-guide": "2026-11-07",
+}
 
 const posts = {
   "custom-software-guide": {
@@ -457,14 +466,120 @@ const posts = {
       relatedService: { href: "/services/web-application-development", label: "Explore web application development" },
     },
   },
+  "business-automation-guide": {
+    tr: {
+      slug: "is-sureci-otomasyonu-rehberi",
+      category: "Otomasyon",
+      title: "İş süreçlerini otomasyona taşımak: tekrardan sisteme",
+      excerpt: "Tekrarlayan işleri otomasyona taşıma kararını, uygun süreç seçimini, pilot uygulamayı ve getiri ölçümünü anlatan uygulamalı rehber.",
+      seo: {
+        title: "İş Süreci Otomasyonu Rehberi",
+        description: "İş süreçleri otomasyonu nerede başlar, hangi süreçler uygundur, pilot proje nasıl kurgulanır? Maliyet, getiri ve ekip değişimini inceleyin.",
+        keywords: ["iş süreçleri otomasyonu", "süreç otomasyonu", "iş otomasyonu", "işletme otomasyonu", "web tabanlı otomasyon"],
+      },
+      readingTime: "7 dakika",
+      sections: [
+        {
+          heading: "Otomasyon nereden başlar?",
+          paragraphs: [
+            "Otomasyon bir araç satın almakla değil, işin nasıl yürütüldüğünü gerçekten gözlemlemekle başlar. Veriler bir tablodan diğerine elle taşınıyor, onaylar mesajlaşma uygulamalarında kayboluyor, aynı bilgi üç farklı sisteme ayrı ayrı giriliyorsa ortada ölçülebilir bir emek kaybı var demektir. Bu kaybı görünür kılmanın en basit yolu, bir hafta boyunca tekrarlayan işleri ve bunların aldığı süreyi yazmak; sonra hangi adımın kurala dayalı olduğunu sormaktır.",
+            "Kurala dayalı, tekrarlanan ve sistemler arasında veri taşıyan işler otomasyonun doğal adaylarıdır. Zaman ve emek tahmini yapan, karar veren görevler ise otomasyona uygun değildir; onlara veri ve rapor desteği sağlanır. Bu ayrım netleşmeden başlanan otomasyon projeleri ya gereksiz karmaşıklık üretir ya da kullanılmayan sistemlerle sonuçlanır. Doğru başlangıç noktası her zaman en sık tekrarlanan ve en çok hata üreten süreçtir.",
+          ],
+          bullets: ["Elle taşınan veriler", "Mesajlaşma uygulamalarında kaybolan onaylar", "Aynı bilginin birden fazla sisteme girişi", "Elle hazırlanan rutin raporlar"],
+        },
+        {
+          heading: "Hangi süreçler otomasyona uygundur?",
+          paragraphs: [
+            "Uygun süreçlerin ortak özellikleri bellidir: Kurallar yazılabilir, istisnalar azdır, sıklıkla tekrarlanır ve hata maliyeti yüksektir. Sipariş takibi, teklif hazırlama, randevu planlama, fatura eşleştirme ve müşteri bildirimleri bu tanıma uyar. Her adımı net kurallarla tanımlanabilen bir süreç, otomasyona taşındığında sadece hızlanmaz; her seferinde aynı şekilde işlenir.",
+            "Sürecin tamamını otomasyona almak zorunda değilsiniz. En çok emek yiyen tek adımı — örneğin veri girişini veya bildirim gönderimini — otomatikleştirmek bile ölçülebilir kazanç sağlar. Karar gerektiren noktaları sistemin içine değil, sistemin önüne koyun: otomasyon bilgiyi hazırlasın, insan kararı versin. Bu denge hem güveni korur hem de otomasyonun getirisini hızla gösterir.",
+          ],
+          bullets: ["Yazılabilir kurallar ve az istisna", "Günlük veya haftalık tekrar", "Sistemler arası veri geçişi", "Yüksek hata maliyeti"],
+        },
+        {
+          heading: "Pilot proje nasıl kurgulanır?",
+          paragraphs: [
+            "İlk otomasyon projesi tek bir süreci, hatta tek bir adımı hedeflemelidir. Pilotin amacı mükemmel bir sistem kurmak değil, kazancı ölçülebilir biçimde göstermektir. Başlangıçta mevcut durum kaydedilmelidir: süreç bugün kaç dakika sürüyor, haftada kaç kez tekrarlanıyor, hata oranı ne? Bu sayılar olmazsa otomasyonun başarısı sonradan kanıtlanamaz.",
+            "Pilot, gerçek kullanıcılarla ve gerçek veriyle çalışmalıdır. Kurgu veriyle yapılan gösterimler gerçek sorunları gizler. İlk sürümde arayüz sade tutulur, akıştan çıkarılamayacak doğrulamalar konur ve her adımın kaydı tutulur. Pilot bittiğinde kazanç ölçülür, sürecin kalan adımları ve benzer diğer süreçler sıraya girer. Otomasyon bir proje değil, bu döngünün sürekli işletilmesidir.",
+          ],
+          bullets: ["Mevcut durum ölçümü", "Tek süreç, dar kapsam", "Gerçek veri ve kullanıcı", "Adım adım genişletme"],
+        },
+        {
+          heading: "Maliyet ve getiri nasıl ölçülür?",
+          paragraphs: [
+            "Getiri hesabı sadece lisans veya geliştirme maliyetiyle yapılmaz. Kazanılan saat, önlenen hatalar, kısalan işlem süresi ve müşteriye daha hızlı dönüş gibi kalemler birlikte değerlendirilmelidir. Haftada beş saat elle yapılan bir işi otomasyona bağlamak yılda iki yüz elli saatin ötesinde, hata düzeltme emeğini ve iş kaybını da ortadan kaldırır. Bu kalemler yazılı hale gelmeden otomasyon yatırımı savunulamaz.",
+            "Maliyet tarafında sadece kurulum değil, bakım da hesaba katılmalıdır: sistem değiştiğinde entegrasyonların güncellenmesi, kullanıcı desteği ve yeni istisnaların sürece eklenmesi. Bu yüzden iyi otomasyon projesi en karmaşık değil, en sürdürülebilir olanıdır. Basit, izlenebilir ve adım adım büyüyen bir sistem, kapsamlı ama kırılgan bir sistemden her zaman daha iyi yatırım yapar.",
+          ],
+          bullets: ["Kazanılan saat", "Önlenen hata maliyeti", "Kısalan işlem süresi", "Bakım ve güncelleme yükü"],
+        },
+      ],
+      faqs: [
+        { question: "Otomasyon için hazır araç mı özel yazılım mı seçilmeli?", answer: "Süreç standart kurallara oturuyorsa ve hazır aracın entegrasyonları ihtiyacı karşılıyorsa hazır araç daha hızlıdır. İş akışı işletmeye özgüyse, birden fazla iç sisteme dokunuyorsa veya veri sahipliği kritikse özel yazılım daha doğru tercihtir." },
+        { question: "Bir otomasyon projesi ne kadar sürede sonuç verir?", answer: "Dar kapsamlı bir pilot süreç genellikle haftalar içinde çalışır hale gelir. Getirinin ölçülebilir hale gelmesi ise sürecin gerçek kullanımıyla doğru orantılıdır; pilot biterken ölçüm zaten hazır olmalıdır." },
+        { question: "Ekip yeni sistemi benimsemekte zorlanırsa ne yapılır?", answer: "Benimseme sorunu çoğunlukla tasarım sorunudur. Sistem mevcut iş akışını taklit etmeli, ekstra adım dayatmamalı ve kazanılan zamanı kullanıcıya görünür kılmalıdır. Eğitim ve geçiş dönemi desteği planın parçası olmalıdır." },
+      ],
+      relatedService: { href: "/services/business-automation", label: "İş süreç otomasyonu hizmetini inceleyin" },
+    },
+    en: {
+      slug: "business-process-automation-guide",
+      category: "Automation",
+      title: "Moving business processes to automation: from repetition to system",
+      excerpt: "A practical guide to deciding what to automate, choosing the right process, running a pilot, and measuring the return.",
+      seo: {
+        title: "Business Process Automation Guide",
+        description: "Where automation starts, which processes qualify, and how to run a pilot. Cost, return, and team adoption explained clearly.",
+        keywords: ["business process automation", "workflow automation", "business automation", "process automation", "web based automation"],
+      },
+      readingTime: "7 min read",
+      sections: [
+        {
+          heading: "Where does automation start?",
+          paragraphs: [
+            "Automation does not start with buying a tool; it starts with honestly observing how the work gets done. If data is moved by hand between spreadsheets, approvals get lost in chat apps, or the same information is typed into three different systems, there is a measurable waste of labor. The simplest way to make it visible is to write down the repeated tasks for one week and the time they take, then ask which steps are rule-based.",
+            "Rule-based, repeated work that moves data between systems is the natural candidate for automation. Tasks that require judgment or estimation are not; they need data and reporting support instead. Automation projects that skip this distinction either produce unnecessary complexity or end up as systems nobody uses. The right starting point is always the most repeated and most error-prone process.",
+          ],
+          bullets: ["Data moved by hand", "Approvals lost in chat apps", "The same data entered in multiple systems", "Routine reports assembled manually"],
+        },
+        {
+          heading: "Which processes are good candidates?",
+          paragraphs: [
+            "Good candidates share clear traits: the rules can be written down, exceptions are few, the work repeats often, and mistakes are expensive. Order tracking, quote preparation, appointment scheduling, invoice matching, and customer notifications all fit this definition. When a process with clearly defined steps is automated, it does not just get faster; it is handled the same way every single time.",
+            "You do not have to automate the entire process. Automating the single most labor-intensive step, such as data entry or notification delivery, already produces measurable gains. Keep decision points in front of the system rather than inside it: let automation prepare the information and let a human decide. This balance protects trust and shows the return quickly.",
+          ],
+          bullets: ["Writable rules, few exceptions", "Daily or weekly repetition", "Data crossing system boundaries", "High cost of mistakes"],
+        },
+        {
+          heading: "How should a pilot be structured?",
+          paragraphs: [
+            "The first automation project should target a single process, or even a single step. The goal of a pilot is not a perfect system; it is a measurable win. Record the baseline first: how many minutes does the process take today, how often per week, and what is the error rate? Without these numbers the success of the automation cannot be proven later.",
+            "The pilot must run with real users and real data. Demos built on fictional data hide real problems. Keep the interface plain in the first release, add the validations that cannot be skipped, and log every step. When the pilot ends, measure the gain, then queue the remaining steps of the process and similar processes. Automation is not a project; it is running this loop continuously.",
+          ],
+          bullets: ["Baseline measurement", "Single process, narrow scope", "Real data and users", "Step-by-step expansion"],
+        },
+        {
+          heading: "How are cost and return measured?",
+          paragraphs: [
+            "Return is not calculated from license or development cost alone. Hours saved, errors prevented, shorter cycle times, and faster responses to customers must be weighed together. Automating a task that takes five hours a week removes more than two hundred and fifty hours a year, plus the labor of fixing mistakes and the business lost to delays. Until these items are written down, the investment cannot be defended.",
+            "On the cost side, include maintenance, not just setup: updating integrations when systems change, supporting users, and adding new exceptions to the flow. That is why the best automation project is not the most sophisticated one but the most sustainable one. A simple, observable system that grows in steps is always a better investment than a comprehensive but fragile one.",
+          ],
+          bullets: ["Hours saved", "Error cost avoided", "Shorter cycle time", "Maintenance and update load"],
+        },
+      ],
+      faqs: [
+        { question: "Should I choose an off-the-shelf tool or custom software for automation?", answer: "If the process follows standard rules and an existing tool's integrations cover the need, the off-the-shelf tool is faster. If the workflow is specific to the business, touches several internal systems, or data ownership is critical, custom software is the better choice." },
+        { question: "How quickly does an automation project pay off?", answer: "A narrowly scoped pilot is usually running within weeks. Measurable return depends on real usage of the process; the measurement should already be in place by the time the pilot ends." },
+        { question: "What if the team struggles to adopt the new system?", answer: "Adoption problems are usually design problems. The system should mirror the existing workflow, avoid imposing extra steps, and make the saved time visible to its users. Training and transition support must be part of the plan." },
+      ],
+      relatedService: { href: "/services/business-automation", label: "Explore business process automation" },
+    },
+  },
 } as const satisfies Record<BlogPostKey, Record<Locale, Omit<BlogPost, "key" | "publishedAt" | "modifiedAt">>>
 
 export function getBlogPosts(locale: Locale): BlogPost[] {
   return blogPostKeys.map((key) => ({
     key,
     ...posts[key][locale],
-    publishedAt: releaseDate,
-    modifiedAt: releaseDate,
+    publishedAt: postDates[key],
+    modifiedAt: postDates[key],
   }))
 }
 
@@ -477,7 +592,7 @@ export function getBlogPostPaths() {
     key,
     tr: `/blog/${posts[key].tr.slug}`,
     en: `/blog/${posts[key].en.slug}`,
-    lastModified: releaseDate,
+    lastModified: postDates[key],
   }))
 }
 
