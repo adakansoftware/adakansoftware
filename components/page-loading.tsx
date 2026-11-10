@@ -12,7 +12,7 @@ export function PageLoading({ label }: { label: string }) {
       <div className="relative flex w-full max-w-xs flex-col items-center text-center">
         <div className="loading-halo relative grid h-20 w-20 place-items-center rounded-[1.4rem] border border-border/70 bg-card/80 shadow-[0_18px_60px_color-mix(in_oklab,var(--accent)_14%,transparent)] backdrop-blur-xl" aria-hidden="true">
           <div className="absolute inset-2 rounded-[1rem] border border-foreground/[0.06]" />
-          <Image src="/favicon-v3.svg" alt="" width={42} height={42} priority />
+          <Image src="/adakan-logo-v4.png" unoptimized alt="" width={42} height={42} priority />
         </div>
 
         <p className="mt-7 text-[13px] font-semibold tracking-[-0.01em] text-foreground">Adakan Software</p>

@@ -20,6 +20,7 @@ export function PortfolioLogoCard({ work, href }: { work: PortfolioLogoWork; hre
           {work.logoImage ? (
             <Image
               src={getOptimizedLogoImage(work.logoImage)}
+              unoptimized={work.logoImage === "/adakan-logo-v4.png"}
               alt={`${work.title} logo`}
               width={480}
               height={480}

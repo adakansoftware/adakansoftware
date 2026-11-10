@@ -10,7 +10,7 @@ export function JsonLd({ locale }: { locale: Locale }) {
     name: siteConfig.name,
     url: siteConfig.url,
     email: siteConfig.email,
-    logo: `${siteConfig.url}/adakan-logo.png`,
+    logo: `${siteConfig.url}/adakan-logo-v4.png`,
     sameAs: [
       "https://www.linkedin.com/company/adakan-software/",
       "https://x.com/adakansoftware",

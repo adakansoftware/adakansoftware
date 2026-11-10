@@ -24,13 +24,12 @@ export const metadata: Metadata = {
   publisher: siteConfig.name,
   icons: {
     icon: [
-      { url: "/favicon-v3.svg", type: "image/svg+xml", sizes: "any" },
-      { url: "/favicon-48-v3.png", type: "image/png", sizes: "48x48" },
-      { url: "/icon-192-v3.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon-512-v3.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon-48-v4.png", type: "image/png", sizes: "48x48" },
+      { url: "/icon-192-v4.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon-512-v4.png", type: "image/png", sizes: "512x512" },
     ],
-    shortcut: "/favicon-48-v3.png",
-    apple: [{ url: "/apple-icon-180-v3.png", type: "image/png", sizes: "180x180" }],
+    shortcut: "/favicon-48-v4.png",
+    apple: [{ url: "/apple-icon-180-v4.png", type: "image/png", sizes: "180x180" }],
   },
   alternates: {
     canonical: "/",
