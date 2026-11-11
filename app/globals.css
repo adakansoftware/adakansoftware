@@ -154,33 +154,91 @@
   }
 }
 
-@keyframes loading-progress {
-  0% { transform: translateX(-110%) scaleX(.58); opacity: .45; }
-  48% { transform: translateX(22%) scaleX(1); opacity: 1; }
-  100% { transform: translateX(165%) scaleX(.62); opacity: .5; }
+.brand-loading {
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  padding: 64px 28px;
+  background: var(--background);
+  color: var(--foreground);
 }
 
-@keyframes loading-halo {
-  0%, 100% { transform: translateY(0); box-shadow: 0 18px 60px color-mix(in oklab, var(--accent) 10%, transparent); }
-  50% { transform: translateY(-3px); box-shadow: 0 24px 72px color-mix(in oklab, var(--accent) 18%, transparent); }
+.brand-loading-content {
+  width: min(100%, 320px);
+}
+
+.brand-loading-signature {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+}
+
+.brand-loading-mark {
+  width: clamp(48px, 12vw, 64px);
+  height: auto;
+  flex-shrink: 0;
+}
+
+.brand-loading-wordmark {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.brand-loading-name {
+  font-family: "Aquire", system-ui, sans-serif;
+  font-size: clamp(28px, 7vw, 36px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.015em;
+}
+
+.brand-loading-descriptor {
+  font-family: "Aquire", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+  padding-left: .14em;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.brand-loading-track {
+  height: 1px;
+  margin-top: 48px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--foreground) 12%, transparent);
 }
 
 .loading-progress {
-  animation: loading-progress 1.45s cubic-bezier(.4, 0, .2, 1) infinite;
+  display: block;
+  width: 40%;
+  height: 100%;
+  background: var(--foreground);
+  animation: loading-progress 2.8s cubic-bezier(.45, 0, .25, 1) infinite;
 }
 
-.loading-halo {
-  animation: loading-halo 2.6s ease-in-out infinite;
+.brand-loading-label {
+  margin-top: 18px;
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: .025em;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+@keyframes loading-progress {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(350%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .loading-progress,
-  .loading-halo {
-    animation: none;
-  }
-
   .loading-progress {
-    transform: translateX(24%);
+    animation: none;
+    transform: translateX(75%);
   }
 }
 
