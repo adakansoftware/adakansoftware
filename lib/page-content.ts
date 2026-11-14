@@ -422,13 +422,13 @@ const logoPageContent: Record<Locale, LogoContent> = {
       },
       {
         title: "Logo varyasyonları",
-        description: "Açık/koyu versiyonları hazırlarız. Genişletilmiş pakette yatay, dikey ve ikon varyasyonları da bulunur.",
+        description: "Açık/koyu versiyonları hazırlarız. Premium pakette yatay, dikey ve ikon varyasyonları da bulunur.",
         points: ["Açık/koyu versiyon", "Yatay/dikey kullanım", "İkon varyasyonu"],
       },
       {
         title: "Teslim sistemi",
         description: "Dosyaları gerçek kullanım senaryolarına hazır, düzenli ve ölçeklenebilir şekilde teslim ederiz.",
-        points: ["SVG/PNG", "Koyu/açık versiyon", "Genişletilmiş: kaynak dosya"],
+        points: ["SVG/PNG", "Koyu/açık versiyon", "Premium: kaynak dosya"],
       },
     ],
   },
@@ -451,13 +451,13 @@ const logoPageContent: Record<Locale, LogoContent> = {
       },
       {
         title: "Logo variations",
-        description: "We prepare light/dark versions. The Extended package also includes horizontal, vertical and icon variations.",
+        description: "We prepare light/dark versions. The Premium package also includes horizontal, vertical and icon variations.",
         points: ["Light/dark versions", "Horizontal/vertical use", "Icon variation"],
       },
       {
         title: "Delivery system",
         description: "Assets are delivered cleanly for real usage scenarios, from web to print.",
-        points: ["SVG/PNG", "Dark/light versions", "Extended: source file"],
+        points: ["SVG/PNG", "Dark/light versions", "Premium: source file"],
       },
     ],
   },

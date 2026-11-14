@@ -49,6 +49,6 @@ export async function StudioHome({ locale }: { locale: Locale }) {
       <div className="mt-8"><ProjectListingCards projects={projects} locale={locale} /></div>
       <Link className="studio-link mt-6" href={withLocale("/projects", locale)}>{locale === "tr" ? "Tüm işleri görün" : "View all work"}<ArrowRight size={16} /></Link>
     </section>}
-    <PricingSection locale={locale} overview /><CTASection locale={locale} />
+    <PricingSection locale={locale} /><CTASection locale={locale} />
   </>
 }

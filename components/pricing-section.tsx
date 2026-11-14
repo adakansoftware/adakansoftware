@@ -21,32 +21,35 @@ export const pricing: Record<Locale, PricingCopy> = {
       { question: "Yazılım ürünleri nasıl fiyatlanır?", answer: "CRM, ERP Lite ve TableFlow için kurulum bedeli ve aylık bakım ayrı teklif edilir. ERP Lite yakında; TableFlow adisyon ve sipariş arayüzü pilot aşamasındadır." },
     ],
     items: [
-      { name: "Logo tasarımı", price: "2.500–8.000 TL", note: "Sadece logo", priceNote: "paket aralığı", features: ["Temel ve Genişletilmiş paketler", "Konsept ve revizyon kapsamı belli", "SVG + PNG teslimi"], href: "/pricing#logo" },
-      { name: "Web siteleri", price: "15.000–40.000 TL", note: "Tek seferlik proje", priceNote: "paket fiyatları", features: ["Vitrin, Kurumsal, Randevulu site", "2 revizyon turu", "İlk ay hata düzeltme dahil"], featured: true, href: "/pricing#web" },
-      { name: "Yazılım ürünleri", price: "Teklif alın", note: "Kurulum + aylık bakım", priceNote: "kapsama göre teklif", features: ["CRM", "ERP Lite — yakında", "TableFlow — adisyon ve sipariş arayüzü (pilot)"], href: "/pricing#yazilim" },
+      { name: "Logo tasarımı", price: "2.500–8.000 TL", note: "Sadece logo", priceNote: "paket aralığı", features: ["Temel, Standart ve Premium paketler", "Konsept ve revizyon kapsamı belli", "SVG + PNG teslimi"], href: "/pricing/logo" },
+      { name: "Web siteleri", price: "15.000–40.000 TL", note: "Tek seferlik proje", priceNote: "paket fiyatları", features: ["Başlangıç, Profesyonel, Premium", "Her pakette SEO; seviyeye göre kapsam", "2 revizyon turu ve ilk ay hata düzeltme"], featured: true, href: "/pricing/web" },
+      { name: "Yazılım ürünleri", price: "Teklif alın", note: "Kurulum + aylık bakım", priceNote: "kapsama göre teklif", features: ["CRM", "ERP Lite — yakında", "TableFlow — adisyon ve sipariş arayüzü (pilot)"], href: "/pricing/yazilim" },
     ],
     groups: [
       {
         id: "logo", title: "Logo tasarımı", cta: "Logo için teklif alın", faqTitle: "Logo tasarımı hakkında",
         description: "Yalnızca logo tasarımı. Kartvizit, antetli kağıt, sosyal medya şablonu, renk/tipografi sistemi ve marka rehberi dahil değildir.",
         items: [
-          { name: "Temel", price: "2.500–4.000 TL", note: "Logo tasarımı", priceNote: "paket fiyat aralığı", features: ["1 konsept", "2 revizyon turu", "Açık/koyu versiyon", "SVG + PNG"] },
-          { name: "Genişletilmiş", price: "5.000–8.000 TL", note: "Logo tasarımı", priceNote: "paket fiyat aralığı", features: ["3 konsept", "3 revizyon turu", "Yatay/dikey/ikon varyasyonları", "SVG + PNG ve kaynak dosya"] },
+          { name: "Temel", price: "2.500–4.000 TL", note: "Başlangıç paketi", priceNote: "paket fiyat aralığı", features: ["1 konsept", "2 revizyon turu", "Açık/koyu versiyon", "SVG + PNG"] },
+          { name: "Standart", price: "4.000–5.000 TL", note: "Orta seviye paket", priceNote: "paket fiyat aralığı", features: ["2 konsept", "2 revizyon turu", "Açık/koyu versiyon ve yatay varyasyon", "SVG + PNG"] },
+          { name: "Premium", price: "5.000–8.000 TL", note: "Üst seviye paket", priceNote: "paket fiyat aralığı", features: ["3 konsept", "3 revizyon turu", "Yatay/dikey/ikon varyasyonları", "SVG + PNG ve kaynak dosya"] },
         ],
         faqs: [
-          { question: "Kaç revizyon yapılır?", answer: "Temel pakette 2, Genişletilmiş pakette 3 revizyon turu vardır. Geri bildirimler her turda birlikte değerlendirilir; ek turlar ayrıca teklif edilir." },
+          { question: "Kaç revizyon yapılır?", answer: "Temel ve Standart paketlerde 2, Premium pakette 3 revizyon turu vardır. Her pakette seçilen tek logo tamamlanır. Geri bildirimler her turda birlikte değerlendirilir; ek turlar ayrıca teklif edilir." },
           { question: "Paketler neleri kapsamaz?", answer: "Kartvizit, antetli kağıt, sosyal medya şablonu, renk/tipografi sistemi ve marka rehberi kapsam dışıdır. Teslim, seçilen paketin logo dosyaları ve varyasyonlarıyla sınırlıdır." },
         ],
       },
       {
         id: "web", title: "Web siteleri", cta: "Web sitesi için teklif alın", faqTitle: "Web sitesi paketleri hakkında",
-        description: "Tek seferlik web sitesi projeleri. Tüm paketlerde 2 revizyon turu bulunur. İçerik, fotoğraf, alan adı ve hosting müşteriye aittir; aylık bakım opsiyoneldir.",
+        description: "Aynı web sitesi hizmeti için üç bütçe ve kapsam seviyesi. Her pakette SEO bulunur; içerik yönetimi, dil sayısı, işlevler ve SEO çalışmasının kapsamı seviyeye göre değişir. Tek seferlik proje bedeli; her pakette 2 revizyon turu. İçerik, fotoğraf, alan adı ve hosting müşteriye aittir; aylık bakım opsiyoneldir.",
         items: [
-          { name: "Vitrin", price: "15.000–20.000 TL", note: "Tek seferlik proje", priceNote: "proje bedeli", features: ["4–5 sayfa", "İletişim formu", "Responsive tasarım", "Yönetim paneli yok"] },
-          { name: "Kurumsal", price: "25.000 TL", note: "Tek seferlik proje", priceNote: "proje bedeli", features: ["Kurumsal sayfalar", "Teklif formu", "Yönetim paneli", "SEO temeli"], featured: true },
-          { name: "Randevulu site", price: "40.000 TL", note: "Tek seferlik proje", priceNote: "proje bedeli", features: ["Randevu akışı", "Yönetim paneli", "TR/EN"] },
+          { name: "Başlangıç", price: "15.000–20.000 TL", note: "Temel ihtiyaçlar · Giriş bütçesi", priceNote: "proje bedeli", features: ["4–5 sayfa", "İletişim formu", "Responsive tasarım", "Yönetim paneli yok", "Temel SEO: sayfa başlığı, meta açıklama, sitemap ve robots.txt"] },
+          { name: "Profesyonel", price: "25.000 TL", note: "İçerik yönetimi · Orta bütçe", priceNote: "proje bedeli", features: ["Responsive içerik sayfaları", "İletişim ve teklif formu", "Yönetim paneli", "Başlangıç SEO kapsamının tamamı", "Sayfa bazlı anahtar kelime eşlemesi ve başlık hiyerarşisi", "İç bağlantılar ve uygun yapılandırılmış veri"], featured: true },
+          { name: "Premium", price: "40.000 TL", note: "Geniş kapsam · Üst bütçe", priceNote: "proje bedeli", features: ["Profesyonel paketin tüm kapsamı", "TR/EN çift dil", "1 gelişmiş form akışı (örn. randevu talebi)", "Akışın yönetim paneline bağlanması", "Profesyonel SEO kapsamı + TR/EN dil eşlemesi (hreflang)", "Yönlendirme, canonical ve taranabilirlik denetimi"] },
         ],
         faqs: [
+          { question: "Paketler neye göre ayrılıyor?", answer: "Başlangıç temel tanıtım ve iletişim ihtiyaçlarına, Profesyonel içerik yönetimi ve teklif toplamaya, Premium çift dil ve ek form akışına yöneliktir. Bunlar farklı site türleri değil, bütçe ve kapsam seviyeleridir. Premium akışının kapsamı teklif öncesinde netleştirilir; CRM, ERP ve ürün geliştirme ayrı teklif edilir." },
+          { question: "SEO paketlere göre nasıl değişiyor?", answer: "Başlangıç: teslim kapsamındaki sayfaların başlıkları, meta açıklamaları, sitemap ve robots.txt. Profesyonel: bunlara ek sayfa bazlı anahtar kelime eşlemesi, başlık hiyerarşisi, iç bağlantılar ve uygun yapılandırılmış veri. Premium: tüm bunlara ek TR/EN hreflang eşlemesi ve yayın öncesi yönlendirme, canonical ve taranabilirlik denetimi. Çalışma proje teslim kapsamındadır; sürekli içerik üretimi ve aylık SEO takibi ayrıca planlanır." },
           { question: "Ödeme planı ve revizyon sınırı nedir?", answer: "Ödeme %40 başlangıç, %30 tasarım onayı, %30 yayın şeklindedir. Her web sitesi paketinde 2 revizyon turu bulunur." },
           { question: "İlk ay destek neleri kapsar?", answer: "Yayın sonrası ilk ay kapsam içi hata düzeltme dahildir; yeni özellik geliştirme dahil değildir. Aylık bakım isteğe bağlıdır." },
           { question: "İçerik ve işletim giderleri kime ait?", answer: "İçerik, fotoğraf, alan adı ve hosting müşteriye aittir. Bu kalemler web sitesi proje bedeline dahil değildir." },
@@ -78,32 +81,35 @@ export const pricing: Record<Locale, PricingCopy> = {
       { question: "How are software products priced?", answer: "CRM, ERP Lite and TableFlow have separate setup and monthly maintenance quotes. ERP Lite is coming soon; TableFlow is a bill and order interface pilot." },
     ],
     items: [
-      { name: "Logo design", price: "2,500–8,000 TRY", note: "Logo only", priceNote: "package range", features: ["Basic and Extended packages", "Defined concepts and revision rounds", "SVG + PNG delivery"], href: "/pricing#logo" },
-      { name: "Websites", price: "15,000–40,000 TRY", note: "One-off project", priceNote: "package prices", features: ["Showcase, Corporate, Booking website", "2 revision rounds", "First-month bug fixes included"], featured: true, href: "/pricing#web" },
-      { name: "Software products", price: "Request a quote", note: "Setup + monthly maintenance", priceNote: "quoted by scope", features: ["CRM", "ERP Lite — coming soon", "TableFlow — bill and order interface (pilot)"], href: "/pricing#yazilim" },
+      { name: "Logo design", price: "2,500–8,000 TRY", note: "Logo only", priceNote: "package range", features: ["Basic, Standard and Premium packages", "Defined concepts and revision rounds", "SVG + PNG delivery"], href: "/pricing/logo" },
+      { name: "Websites", price: "15,000–40,000 TRY", note: "One-off project", priceNote: "package prices", features: ["Starter, Professional, Premium", "SEO in every tier, with different scope", "2 revision rounds and first-month bug fixes"], featured: true, href: "/pricing/web" },
+      { name: "Software products", price: "Request a quote", note: "Setup + monthly maintenance", priceNote: "quoted by scope", features: ["CRM", "ERP Lite — coming soon", "TableFlow — bill and order interface (pilot)"], href: "/pricing/yazilim" },
     ],
     groups: [
       {
         id: "logo", title: "Logo design", cta: "Request a logo quote", faqTitle: "About logo packages",
         description: "Logo design only. Business cards, letterheads, social media templates, a color/typography system and a brand guide are not included.",
         items: [
-          { name: "Basic", price: "2,500–4,000 TRY", note: "Logo design", priceNote: "package price range", features: ["1 concept", "2 revision rounds", "Light/dark versions", "SVG + PNG"] },
-          { name: "Extended", price: "5,000–8,000 TRY", note: "Logo design", priceNote: "package price range", features: ["3 concepts", "3 revision rounds", "Horizontal/vertical/icon variations", "SVG + PNG and source file"] },
+          { name: "Basic", price: "2,500–4,000 TRY", note: "Entry-level package", priceNote: "package price range", features: ["1 concept", "2 revision rounds", "Light/dark versions", "SVG + PNG"] },
+          { name: "Standard", price: "4,000–5,000 TRY", note: "Mid-tier package", priceNote: "package price range", features: ["2 concepts", "2 revision rounds", "Light/dark versions and horizontal variation", "SVG + PNG"] },
+          { name: "Premium", price: "5,000–8,000 TRY", note: "Top-tier package", priceNote: "package price range", features: ["3 concepts", "3 revision rounds", "Horizontal/vertical/icon variations", "SVG + PNG and source file"] },
         ],
         faqs: [
-          { question: "How many revision rounds are included?", answer: "Basic includes 2 rounds; Extended includes 3. Feedback is consolidated in each round. Extra rounds are quoted separately." },
+          { question: "How many revision rounds are included?", answer: "Basic and Standard include 2 rounds; Premium includes 3. One selected logo is finalized in each package. Feedback is consolidated in each round. Extra rounds are quoted separately." },
           { question: "What is excluded?", answer: "Business cards, letterheads, social media templates, a color/typography system and a brand guide are excluded. Delivery is limited to the selected package's logo files and variations." },
         ],
       },
       {
         id: "web", title: "Websites", cta: "Request a website quote", faqTitle: "About website packages",
-        description: "One-off website projects with 2 revision rounds. Content, photos, domain and hosting are supplied and paid for by the client. Monthly maintenance is optional.",
+        description: "Three budget and scope levels for the same website service, with SEO included in every tier. Content management, languages, functionality and SEO scope vary by tier. One-off project fees with 2 revision rounds. Content, photos, domain and hosting are supplied and paid for by the client. Monthly maintenance is optional.",
         items: [
-          { name: "Showcase", price: "15,000–20,000 TRY", note: "One-off project", priceNote: "project fee", features: ["4–5 pages", "Contact form", "Responsive design", "No admin panel"] },
-          { name: "Corporate", price: "25,000 TRY", note: "One-off project", priceNote: "project fee", features: ["Corporate pages", "Quote request form", "Admin panel", "SEO foundations"], featured: true },
-          { name: "Booking website", price: "40,000 TRY", note: "One-off project", priceNote: "project fee", features: ["Booking flow", "Admin panel", "TR/EN"] },
+          { name: "Starter", price: "15,000–20,000 TRY", note: "Core needs · Entry budget", priceNote: "project fee", features: ["4–5 pages", "Contact form", "Responsive design", "No admin panel", "Core SEO: page titles, meta descriptions, sitemap and robots.txt"] },
+          { name: "Professional", price: "25,000 TRY", note: "Content management · Mid-range budget", priceNote: "project fee", features: ["Responsive content pages", "Contact and quote request forms", "Admin panel", "All Starter SEO deliverables", "Page-level keyword mapping and heading hierarchy", "Internal links and relevant structured data"], featured: true },
+          { name: "Premium", price: "40,000 TRY", note: "Extended scope · Upper budget", priceNote: "project fee", features: ["Everything in Professional", "TR/EN bilingual content", "1 advanced form flow (e.g. a booking request)", "Flow connected to the admin panel", "Professional SEO scope + TR/EN language mapping (hreflang)", "Redirect, canonical and crawlability audit"] },
         ],
         faqs: [
+          { question: "How do the tiers differ?", answer: "Starter covers essential information and contact needs; Professional adds content management and quote collection; Premium adds a second language and an extra form flow. These are budget and scope levels, not different website types. The Premium flow is scoped before the quote; CRM, ERP and product development are quoted separately." },
+          { question: "How does SEO differ by tier?", answer: "Starter covers titles and meta descriptions for the included pages, a sitemap and robots.txt. Professional adds page-level keyword mapping, heading hierarchy, internal links and relevant structured data. Premium also includes TR/EN hreflang mapping and a pre-launch redirect, canonical and crawlability audit. These are project deliverables; ongoing content creation and monthly SEO monitoring are planned separately." },
           { question: "What are the payment terms and revision limits?", answer: "40% at the start, 30% at design approval and 30% at launch. Every website package includes 2 revision rounds." },
           { question: "What does first-month support cover?", answer: "In-scope bug fixes are included for the first month after launch. New features are excluded. Monthly maintenance is optional." },
           { question: "Who provides content and pays running costs?", answer: "The client provides content and photos and pays for the domain and hosting. These are not included in the website project fee." },
@@ -127,15 +133,15 @@ export const pricing: Record<Locale, PricingCopy> = {
   },
 }
 
-export function PricingSection({ locale, overview = false }: { locale: Locale; overview?: boolean }) {
+export function PricingSection({ locale, category }: { locale: Locale; category?: PricingGroup["id"] }) {
   const copy = pricing[locale]
-  const sections = overview ? [{ ...copy, id: "pricing", title: `${copy.title} ${copy.gradient}` }] : copy.groups
+  const sections = category ? copy.groups.filter(group => group.id === category) : [{ ...copy, id: "pricing", title: `${copy.title} ${copy.gradient}` }]
 
   return <>{sections.map((section, index) => (
     <section key={section.id} id={section.id} className="studio-section studio-soft">
       <div className="studio-container">
         <h2>{section.title}</h2>
-        <p className="studio-section-description">{section.description}{!overview && index === 0 && copy.groups.map((group) => <span key={group.id}> · <Link className="studio-link" href={`#${group.id}`}>{group.title}</Link></span>)}</p>
+        <p className="studio-section-description">{section.description}{category && index === 0 && copy.groups.map((group) => <span key={group.id}> · <Link className="studio-link" href={withLocale(`/pricing/${group.id}`, locale)}>{group.title}</Link></span>)}</p>
         <div className="studio-pricing">{section.items.map(item => (
           <article key={item.name} className={"studio-price-card" + (item.featured ? " studio-price-featured" : "")}>
             <p className="studio-price-note">{item.note}</p>
