@@ -46,8 +46,8 @@ export function createOrganizationSchema({
     logo,
     image: `${url}/og`,
     description: locale === "tr"
-      ? "İşletmeler için özel yazılım, web uygulaması, kurumsal web sitesi, Next.js, UI/UX ve marka kimliği hizmetleri sunan İstanbul merkezli yazılım şirketi."
-      : "An Istanbul software company delivering custom software, web applications, corporate websites, Next.js, UI/UX and brand identity services.",
+      ? "İşletmeler için özel yazılım, web uygulaması, kurumsal web sitesi, Next.js, UI/UX ve logo tasarımı hizmetleri sunan İstanbul merkezli yazılım şirketi."
+      : "An Istanbul software company delivering custom software, web applications, corporate websites, Next.js, UI/UX and logo design services.",
     address: {
       "@type": "PostalAddress",
       addressLocality: locale === "tr" ? "İstanbul" : "Istanbul",
@@ -68,7 +68,6 @@ export function createOrganizationSchema({
       "Frontend Development",
       "UI/UX Design",
       "Logo Design",
-      "Brand Identity",
     ],
     sameAs,
   }
@@ -173,8 +172,8 @@ export function createCreativeWorkSchema({ locale, url, name, description, image
 
 export function createServiceSchema({ locale, url, name, description, serviceTypes: providedServiceTypes }: { locale: StructuredDataLocale; url: string; name?: string; description?: string; serviceTypes?: string[] }) {
   const serviceTypes = providedServiceTypes ?? (locale === "tr"
-    ? ["Özel Yazılım Geliştirme", "Web Tasarımı ve Geliştirme", "Next.js Frontend Geliştirme", "UI/UX Tasarımı", "Marka Kimliği ve Logo Tasarımı"]
-    : ["Custom Software Development", "Web Design and Development", "Next.js Frontend Development", "UI/UX Design", "Brand Identity and Logo Design"])
+    ? ["Özel Yazılım Geliştirme", "Web Tasarımı ve Geliştirme", "Next.js Frontend Geliştirme", "UI/UX Tasarımı", "Logo Tasarımı"]
+    : ["Custom Software Development", "Web Design and Development", "Next.js Frontend Development", "UI/UX Design", "Logo Design"])
 
   return {
     "@context": "https://schema.org",
@@ -182,8 +181,8 @@ export function createServiceSchema({ locale, url, name, description, serviceTyp
     "@id": `${url}#service`,
     name: name ?? (locale === "tr" ? "Yazılım Geliştirme, Web Tasarımı ve Dijital Ürün Hizmetleri" : "Software Development, Web Design and Digital Product Services"),
     description: description ?? (locale === "tr"
-      ? "İşletmeler için özel yazılım, kurumsal web sitesi, Next.js frontend, UI/UX ve marka kimliği hizmetleri."
-      : "Custom software, corporate websites, Next.js frontend, UI/UX and brand identity services for businesses."),
+      ? "İşletmeler için özel yazılım, kurumsal web sitesi, Next.js frontend, UI/UX ve logo tasarımı hizmetleri."
+      : "Custom software, corporate websites, Next.js frontend, UI/UX and logo design services for businesses."),
     serviceType: serviceTypes,
     provider: { "@id": `${new URL(url).origin}/#organization` },
     areaServed: ["TR", "GB", "US", "DE"],

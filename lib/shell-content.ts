@@ -48,7 +48,7 @@ export const navbarContent = {
 export const footerContent = {
   tr: {
     description:
-      "İşletmeler için özel yazılım, web uygulaması, kurumsal web sitesi, UI/UX ve marka kimliği geliştiren İstanbul merkezli yazılım şirketi.",
+      "İşletmeler için özel yazılım, web uygulaması, kurumsal web sitesi, UI/UX ve logo tasarımı geliştiren İstanbul merkezli yazılım şirketi.",
     companyTitle: "Şirket",
     servicesTitle: "Hizmetler",
     rights: "Tüm hakları saklıdır.",
@@ -62,7 +62,7 @@ export const footerContent = {
     ],
     services: [
       { name: "Web Tasarım", href: "/services/web-development" },
-      { name: "Marka Kimliği", href: "/services#brand-identity" },
+      { name: "Logo Tasarımı", href: "/services#brand-identity" },
       { name: "UI/UX Tasarım", href: "/services/ui-ux-design" },
       { name: "Özel Yazılım", href: "/services/software-development" },
       { name: "Web Uygulaması", href: "/services/web-application-development" },
@@ -72,7 +72,7 @@ export const footerContent = {
   },
   en: {
     description:
-      "An Istanbul software company building custom software, web applications, corporate websites, UI/UX and brand identity systems.",
+      "An Istanbul software company building custom software, web applications, corporate websites, UI/UX and logo design systems.",
     companyTitle: "Company",
     servicesTitle: "Services",
     rights: "All rights reserved.",
@@ -86,7 +86,7 @@ export const footerContent = {
     ],
     services: [
       { name: "Web Design", href: "/services/web-development" },
-      { name: "Brand Identity", href: "/services#brand-identity" },
+      { name: "Logo Design", href: "/services#brand-identity" },
       { name: "UI/UX Design", href: "/services/ui-ux-design" },
       { name: "Custom Software", href: "/services/software-development" },
       { name: "Web Applications", href: "/services/web-application-development" },
@@ -117,8 +117,8 @@ export const socialLinks = [
 
 export const boundaryContent = {
   loading: {
-    tr: "Sayfa hazırlanıyor",
-    en: "Preparing page",
+    tr: "",
+    en: "",
   },
   notFound: {
     tr: {

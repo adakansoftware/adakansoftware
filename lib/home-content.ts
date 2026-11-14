@@ -4,20 +4,20 @@ export const heroContent = {
   tr: {
     lines: ["Markanı", "dijitalde", "büyüt"] as [string, string, string],
     description:
-      "Web siteleri, marka kimlikleri ve kullanıcı deneyimleri tasarlıyoruz. Her ekran; güven, hız ve satış için birlikte çalışır.",
+      "Web siteleri, logo tasarımları ve kullanıcı deneyimleri tasarlıyoruz. Her ekran; güven, hız ve satış için birlikte çalışır.",
     primary: "Projeye Başla",
     secondary: "Projeleri Gör",
     scroll: "Kaydır",
-    proofPoints: ["Strateji", "Web tasarım", "Marka kimliği", "Ürün arayüzü"],
+    proofPoints: ["Strateji", "Web tasarım", "Logo tasarımı", "Ürün arayüzü"],
   },
   en: {
     lines: ["Grow", "digital", "brands"] as [string, string, string],
     description:
-      "We design websites, brand identities, and user experiences. Every screen works together for trust, speed, and conversion.",
+      "We design websites, logo designs, and user experiences. Every screen works together for trust, speed, and conversion.",
     primary: "Start a Project",
     secondary: "View Projects",
     scroll: "Scroll",
-    proofPoints: ["Strategy", "Web design", "Brand identity", "Product UI"],
+    proofPoints: ["Strategy", "Web design", "Logo design", "Product UI"],
   },
 } satisfies Record<
   Locale,
@@ -36,7 +36,7 @@ export const ctaContent = {
     title: "Markanı",
     gradient: "daha güçlü anlatalım",
     description:
-      "Yeni web siteniz, marka kimliğiniz veya dijital ürününüz için net kapsam, doğru öncelik ve güçlü bir uygulama planı çıkaralım.",
+      "Yeni web siteniz, logo tasarımınız veya dijital ürününüz için net kapsam, doğru öncelik ve güçlü bir uygulama planı çıkaralım.",
     cta: "Görüşmeye Başla",
     stats: [
       { value: "4", label: "Ana hizmet alanı" },
@@ -49,7 +49,7 @@ export const ctaContent = {
     title: "Let's tell",
     gradient: "your brand stronger",
     description:
-      "For your new website, brand identity, or digital product, let's define the scope, priorities, and a strong execution plan.",
+      "For your new website, logo design, or digital product, let's define the scope, priorities, and a strong execution plan.",
     cta: "Start the Conversation",
     stats: [
       { value: "4", label: "Core service areas" },

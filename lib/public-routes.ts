@@ -125,5 +125,5 @@ export function buildLlmsText({
     .map((route) => `- [${route.path === "/" ? name : route.path.slice(1)}](${getPublicUrl(route, "tr", baseUrl)})`)
     .join("\n")
 
-  return `# ${name}\n\n${location}. Design, brand identity, and web development studio.\n\n## Canonical public pages\n${links}\n\nEnglish equivalents are available under /en.\n`
+  return `# ${name}\n\n${location}. Design, logo design, and web development studio.\n\n## Canonical public pages\n${links}\n\nEnglish equivalents are available under /en.\n`
 }

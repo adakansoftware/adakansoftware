@@ -7,7 +7,7 @@ const pageData: Record<string, { tr: string; en: string; accent: string }> = {
   services: { tr: "Özel Yazılım | Web Tasarım | Next.js | UI/UX", en: "Custom Software | Web Design | Next.js | UI/UX", accent: "#0066ff" },
   projects: { tr: "Yazılım ve Web Tasarım Projeleri", en: "Software and Web Design Projects", accent: "#14b8a6" },
   contact: { tr: "Yazılım Projenizi Birlikte Planlayalım", en: "Let’s Plan Your Software Project", accent: "#0066ff" },
-  logo: { tr: "Logo ve Kurumsal Kimlik Tasarımı", en: "Logo and Brand Identity Design", accent: "#f59e0b" },
+  logo: { tr: "Logo Tasarımı", en: "Logo Design", accent: "#f59e0b" },
   about: { tr: "İstanbul Yazılım ve Tasarım Stüdyosu", en: "Istanbul Software and Design Studio", accent: "#2dd4bf" },
   home: { tr: "Yazılım Geliştirme | Web Tasarım | UI/UX", en: "Software Development | Web Design | UI/UX", accent: "#0066ff" },
 }

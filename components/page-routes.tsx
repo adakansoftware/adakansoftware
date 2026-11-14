@@ -160,20 +160,20 @@ export function ServicesPageContent({ locale }: { locale: Locale }) {
           <div className="mt-6 rounded-2xl border border-border/50 bg-card/25 p-8 backdrop-blur-md">
             <p className="max-w-2xl text-muted-foreground">
               {locale === "tr"
-                ? "Proje kapsamı ve karmaşıklığına göre değişir. Aşağıdaki aralıklar başlangıç noktası olarak kullanılabilir; kesin teklif kapsam görüşmesinin ardından sunulur."
-                : "Varies by scope and complexity. The ranges below are a starting point; exact pricing follows a scope call."}
+                ? "Logo ve web sitesi paketlerini ayrı inceleyin. Yazılım ürünleri kurulum bedeli + aylık bakım yapısıyla teklif edilir."
+                : "Explore logo and website packages separately. Software products are quoted as setup plus monthly maintenance."}
             </p>
             <div className="mt-6 grid gap-4 sm:grid-cols-3">
               {(locale === "tr"
                 ? [
-                    { service: "Logo & Marka Kimliği", range: "₺15.000 - ₺35.000" },
-                    { service: "Kurumsal Web Sitesi", range: "₺25.000 - ₺75.000" },
-                    { service: "UI/UX & Frontend", range: "₺40.000 - ₺120.000" },
+                    { service: "Logo Tasarımı", range: "2.500–8.000 TL" },
+                    { service: "Web siteleri", range: "15.000–40.000 TL" },
+                    { service: "Yazılım ürünleri", range: "Teklif alın" },
                   ]
                 : [
-                    { service: "Logo & Brand Identity", range: "€800 - €2.000" },
-                    { service: "Corporate Website", range: "€1.500 - €5.000" },
-                    { service: "UI/UX & Frontend", range: "€3.000 - €10.000" },
+                    { service: "Logo Design", range: "2,500–8,000 TRY" },
+                    { service: "Websites", range: "15,000–40,000 TRY" },
+                    { service: "Software products", range: "Request a quote" },
                   ]
               ).map((item) => (
                 <div key={item.service} className="rounded-xl border border-border/40 bg-background/35 p-5">
@@ -225,12 +225,12 @@ export async function ProjectsPageContent({ locale }: { locale: Locale }) {
           <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <h2 className="text-3xl font-bold tracking-tight md:text-5xl">
-                {locale === "tr" ? "Marka işaretleri ve kimlik denemeleri" : "Brand marks and identity studies"}
+                {locale === "tr" ? "Logo tasarımları ve varyasyonları" : "Logo designs and variations"}
               </h2>
               <p className="mt-4 text-muted-foreground">
                 {locale === "tr"
-                  ? "Logo çalışmalarını sadece tek bir görsel olarak değil; sembol, wordmark, renk ve kullanım ritmiyle birlikte gösteriyoruz."
-                  : "Logo work is presented as more than a single visual: symbol, wordmark, color, and usage rhythm are considered together."}
+                  ? "Logo çalışmalarını sembol, yazılı kullanım ve açık/koyu varyasyonlarıyla gösteriyoruz."
+                  : "Logo work is presented through symbols, wordmarks and light/dark variations."}
               </p>
             </div>
             <Link
@@ -289,12 +289,12 @@ export async function LogoPageContent({ locale }: { locale: Locale }) {
             <div className="grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-center">
               <div>
                 <h2 className="text-3xl font-bold tracking-tight md:text-5xl">
-                  {locale === "tr" ? "Tek logo değil, kullanılabilir marka seti" : "Not just one logo, a usable brand kit"}
+                  {locale === "tr" ? "Farklı zeminlerde aynı logo" : "One logo across different backgrounds"}
                 </h2>
                 <p className="mt-5 max-w-2xl leading-relaxed text-muted-foreground">
                   {locale === "tr"
-                    ? "Web sitesi, sosyal medya, teklif dosyası ve baskı gibi gerçek alanlarda çalışacak versiyonları baştan planlarız."
-                    : "We plan versions that work across real touchpoints: website, social media, proposal decks, and print."}
+                    ? "Açık ve koyu zeminlerde kullanılacak logo versiyonlarını hazırlıyoruz. Kartvizit, antetli kağıt ve sosyal medya şablonu hizmete dahil değildir."
+                    : "We prepare logo versions for light and dark backgrounds. Business cards, letterheads and social media templates are not included."}
                 </p>
               </div>
               <LogoBrandKitPanel locale={locale} />

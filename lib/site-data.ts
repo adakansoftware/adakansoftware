@@ -10,10 +10,10 @@ export const servicesByLocale = {
       tags: ["Kurumsal site", "Landing page", "E-ticaret"],
     },
     {
-      title: "Marka Kimliği",
+      title: "Logo Tasarımı",
       href: "/services#brand-identity",
-      description: "Logo, renk, tipografi ve görsel dilin tek bir sistem gibi çalıştığı güçlü marka kimlikleri kurarız.",
-      tags: ["Logo", "Görsel sistem", "Marka rehberi"],
+      description: "Farklı boyutlarda kullanılabilen, açık ve koyu zeminlere uygun logolar tasarlarız.",
+      tags: ["Logo", "Varyasyonlar", "SVG/PNG"],
     },
     {
       title: "UI/UX Tasarım",
@@ -54,10 +54,10 @@ export const servicesByLocale = {
       tags: ["Corporate site", "Landing page", "E-commerce"],
     },
     {
-      title: "Brand Identity",
+      title: "Logo Design",
       href: "/services#brand-identity",
-      description: "We build strong identity systems where logo, color, typography, and visual language work as one.",
-      tags: ["Logo", "Visual system", "Brand guide"],
+      description: "We design logos for different sizes and light or dark backgrounds.",
+      tags: ["Logo", "Variations", "SVG/PNG"],
     },
     {
       title: "UI/UX Design",
@@ -142,10 +142,10 @@ export const projectsByLocale = {
 export const demoExamplesByLocale = {
   tr: [
     {
-      title: "TableFlow POS Yönetim Sistemi Demo",
+      title: "TableFlow — adisyon ve sipariş arayüzü (pilot)",
       href: "https://tableflow-pos-ui.vercel.app/",
-      category: "Restoran POS ve operasyon paneli",
-      description: "Sipariş, masa, mutfak, menü ve satış raporlarını tek ekranda yöneten kapsamlı restoran operasyon demosu.",
+      category: "Adisyon ve sipariş arayüzü (pilot)",
+      description: "Adisyon ve sipariş akışlarını gösteren pilot arayüz. Kurulum ve aylık bakım kapsamı ayrıca teklif edilir.",
       coverImage: "/demos/tableflow-pos-dashboard.png",
       color: "#ff5a1f",
     },
@@ -176,10 +176,10 @@ export const demoExamplesByLocale = {
   ],
   en: [
     {
-      title: "TableFlow POS Management Demo",
+      title: "TableFlow — bill and order interface (pilot)",
       href: "https://tableflow-pos-ui.vercel.app/",
-      category: "Restaurant POS and operations dashboard",
-      description: "A comprehensive restaurant operations demo for managing orders, tables, kitchen workflows, menus, and sales reports.",
+      category: "Bill and order interface (pilot)",
+      description: "A pilot interface demonstrating bill and order workflows. Setup and monthly maintenance are quoted separately.",
       coverImage: "/demos/tableflow-pos-dashboard.png",
       color: "#ff5a1f",
     },
@@ -238,7 +238,7 @@ export const logoWorksByLocale = {
     },
     {
       title: "Adakan Software",
-      category: "Yazılım marka kimliği",
+      category: "Yazılım şirketi logosu",
       description: "A harfini dijital bağlantı detaylarıyla birleştiren Adakan Software marka işareti.",
       initials: "AS",
       logoImage: "/adakan-logo-v4.png",
@@ -264,7 +264,7 @@ export const logoWorksByLocale = {
     },
     {
       title: "Adakan Hafriyat",
-      category: "Construction identity",
+      category: "Construction logo design",
       description: "A geometric red-and-black symbol paired with the Adakan wordmark.",
       initials: "AH",
       logoImage: "/projects/adakan-hafriyat-logo.svg",
@@ -272,7 +272,7 @@ export const logoWorksByLocale = {
     },
     {
       title: "Adakan Software",
-      category: "Software brand identity",
+      category: "Software company logo",
       description: "The Adakan Software brand mark combines the letter A with digital connection details.",
       initials: "AS",
       logoImage: "/adakan-logo-v4.png",

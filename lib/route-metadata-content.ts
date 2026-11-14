@@ -28,25 +28,25 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
     tr: {
       title: "Yazılım Şirketi ve Web Tasarım Ajansı",
       description:
-        "Özel yazılım, kurumsal web sitesi, Next.js geliştirme, UI/UX, logo ve marka kimliği hizmetleri sunan İstanbul merkezli yazılım şirketi.",
+        "Özel yazılım, kurumsal web sitesi, Next.js geliştirme, UI/UX, logo tasarımı hizmetleri sunan İstanbul merkezli yazılım şirketi.",
       keywords: ["yazılım şirketi", "yazılım firması", "özel yazılım geliştirme", "web tasarım ajansı", "kurumsal web sitesi", "Next.js geliştirme", "UI UX tasarımı", "İstanbul yazılım şirketi"],
     },
     en: {
       title: "Software Development and Web Design Agency",
       description:
-        "Istanbul software company delivering custom software, corporate websites, Next.js development, UI/UX, logo design and brand identity.",
+        "Istanbul software company delivering custom software, corporate websites, Next.js development, UI/UX, logo design.",
       keywords: ["software development company", "custom software development", "web design agency", "corporate website", "Next.js development", "UI UX design", "Istanbul software company"],
     },
   },
   about: {
     tr: {
       title: "Yazılım ve Tasarım Stüdyosu Hakkında",
-      description: "İstanbul merkezli yazılım ve tasarım stüdyomuz; strateji, UI/UX, web geliştirme ve marka kimliğini tek ekipte birleştirir.",
+      description: "İstanbul merkezli yazılım ve tasarım stüdyomuz; strateji, UI/UX, web geliştirme ve logo tasarımını tek ekipte birleştirir.",
       keywords: ["yazılım stüdyosu", "İstanbul yazılım firması", "dijital ürün ajansı", "web geliştirme ekibi"],
     },
     en: {
       title: "About Our Software and Design Studio",
-      description: "Our Istanbul software and design studio brings strategy, UI/UX, web development and brand identity together in one team.",
+      description: "Our Istanbul software and design studio brings strategy, UI/UX, web development and logo design together in one team.",
       keywords: ["software studio", "Istanbul software company", "digital product agency", "web development team"],
     },
   },
@@ -75,22 +75,22 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
   careers: {
     tr: {
       title: "Kariyer",
-      description: "Adakan Software ile tasarım, marka ve dijital ürün geliştirme odağında çalışma fırsatlarını keşfedin.",
+      description: "Adakan Software ile tasarım, logo tasarımı ve dijital ürün geliştirme odağında çalışma fırsatlarını keşfedin.",
     },
     en: {
       title: "Careers",
-      description: "Explore opportunities to work with Adakan Software on design, brand, and digital product delivery.",
+      description: "Explore opportunities to work with Adakan Software on design, logo design, and digital product delivery.",
     },
   },
   contact: {
     tr: {
       title: "Yazılım ve Web Projesi İçin İletişim",
-      description: "Özel yazılım, kurumsal web sitesi, UI/UX veya marka kimliği projenizin kapsamını ve teklif sürecini birlikte netleştirelim.",
+      description: "Özel yazılım, kurumsal web sitesi, UI/UX veya logo tasarımı projenizin kapsamını ve teklif sürecini birlikte netleştirelim.",
       keywords: ["yazılım projesi teklifi", "web sitesi teklifi", "yazılım firması iletişim", "web tasarım ajansı İstanbul"],
     },
     en: {
       title: "Contact for Software and Web Projects",
-      description: "Get in touch with Adakan Software about your new website, brand identity, or digital product project.",
+      description: "Get in touch with Adakan Software about your new website, logo design, or digital product project.",
       keywords: ["software project quote", "website quote", "software company contact", "Istanbul web design agency"],
     },
   },
@@ -120,14 +120,14 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
   },
   logo: {
     tr: {
-      title: "Logo ve Kurumsal Kimlik Tasarımı",
-      description: "Adakan Software logo tasarımı, marka işareti ve kurumsal kimlik sistemleri için premium görsel kimlik çözümleri sunar.",
-      keywords: ["logo tasarımı", "marka kimliği", "kurumsal kimlik", "premium logo"],
+      title: "Logo Tasarımı",
+      description: "Adakan Software; konsept, revizyon, açık/koyu versiyon ve SVG/PNG teslimleriyle yalnızca logo tasarımı sunar.",
+      keywords: ["logo tasarımı", "logo fiyatları", "vektörel logo", "logo varyasyonları"],
     },
     en: {
-      title: "Logo and Brand Identity Design",
-      description: "Adakan Software creates premium logo design, brand marks, and visual identity systems for ambitious brands.",
-      keywords: ["logo design", "brand identity", "visual identity", "premium logo"],
+      title: "Logo Design",
+      description: "Adakan Software provides logo design with concepts, revision rounds, light/dark versions and SVG/PNG delivery.",
+      keywords: ["logo design", "logo pricing", "vector logo", "logo variations"],
     },
   },
   privacy: {
@@ -142,37 +142,37 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
   },
   pricing: {
     tr: {
-      title: "Yazılım ve Web Tasarım Fiyatları",
-      description: "Kurumsal web sitesi, özel yazılım, UI/UX, frontend geliştirme, logo ve marka kimliği projeleri için başlangıç fiyatlarını inceleyin.",
+      title: "Logo, Web Sitesi ve Yazılım Paketleri",
+      description: "Logo tasarımı ve web sitesi paketlerinin fiyatlarını, CRM, ERP Lite ve TableFlow için kurulum + aylık bakım modelini inceleyin.",
       keywords: ["yazılım fiyatları", "web tasarım fiyatları", "kurumsal web sitesi fiyatı", "özel yazılım maliyeti", "UI UX fiyatları"],
     },
     en: {
-      title: "Software and Web Design Pricing",
-      description: "Starting price ranges for web, brand identity, and digital product projects.",
+      title: "Logo, Website and Software Packages",
+      description: "Compare logo and website package prices and request setup plus monthly maintenance quotes for CRM, ERP Lite and TableFlow.",
       keywords: ["software development pricing", "web design pricing", "corporate website cost", "custom software cost", "UI UX pricing"],
     },
   },
   projects: {
     tr: {
       title: "Yazılım ve Web Tasarım Projeleri",
-      description: "Kurumsal web sitesi, Next.js geliştirme, UI/UX, logo ve marka kimliği alanlarındaki seçili projelerimizi ve canlı işleri inceleyin.",
+      description: "Kurumsal web sitesi, Next.js geliştirme, UI/UX, logo tasarımı alanlarındaki seçili projelerimizi ve canlı işleri inceleyin.",
       keywords: ["yazılım projeleri", "web tasarım örnekleri", "Next.js projeleri", "kurumsal web sitesi örnekleri", "UI UX portfolyo"],
     },
     en: {
       title: "Software and Web Design Projects",
-      description: "Selected examples of web design, brand identity, and digital product development work.",
+      description: "Selected examples of web design, logo design, and digital product development work.",
       keywords: ["software projects", "web design portfolio", "Next.js projects", "corporate website examples", "UI UX portfolio"],
     },
   },
   services: {
     tr: {
       title: "Yazılım Geliştirme ve Web Tasarım Hizmetleri",
-      description: "Özel yazılım, kurumsal web tasarımı, Next.js frontend, UI/UX, mobil arayüz, SEO altyapısı, logo ve marka kimliği hizmetleri.",
+      description: "Özel yazılım, kurumsal web tasarımı, Next.js frontend, UI/UX, mobil arayüz, SEO altyapısı, logo tasarımı hizmetleri.",
       keywords: ["özel yazılım geliştirme", "web yazılım hizmetleri", "kurumsal web tasarım", "Next.js geliştirme", "frontend geliştirme", "UI UX tasarım", "mobil uygulama arayüzü"],
     },
     en: {
       title: "Software Development and Web Design Services",
-      description: "Premium web design, brand identity, UI/UX, and frontend development services.",
+      description: "Premium web design, logo design, UI/UX, and frontend development services.",
       keywords: ["custom software development", "web development services", "corporate web design", "Next.js development", "frontend development", "UI UX design"],
     },
   },

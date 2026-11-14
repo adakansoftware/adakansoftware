@@ -6,5 +6,5 @@ import { createRouteMetadata } from "@/lib/metadata"
 export const metadata = createRouteMetadata("pricing", "tr", "/pricing")
 
 export default function PricingPage() {
-  return <><PageJsonLd locale="tr" path="/pricing" /><PageHeader locale="tr" title="Net kapsam," gradientText="net yatırım" description="İhtiyacına uygun başlangıç paketini seç; proje kapsamını birlikte netleştirelim." /><PricingSection locale="tr" /></>
+  return <><PageJsonLd locale="tr" path="/pricing" /><PageHeader locale="tr" title="Net kapsam," gradientText="net yatırım" description="Logo tasarımı, tek seferlik web sitesi projeleri ve yazılım ürünlerinin kurulum + aylık bakım kapsamlarını ayrı inceleyin." /><PricingSection locale="tr" /></>
 }

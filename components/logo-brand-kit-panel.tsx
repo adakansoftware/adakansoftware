@@ -7,7 +7,7 @@ const formats = ["PNG", "WEBP", "APP ICON"]
 export function LogoBrandKitPanel({ locale }: { locale: Locale }) {
   const copy = locale === "tr"
     ? {
-        eyebrow: "Marka sistemi",
+        eyebrow: "Logo varyasyonları",
         descriptor: "Dijital ürün stüdyosu",
         primary: "Ana kullanım",
         light: "Açık zemin",
@@ -16,7 +16,7 @@ export function LogoBrandKitPanel({ locale }: { locale: Locale }) {
         alt: "Adakan Software marka işareti",
       }
     : {
-        eyebrow: "Brand system",
+        eyebrow: "Logo variations",
         descriptor: "Digital product studio",
         primary: "Primary lockup",
         light: "Light surface",

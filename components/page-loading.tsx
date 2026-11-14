@@ -22,7 +22,7 @@ export function PageLoading({ label }: { label: string }) {
         <div className="brand-loading-track" aria-hidden="true">
           <span className="loading-progress" />
         </div>
-        <p className="brand-loading-label"><span className="sr-only">Adakan Software. </span>{label}</p>
+        <p className="brand-loading-label"><span className="sr-only">Yükleniyor · Loading</span>{label}</p>
       </div>
     </div>
   )

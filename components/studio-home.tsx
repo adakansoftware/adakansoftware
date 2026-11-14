@@ -11,19 +11,19 @@ import { LaptopReveal } from "@/components/laptop-reveal"
 const content = {
   tr: {
     intro: "İstanbul merkezli yazılım ve tasarım stüdyosu", title: "Web tasarım ve yazılım.", accent: "Sade çözümler.",
-    description: "İşletmeniz için özel yazılım, kurumsal web sitesi, Next.js arayüzleri, UI/UX ve güçlü marka kimlikleri tasarlayıp geliştiriyoruz.",
+    description: "İşletmeniz için özel yazılım, kurumsal web sitesi, Next.js arayüzleri ve UI/UX geliştiriyor; logo tasarımı sunuyoruz.",
     start: "Projenizi konuşalım", work: "İşlerimizi keşfedin", services: "İhtiyacınız kadar. Özenle.",
-    serviceIntro: "Fikirden yayına; web tasarımı, özel yazılım geliştirme ve marka kimliği tek ekipte.",
-    items: [["Marka kimliği", "Markanızı anlatan logo, renk ve tipografi. Her yerde tutarlı bir görünüm."], ["Web tasarımı", "İçeriği öne çıkaran, her ekranda rahat kullanılan web siteleri."], ["Yazılım geliştirme", "İşinize uygun, hızlı ve sürdürülebilir dijital ürünler."]],
+    serviceIntro: "Fikirden yayına; web tasarımı, özel yazılım geliştirme ve logo tasarımı tek elden.",
+    items: [["Logo tasarımı", "İşletmenizi anlatan logo. Konsept, revizyon ve teslim dosyaları seçtiğiniz pakete göre."], ["Web tasarımı", "İçeriği öne çıkaran, her ekranda rahat kullanılan web siteleri."], ["Yazılım geliştirme", "İşinize uygun, hızlı ve sürdürülebilir dijital ürünler."]],
     approach: "Az karmaşa. Daha iyi sonuç.",
     steps: [["Anlıyoruz", "İhtiyacınızı dinliyor, hedefi ve kapsamı birlikte netleştiriyoruz."], ["Tasarlıyoruz", "Gereksiz olanı çıkarıyor, işe yarayan çözüme odaklanıyoruz."], ["Hayata geçiriyoruz", "Geliştiriyor, test ediyor ve yayına alıyoruz."]], more: "Yaklaşımımız",
   },
   en: {
     intro: "Istanbul software and design studio", title: "Web design & software.", accent: "Simple solutions.",
-    description: "We design and build custom software, corporate websites, Next.js interfaces, UI/UX and clear brand identities for ambitious businesses.",
+    description: "We build custom software, corporate websites, Next.js interfaces and UI/UX, and provide logo design for businesses.",
     start: "Let’s talk about your project", work: "Explore our work", services: "Just what you need. Done well.",
-    serviceIntro: "Web design, custom software development and brand identity from one connected team.",
-    items: [["Brand identity", "A logo, colors and typography that tell your story. A consistent presence everywhere."], ["Web design", "Websites that put content first and feel comfortable on every screen."], ["Development", "Fast, maintainable digital products built around your business."]],
+    serviceIntro: "Web design, custom software development and logo design from one provider.",
+    items: [["Logo design", "A logo for your business, with concepts, revision rounds and delivery files defined by your package."], ["Web design", "Websites that put content first and feel comfortable on every screen."], ["Development", "Fast, maintainable digital products built around your business."]],
     approach: "Less complexity. Better outcomes.",
     steps: [["Understand", "We listen and define your goals and project scope together."], ["Design", "We remove what gets in the way and focus on what works."], ["Build", "We develop, test and help you launch."]], more: "Our approach",
   },
@@ -49,6 +49,6 @@ export async function StudioHome({ locale }: { locale: Locale }) {
       <div className="mt-8"><ProjectListingCards projects={projects} locale={locale} /></div>
       <Link className="studio-link mt-6" href={withLocale("/projects", locale)}>{locale === "tr" ? "Tüm işleri görün" : "View all work"}<ArrowRight size={16} /></Link>
     </section>}
-    <PricingSection locale={locale} /><CTASection locale={locale} />
+    <PricingSection locale={locale} overview /><CTASection locale={locale} />
   </>
 }

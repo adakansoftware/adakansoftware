@@ -92,7 +92,7 @@ const aboutPageContent: Record<Locale, AboutContent> = {
       title: "Tasarım ve yazılımı",
       gradientText: "aynı masada topluyoruz",
       description:
-        "Adakan Software; büyümek isteyen markalar için stratejik web siteleri, marka kimlikleri ve dijital ürün arayüzleri üreten bir tasarım ve yazılım stüdyosudur.",
+        "Adakan Software; büyümek isteyen markalar için stratejik web siteleri, logo tasarımları ve dijital ürün arayüzleri üreten bir tasarım ve yazılım stüdyosudur.",
       secondaryHref: "/projects",
       secondaryLabel: "Projeleri Gör",
     },
@@ -116,7 +116,7 @@ const aboutPageContent: Record<Locale, AboutContent> = {
       title: "We bring design",
       gradientText: "and software together",
       description:
-        "Adakan Software is a design and software studio creating strategic websites, brand identities, and digital product interfaces for ambitious brands.",
+        "Adakan Software is a design and software studio creating strategic websites, logo designs, and digital product interfaces for ambitious brands.",
       primaryHref: "/en/contact",
       primaryLabel: "Start a Project",
       secondaryHref: "/en/projects",
@@ -181,7 +181,7 @@ const approachPageContent: Record<Locale, ApproachContent> = {
       {
         phase: "06",
         title: "Yayın sonrası",
-        description: "İlk aylarda düzeltmeler dahildir. İstersen içerik güncellemesi ve bakım için devam ederiz; istersen kendi yolunda gider.",
+        description: "Yayın sonrası ilk ay kapsam içi hata düzeltme dahildir; yeni özellikler hariçtir. Aylık bakım isteğe bağlıdır.",
       },
     ],
   },
@@ -228,7 +228,7 @@ const approachPageContent: Record<Locale, ApproachContent> = {
       {
         phase: "06",
         title: "After launch",
-        description: "Fixes are included in the first months. Continue with us for content and maintenance if you wish, or run it on your own.",
+        description: "In-scope bug fixes are included for the first month; new features are excluded. Monthly maintenance is optional.",
       },
     ],
   },
@@ -240,7 +240,7 @@ const servicesPageContent: Record<Locale, ServicesContent> = {
       title: "Yazılım ve tasarım için",
       gradientText: "net çözümler",
       description:
-        "Özel yazılım, kurumsal web sitesi, Next.js geliştirme, UI/UX ve marka kimliğini ayrı hedef ve çıktılarla ele alıyor; aynı büyüme amacında birleştiriyoruz.",
+        "Özel yazılım, kurumsal web sitesi, Next.js geliştirme, UI/UX ve logo tasarımını ayrı hedef ve çıktılarla ele alıyor; aynı büyüme amacında birleştiriyoruz.",
       secondaryHref: "/projects",
       secondaryLabel: "Projeleri İncele",
     },
@@ -254,9 +254,9 @@ const servicesPageContent: Record<Locale, ServicesContent> = {
       },
       {
         id: "brand-identity",
-        title: "Marka Kimliği",
-        outcome: "Logo, renk, tipografi ve görsel dili tek bir sistemde toplarız.",
-        items: ["Logo sistemi", "Renk ve tipografi", "Sosyal medya şablonları", "Marka kullanım rehberi"],
+        title: "Logo Tasarımı",
+        outcome: "Konsept, revizyon ve teslim dosyaları net olarak tanımlanmış logo tasarımı sunarız.",
+        items: ["Logo konsepti", "Revizyon turları", "Açık/koyu versiyon", "SVG ve PNG teslimi"],
       },
       {
         id: "ui-ux",
@@ -283,7 +283,7 @@ const servicesPageContent: Record<Locale, ServicesContent> = {
       title: "Clear solutions",
       gradientText: "for software and design",
       description:
-        "We connect custom software, corporate websites, Next.js development, UI/UX and brand identity through clear goals, outputs and business impact.",
+        "We connect custom software, corporate websites, Next.js development, UI/UX and logo design through clear goals, outputs and business impact.",
       primaryHref: "/en/contact",
       primaryLabel: "Start a Project",
       secondaryHref: "/en/projects",
@@ -299,9 +299,9 @@ const servicesPageContent: Record<Locale, ServicesContent> = {
       },
       {
         id: "brand-identity",
-        title: "Brand Identity",
-        outcome: "We bring logo, color, typography, and visual language into one coherent system.",
-        items: ["Logo system", "Color and typography", "Social media templates", "Brand usage guide"],
+        title: "Logo Design",
+        outcome: "We offer logo design with clearly defined concepts, revision rounds and delivery files.",
+        items: ["Logo concept", "Revision rounds", "Light/dark versions", "SVG and PNG delivery"],
       },
       {
         id: "ui-ux",
@@ -366,7 +366,7 @@ const contactPageContent: Record<Locale, ContactContent> = {
       title: "Projeni",
       gradientText: "birlikte netleştirelim",
       description:
-        "Yeni web siteniz, marka kimliğiniz veya dijital ürününüz için hedefleri, kapsamı ve ilk teslim planını birlikte çıkaralım.",
+        "Yeni web siteniz, logo tasarımınız veya dijital ürününüz için hedefleri, kapsamı ve ilk teslim planını birlikte çıkaralım.",
       primaryHref: getInquiryMailto(siteConfig.email, "tr"),
       primaryLabel: "E-posta Gönder",
       secondaryHref: "/services",
@@ -375,7 +375,7 @@ const contactPageContent: Record<Locale, ContactContent> = {
     noteTitle: "Başlangıç için kısa not",
     noteDescription:
       "Mail atarken proje türünü, varsa mevcut web sitenizi, hedeflediğiniz teslim tarihini ve beklentinizi yazmanız yeterli.",
-    tags: ["Web sitesi", "Marka kimliği", "UI/UX", "Frontend geliştirme"],
+    tags: ["Web sitesi", "Logo tasarımı", "UI/UX", "Frontend geliştirme"],
     emailHref: getInquiryMailto(siteConfig.email, "tr"),
     emailLabel: siteConfig.email,
     messagingLabel: "WhatsApp",
@@ -386,7 +386,7 @@ const contactPageContent: Record<Locale, ContactContent> = {
       title: "Let's clarify",
       gradientText: "your project",
       description:
-        "For your new website, brand identity, or digital product, let's define goals, scope, and the first delivery plan together.",
+        "For your new website, logo design, or digital product, let's define goals, scope, and the first delivery plan together.",
       primaryHref: getInquiryMailto(siteConfig.email, "en"),
       primaryLabel: "Send Email",
       secondaryHref: "/en/services",
@@ -394,7 +394,7 @@ const contactPageContent: Record<Locale, ContactContent> = {
     },
     noteTitle: "A short note is enough to start",
     noteDescription: "Include the project type, your current website if available, target timeline, and expectations.",
-    tags: ["Website", "Brand identity", "UI/UX", "Frontend development"],
+    tags: ["Website", "Logo design", "UI/UX", "Frontend development"],
     emailHref: getInquiryMailto(siteConfig.email, "en"),
     emailLabel: siteConfig.email,
     messagingLabel: "WhatsApp",
@@ -408,7 +408,7 @@ const logoPageContent: Record<Locale, LogoContent> = {
       title: "Markanı tek bakışta",
       gradientText: "tanınır hale getir",
       description:
-        "Logo tasarımını sadece güzel bir işaret olarak değil; renk, tipografi, kullanım kuralları ve dijital temas noktalarıyla birlikte çalışan bir marka sistemi olarak ele alıyoruz.",
+        "Logo tasarımı sunuyoruz. Konsept, revizyon ve teslim dosyaları seçilen pakete göre belirlenir; kurumsal kimlik çalışması dahil değildir.",
       primaryHref: "/contact",
       primaryLabel: "Logo Projesi Başlat",
       secondaryHref: "/logo#logo-work",
@@ -421,14 +421,14 @@ const logoPageContent: Record<Locale, LogoContent> = {
         points: ["Ana logo", "Alternatif kullanım", "Sembol ve wordmark"],
       },
       {
-        title: "Kimlik dili",
-        description: "Logonun tek başına kalmaması için renk, tipografi ve görsel ritmi birlikte tanımlarız.",
-        points: ["Renk paleti", "Tipografi seçimi", "Sosyal medya uyumu"],
+        title: "Logo varyasyonları",
+        description: "Açık/koyu versiyonları hazırlarız. Genişletilmiş pakette yatay, dikey ve ikon varyasyonları da bulunur.",
+        points: ["Açık/koyu versiyon", "Yatay/dikey kullanım", "İkon varyasyonu"],
       },
       {
         title: "Teslim sistemi",
         description: "Dosyaları gerçek kullanım senaryolarına hazır, düzenli ve ölçeklenebilir şekilde teslim ederiz.",
-        points: ["SVG/PNG/PDF", "Koyu/açık versiyon", "Kullanım rehberi"],
+        points: ["SVG/PNG", "Koyu/açık versiyon", "Genişletilmiş: kaynak dosya"],
       },
     ],
   },
@@ -437,7 +437,7 @@ const logoPageContent: Record<Locale, LogoContent> = {
       title: "Make your brand",
       gradientText: "recognizable at a glance",
       description:
-        "We treat logo design as a working identity system: a clear mark supported by color, typography, usage rules, and digital touchpoints.",
+        "We provide logo design. Concepts, revision rounds and delivery files depend on the selected package; corporate identity work is not included.",
       primaryHref: "/en/contact",
       primaryLabel: "Start a Logo Project",
       secondaryHref: "/en/logo#logo-work",
@@ -450,14 +450,14 @@ const logoPageContent: Record<Locale, LogoContent> = {
         points: ["Primary logo", "Alternate lockups", "Symbol and wordmark"],
       },
       {
-        title: "Identity language",
-        description: "Color, typography, and visual rhythm are defined together so the logo does not stand alone.",
-        points: ["Color palette", "Typography", "Social media fit"],
+        title: "Logo variations",
+        description: "We prepare light/dark versions. The Extended package also includes horizontal, vertical and icon variations.",
+        points: ["Light/dark versions", "Horizontal/vertical use", "Icon variation"],
       },
       {
         title: "Delivery system",
         description: "Assets are delivered cleanly for real usage scenarios, from web to print.",
-        points: ["SVG/PNG/PDF", "Dark/light versions", "Usage guide"],
+        points: ["SVG/PNG", "Dark/light versions", "Extended: source file"],
       },
     ],
   },
@@ -467,12 +467,12 @@ const pricingPageContent: Record<Locale, HeaderContent> = {
   tr: {
     title: "Net kapsam,",
     gradientText: "net yatırım",
-    description: "Doğru başlangıç noktasını seçin; proje kapsamını birlikte netleştirelim.",
+    description: "Logo tasarımı, tek seferlik web sitesi projeleri ve yazılım ürünlerinin kurulum + aylık bakım kapsamlarını ayrı inceleyin.",
   },
   en: {
     title: "Clear scope,",
     gradientText: "clear investment",
-    description: "Choose the right starting point and let’s define your project scope together.",
+    description: "Explore logo design, one-off website projects and software setup plus monthly maintenance separately.",
   },
 }
 
