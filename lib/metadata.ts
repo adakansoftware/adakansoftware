@@ -100,5 +100,6 @@ export function createRouteMetadata(route: RouteMetadataKey, locale: Locale, pat
     description: content.description,
     path,
     keywords: content.keywords,
+    localizedPaths: getPublicRouteByPath(path)?.localizedPaths as Record<Locale, string> | undefined,
   })
 }

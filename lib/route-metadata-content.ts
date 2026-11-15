@@ -1,8 +1,10 @@
+import { vanServiceContent } from "./van-service-page.ts"
 import type { Locale } from "@/lib/i18n"
 
 export type RouteMetadataKey =
   | "home"
   | "istanbulSoftwareCompany"
+  | "vanSoftwareCompany"
   | "about"
   | "approach"
   | "blog"
@@ -12,6 +14,9 @@ export type RouteMetadataKey =
   | "logo"
   | "privacy"
   | "pricing"
+  | "pricingLogo"
+  | "pricingWeb"
+  | "pricingSoftware"
   | "projects"
   | "services"
   | "terms"
@@ -24,17 +29,30 @@ type MetadataContent = {
 }
 
 export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, MetadataContent>> = {
+  vanSoftwareCompany: { tr: vanServiceContent.tr.seo, en: vanServiceContent.en.seo },
+  pricingLogo: {
+    tr: { title: "Logo Tasarımı Paketleri ve Fiyatları", description: "Temel, Standart ve Premium logo tasarımı paketlerini karşılaştırın. Konsept, revizyon, logo varyasyonları ve dosya teslim kapsamını inceleyin." },
+    en: { title: "Logo Design Packages and Pricing", description: "Compare Basic, Standard and Premium logo design packages. Review concepts, revision rounds, logo variations and the files included in each package." },
+  },
+  pricingWeb: {
+    tr: { title: "Web Sitesi Paketleri ve Fiyatları", description: "Başlangıç, Profesyonel ve Premium web sitesi paketleri: 15.000–40.000 TL. Yönetim paneli, dil seçenekleri ve pakete göre SEO kapsamını karşılaştırın." },
+    en: { title: "Website Packages and Pricing", description: "Compare Starter, Professional and Premium website packages, from TRY 15,000 to 40,000. Review admin features, languages and SEO scope for each tier." },
+  },
+  pricingSoftware: {
+    tr: { title: "CRM, ERP Lite ve TableFlow İçin Teklif Alın", description: "CRM, yakında sunulacak ERP Lite ve TableFlow pilotu için teklif alın. Kurulum, veri aktarımı, eğitim ve aylık bakım kapsamını ayrı inceleyin." },
+    en: { title: "CRM, ERP Lite and TableFlow Quotes", description: "Request a quote for CRM, upcoming ERP Lite or the TableFlow pilot. Explore setup, data migration, training and monthly maintenance as separate scopes." },
+  },
   home: {
     tr: {
-      title: "Yazılım Şirketi ve Web Tasarım Ajansı",
+      title: "Özel Yazılım Şirketi ve Web Tasarım",
       description:
-        "Özel yazılım, kurumsal web sitesi, Next.js geliştirme, UI/UX, logo tasarımı hizmetleri sunan İstanbul merkezli yazılım şirketi.",
+        "Van, İstanbul ve Türkiye genelindeki işletmelere özel yazılım, web sitesi ve iş otomasyonu. Adakan Software ile kapsamı net, ihtiyaca göre geliştirme.",
       keywords: ["yazılım şirketi", "yazılım firması", "özel yazılım geliştirme", "web tasarım ajansı", "kurumsal web sitesi", "Next.js geliştirme", "UI UX tasarımı", "İstanbul yazılım şirketi"],
     },
     en: {
-      title: "Software Development and Web Design Agency",
+      title: "Software Company for Web and Business Applications",
       description:
-        "Istanbul software company delivering custom software, corporate websites, Next.js development, UI/UX, logo design.",
+        "Istanbul-based software company building custom applications, websites and workflow automation for businesses in Turkey and international teams.",
       keywords: ["software development company", "custom software development", "web design agency", "corporate website", "Next.js development", "UI UX design", "Istanbul software company"],
     },
   },

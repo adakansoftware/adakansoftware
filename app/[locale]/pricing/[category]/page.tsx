@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/page-header"
 import { PageJsonLd } from "@/components/page-json-ld"
 import { pricing, PricingSection } from "@/components/pricing-section"
 import { isLocale } from "@/lib/i18n"
-import { createPageMetadata } from "@/lib/metadata"
+import { createRouteMetadata } from "@/lib/metadata"
 
 type Props = { params: Promise<{ locale: string; category: string }> }
 
@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props) {
   if (!isLocale(locale)) notFound()
   const group = pricing[locale].groups.find(group => group.id === category)
   if (!group) notFound()
-  return createPageMetadata({ locale, title: `${group.title} — ${locale === "tr" ? "Paketler ve Fiyatlar" : "Packages and Pricing"}`, description: group.description, path: `/pricing/${group.id}` })
+  return createRouteMetadata(group.id === "logo" ? "pricingLogo" : group.id === "web" ? "pricingWeb" : "pricingSoftware", locale, `/pricing/${group.id}`)
 }
 
 export default async function LocalizedPricingCategoryPage({ params }: Props) {

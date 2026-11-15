@@ -10,8 +10,8 @@ import { LaptopReveal } from "@/components/laptop-reveal"
 
 const content = {
   tr: {
-    intro: "İstanbul merkezli yazılım ve tasarım stüdyosu", title: "Web tasarım ve yazılım.", accent: "Sade çözümler.",
-    description: "İşletmeniz için özel yazılım, kurumsal web sitesi, Next.js arayüzleri ve UI/UX geliştiriyor; logo tasarımı sunuyoruz.",
+    intro: "İstanbul merkezli yazılım şirketi", title: "Özel yazılım ve web.", accent: "Sade çözümler.",
+    description: "Van ve İstanbul başta olmak üzere Türkiye ve yurt dışındaki işletmeler için özel yazılım, web sitesi ve iş otomasyonu geliştiriyoruz.",
     start: "Projenizi konuşalım", work: "İşlerimizi keşfedin", services: "İhtiyacınız kadar. Özenle.",
     serviceIntro: "Fikirden yayına; web tasarımı, özel yazılım geliştirme ve logo tasarımı tek elden.",
     items: [["Logo tasarımı", "İşletmenizi anlatan logo. Konsept, revizyon ve teslim dosyaları seçtiğiniz pakete göre."], ["Web tasarımı", "İçeriği öne çıkaran, her ekranda rahat kullanılan web siteleri."], ["Yazılım geliştirme", "İşinize uygun, hızlı ve sürdürülebilir dijital ürünler."]],
@@ -19,8 +19,8 @@ const content = {
     steps: [["Anlıyoruz", "İhtiyacınızı dinliyor, hedefi ve kapsamı birlikte netleştiriyoruz."], ["Tasarlıyoruz", "Gereksiz olanı çıkarıyor, işe yarayan çözüme odaklanıyoruz."], ["Hayata geçiriyoruz", "Geliştiriyor, test ediyor ve yayına alıyoruz."]], more: "Yaklaşımımız",
   },
   en: {
-    intro: "Istanbul software and design studio", title: "Web design & software.", accent: "Simple solutions.",
-    description: "We build custom software, corporate websites, Next.js interfaces and UI/UX, and provide logo design for businesses.",
+    intro: "Istanbul-based software company", title: "Custom software & web.", accent: "Simple solutions.",
+    description: "We build custom software, websites and workflow automation for businesses across Turkey and international teams, with remote delivery in Turkish and English.",
     start: "Let’s talk about your project", work: "Explore our work", services: "Just what you need. Done well.",
     serviceIntro: "Web design, custom software development and logo design from one provider.",
     items: [["Logo design", "A logo for your business, with concepts, revision rounds and delivery files defined by your package."], ["Web design", "Websites that put content first and feel comfortable on every screen."], ["Development", "Fast, maintainable digital products built around your business."]],

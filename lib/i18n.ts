@@ -29,5 +29,10 @@ export function withLocale(path: string, locale: Locale) {
 
 export function switchLocalePath(pathname: string, targetLocale: Locale) {
   const withoutLocale = stripLocalePrefix(pathname)
-  return withLocale(withoutLocale, targetLocale)
+  const cityPaths = [
+    { tr: "/istanbul-yazilim-sirketi", en: "/istanbul-software-company" },
+    { tr: "/van-yazilim-firmasi", en: "/van-software-company" },
+  ]
+  const city = cityPaths.find(paths => paths.tr === withoutLocale || paths.en === withoutLocale)
+  return withLocale(city?.[targetLocale] ?? withoutLocale, targetLocale)
 }

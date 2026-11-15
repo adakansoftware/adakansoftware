@@ -68,6 +68,7 @@ export const footerContent = {
       { name: "Web Uygulaması", href: "/services/web-application-development" },
       { name: "İş Otomasyonu", href: "/services/business-automation" },
       { name: "Next.js Geliştirme", href: "/services/nextjs-development" },
+      { name: "Van Yazılım Hizmetleri", href: "/van-yazilim-firmasi" },
     ],
   },
   en: {
@@ -92,6 +93,7 @@ export const footerContent = {
       { name: "Web Applications", href: "/services/web-application-development" },
       { name: "Business Automation", href: "/services/business-automation" },
       { name: "Next.js Development", href: "/services/nextjs-development" },
+      { name: "Software Services in Van", href: "/van-software-company" },
     ],
   },
 } satisfies Record<

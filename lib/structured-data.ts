@@ -170,7 +170,7 @@ export function createCreativeWorkSchema({ locale, url, name, description, image
   }
 }
 
-export function createServiceSchema({ locale, url, name, description, serviceTypes: providedServiceTypes }: { locale: StructuredDataLocale; url: string; name?: string; description?: string; serviceTypes?: string[] }) {
+export function createServiceSchema({ locale, url, name, description, serviceTypes: providedServiceTypes, areaServed }: { locale: StructuredDataLocale; url: string; name?: string; description?: string; serviceTypes?: string[]; areaServed?: Array<string | { "@type": "City"; name: string }> }) {
   const serviceTypes = providedServiceTypes ?? (locale === "tr"
     ? ["Özel Yazılım Geliştirme", "Web Tasarımı ve Geliştirme", "Next.js Frontend Geliştirme", "UI/UX Tasarımı", "Logo Tasarımı"]
     : ["Custom Software Development", "Web Design and Development", "Next.js Frontend Development", "UI/UX Design", "Logo Design"])
@@ -185,7 +185,7 @@ export function createServiceSchema({ locale, url, name, description, serviceTyp
       : "Custom software, corporate websites, Next.js frontend, UI/UX and logo design services for businesses."),
     serviceType: serviceTypes,
     provider: { "@id": `${new URL(url).origin}/#organization` },
-    areaServed: ["TR", "GB", "US", "DE"],
+    areaServed: areaServed ?? ["TR", "GB", "US", "DE"],
     url,
     inLanguage: locale === "tr" ? "tr-TR" : "en-US",
   }

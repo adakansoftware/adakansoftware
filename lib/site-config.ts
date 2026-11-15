@@ -1,3 +1,4 @@
+import { routeMetadataContent } from "./route-metadata-content"
 import type { Locale } from "@/lib/i18n"
 
 export const siteConfig = {
@@ -19,9 +20,9 @@ export const siteConfig = {
 
 export const rootMetadataCopy = {
   tr: {
-    title: "Adakan Software | Yazılım Şirketi ve Web Tasarım Ajansı",
+    title: `Adakan Software | ${routeMetadataContent.home.tr.title}`,
     description:
-      "Adakan Software; özel yazılım, kurumsal web sitesi, Next.js, UI/UX ve logo tasarımı hizmetleri sunan İstanbul merkezli yazılım şirketidir.",
+      routeMetadataContent.home.tr.description,
     keywords: [
       "Adakan Software",
       "yazılım şirketi",
@@ -35,14 +36,14 @@ export const rootMetadataCopy = {
       "UI UX tasarımı",
     ],
     openGraphDescription:
-      "Özel yazılım, web tasarımı, Next.js geliştirme, UI/UX ve logo tasarımı hizmetleri.",
+      routeMetadataContent.home.tr.description,
     twitterDescription:
-      "Yazılım geliştirme, kurumsal web tasarımı ve dijital ürün çözümleri.",
+      routeMetadataContent.home.tr.description,
   },
   en: {
-    title: "Adakan Software | Software Development and Web Design",
+    title: `Adakan Software | ${routeMetadataContent.home.en.title}`,
     description:
-      "Adakan Software is an Istanbul software company delivering custom software, corporate websites, Next.js, UI/UX and logo design services.",
+      routeMetadataContent.home.en.description,
     keywords: [
       "Adakan Software",
       "software development company",
@@ -55,9 +56,9 @@ export const rootMetadataCopy = {
       "UI UX design",
     ],
     openGraphDescription:
-      "Premium web design, logo design, and conversion-focused digital product experiences.",
+      routeMetadataContent.home.en.description,
     twitterDescription:
-      "Futuristic web design, logo design, and digital product interfaces.",
+      routeMetadataContent.home.en.description,
   },
 } satisfies Record<
   Locale,

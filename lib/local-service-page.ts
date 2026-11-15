@@ -1,3 +1,4 @@
+import { vanServiceContent } from "./van-service-page.ts"
 import type { Locale } from "./i18n.ts"
 
 type LocalSoftwarePage = {
@@ -84,4 +85,6 @@ const pages: Record<Locale, LocalSoftwarePage> = {
   },
 }
 
-export function getLocalSoftwarePage(locale: Locale) { return pages[locale] }
+export function getLocalSoftwarePage(locale: Locale, city: "istanbul" | "van" = "istanbul"): LocalSoftwarePage {
+  return city === "van" ? { ...pages[locale], ...vanServiceContent[locale] } : pages[locale]
+}

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import { PageHeader } from "@/components/page-header"
 import { PageJsonLd } from "@/components/page-json-ld"
 import { pricing, PricingSection } from "@/components/pricing-section"
-import { createPageMetadata } from "@/lib/metadata"
+import { createRouteMetadata } from "@/lib/metadata"
 
 type Props = { params: Promise<{ category: string }> }
 
@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: Props) {
   const { category } = await params
   const group = pricing.tr.groups.find(group => group.id === category)
   if (!group) notFound()
-  return createPageMetadata({ locale: "tr", title: `${group.title} — Paketler ve Fiyatlar`, description: group.description, path: `/pricing/${group.id}` })
+  return createRouteMetadata(group.id === "logo" ? "pricingLogo" : group.id === "web" ? "pricingWeb" : "pricingSoftware", "tr", `/pricing/${group.id}`)
 }
 
 export default async function PricingCategoryPage({ params }: Props) {
