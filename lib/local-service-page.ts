@@ -47,7 +47,7 @@ const pages: Record<Locale, LocalSoftwarePage> = {
       { question: "Web sitesi SEO çalışması içeriyor mu?", answer: "Projeye göre teknik SEO temeli; metadata, canonical, sitemap, yapılandırılmış veri, semantik içerik ve performans kontrollerini içerir. Organik sıralama içerik kalitesi, rekabet ve zaman gibi dış etkenlere de bağlıdır." },
       { question: "Yayın sonrası destek veriliyor mu?", answer: "Evet. Hata takibi, güvenlik ve bağımlılık güncellemeleri, performans iyileştirmeleri ve yeni özellikler için ihtiyaca uygun bakım kapsamı hazırlanır." },
     ],
-    relatedLinks: [{ label: "Projeleri inceleyin", href: "/projects" }, { label: "Yazılım rehberlerini okuyun", href: "/blog" }, { label: "Projenizi anlatın", href: "/contact" }],
+    relatedLinks: [{ label: "Van yazılım şirketi", href: "/van-yazilim-firmasi" }, { label: "Projeleri inceleyin", href: "/projects" }, { label: "Yazılım rehberlerini okuyun", href: "/blog" }, { label: "Projenizi anlatın", href: "/contact" }],
   },
   en: {
     path: "/istanbul-software-company",
@@ -81,7 +81,7 @@ const pages: Record<Locale, LocalSoftwarePage> = {
       { question: "Does a website project include SEO?", answer: "Depending on scope, the technical foundation includes metadata, canonicals, sitemap, structured data, semantic content and performance checks. Organic ranking also depends on content quality, competition and time." },
       { question: "Is post-launch support available?", answer: "Yes. Maintenance can cover issue monitoring, security and dependency updates, performance improvements and continued feature development." },
     ],
-    relatedLinks: [{ label: "Explore projects", href: "/projects" }, { label: "Read software guides", href: "/blog" }, { label: "Tell us about your project", href: "/contact" }],
+    relatedLinks: [{ label: "Software services in Van", href: "/van-software-company" }, { label: "Explore projects", href: "/projects" }, { label: "Read software guides", href: "/blog" }, { label: "Tell us about your project", href: "/contact" }],
   },
 }
 

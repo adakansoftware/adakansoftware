@@ -68,7 +68,7 @@ export const footerContent = {
       { name: "Web Uygulaması", href: "/services/web-application-development" },
       { name: "İş Otomasyonu", href: "/services/business-automation" },
       { name: "Next.js Geliştirme", href: "/services/nextjs-development" },
-      { name: "Van Yazılım Hizmetleri", href: "/van-yazilim-firmasi" },
+      { name: "Van Yazılım Şirketi", href: "/van-yazilim-firmasi" },
     ],
   },
   en: {

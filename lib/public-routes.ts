@@ -43,7 +43,7 @@ export const publicRoutes = [
   { path: "/careers", metadataKey: "careers", llms: false, indexable: false, lastModified: siteContentRevision },
   { path: "/contact", metadataKey: "contact", llms: true, lastModified: siteContentRevision },
   { path: "/demos", metadataKey: "demos", llms: true, lastModified: siteContentRevision, images: ["/demos/tableflow-pos-dashboard.png", "/projects/optimized/z-grup-insaat-cover.webp", "/demos/adakan-dental-clinic.png", "/projects/optimized/sallihogullari-hafriyat-cover.webp"] },
-  { path: "/istanbul-yazilim-sirketi", localizedPaths: { tr: "/istanbul-yazilim-sirketi", en: "/istanbul-software-company" }, metadataKey: "istanbulSoftwareCompany", llms: true, lastModified: siteContentRevision },
+  { path: "/istanbul-yazilim-sirketi", localizedPaths: { tr: "/istanbul-yazilim-sirketi", en: "/istanbul-software-company" }, metadataKey: "istanbulSoftwareCompany", llms: true, lastModified: "2026-11-15" },
   { path: "/van-yazilim-firmasi", localizedPaths: { tr: "/van-yazilim-firmasi", en: "/van-software-company" }, metadataKey: "vanSoftwareCompany", llms: true, lastModified: "2026-11-15" },
   { path: "/logo", metadataKey: "logo", llms: true, lastModified: siteContentRevision, images: ["/projects/optimized/z-grup-logo.webp", "/projects/optimized/salihogullari-hafriyat-logo.webp", "/projects/optimized/adakan-hafriyat-insaat-logo.webp", "/projects/optimized/adakan-software-logo.webp"] },
   { path: "/privacy", metadataKey: "privacy", llms: false, lastModified: "2026-09-30" },

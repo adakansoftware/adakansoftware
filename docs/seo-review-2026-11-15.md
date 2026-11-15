@@ -1,5 +1,22 @@
 # SEO teslim notu — 15 Kasım 2026
 
+## İkinci çalışma: marka ve Van arama niyeti
+
+İlk SEO sürümünün (`94113f6`) CI çalışması başarılı. Canlı kontrolde Türkçe/İngilizce Van sayfaları ve web fiyat sayfası HTTP 200 ve beklenen başlıklarla açıldı. İkinci çalışma da commit ve push kapsamına alındı; bu sürümün canlı dağıtım sonucu ayrıca doğrulanmalıdır.
+
+- `components/studio-home.tsx`: Adakan adı ve yazılım şirketi konumlandırması TR/EN görünür metinde netleştirildi. Mevcut hizmet başlıklarına ilgili hizmet sayfası bağlantıları eklendi.
+- `lib/route-metadata-content.ts`: Türkçe ana sayfa başlığı “Yazılım Şirketi ve Özel Yazılım Geliştirme” oldu; ortak metadata üreticisi Adakan Software adını ekler.
+- `lib/van-service-page.ts`: Başlık “Van Yazılım Şirketi ve Web Tasarım”; geliştirici seçimi, ihtiyacı tarif etme ve teklif kapsamını karşılaştırmaya ilişkin TR/EN içerik eklendi. İstanbul sayfasına ilgili bağlantı eklendi. Mevcut URL korundu.
+- `lib/local-service-page.ts`: İstanbul sayfasından Van'a iki dilde bağlantı eklendi.
+- `lib/shell-content.ts`: Türkçe footer bağlantısının görünen adı “Van Yazılım Şirketi” oldu.
+- `lib/public-routes.ts`: İçeriği değişen İstanbul sayfasının tarihi güncellendi.
+- `lib/local-service-page.test.mjs`: İlgili bağlantılar, hedef dildeki kayıtlı rota adresine göre doğrulanıyor.
+- `docs/seo-review-2026-11-15.md`: İkinci çalışma kapsamı ve yayın durumu kaydedildi.
+
+Yeni stil, görsel bileşen veya bağımlılık yok. Değişen metinler ve eklenen ilgili bağlantılar mevcut düzeni kullanır. Mevcut Organization/WebSite şemalarında zaten bulunan “Adakan” alternatif adı korundu; doğrulanmamış adres, değerlendirme veya sıralama iddiası eklenmedi.
+
+Hedef sorguların sayfa eşleştirmesi: “Adakan” ve “yazılım şirketi” ana sayfa; “Van yazılım şirketi”, “Van yazılım firması” ve “Van yazılımcı” aynı kapsamlı Van sayfası. Bu eşleştirme sıralama garantisi değildir. Google'ın [açık başlık](https://developers.google.com/search/docs/appearance/title-link) ve [anlamlı iç bağlantı](https://developers.google.com/search/docs/crawling-indexing/links-crawlable) rehberleri esas alındı. Yazım hataları için ayrı sayfa veya görünmez kelime listesi oluşturulmadı.
+
 Hedef: Van ve İstanbul öncelikli; Türkiye geneli ve yurt dışı için Türkçe/İngilizce hizmet anlatımı.
 
 ## Uygulanan değişiklikler

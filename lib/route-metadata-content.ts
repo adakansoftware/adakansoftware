@@ -44,7 +44,7 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
   },
   home: {
     tr: {
-      title: "Özel Yazılım Şirketi ve Web Tasarım",
+      title: "Yazılım Şirketi ve Özel Yazılım Geliştirme",
       description:
         "Van, İstanbul ve Türkiye genelindeki işletmelere özel yazılım, web sitesi ve iş otomasyonu. Adakan Software ile kapsamı net, ihtiyaca göre geliştirme.",
       keywords: ["yazılım şirketi", "yazılım firması", "özel yazılım geliştirme", "web tasarım ajansı", "kurumsal web sitesi", "Next.js geliştirme", "UI UX tasarımı", "İstanbul yazılım şirketi"],
