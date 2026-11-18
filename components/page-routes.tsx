@@ -166,13 +166,13 @@ export function ServicesPageContent({ locale }: { locale: Locale }) {
             <div className="mt-6 grid gap-4 sm:grid-cols-3">
               {(locale === "tr"
                 ? [
-                    { service: "Logo Tasarımı", range: "2.500–8.000 TL" },
-                    { service: "Web siteleri", range: "15.000–40.000 TL" },
+                    { service: "Logo Tasarımı", range: "₺2.500’den başlayan fiyatlarla" },
+                    { service: "Web siteleri", range: "₺15.000’den başlayan fiyatlarla" },
                     { service: "Yazılım ürünleri", range: "Teklif alın" },
                   ]
                 : [
-                    { service: "Logo Design", range: "2,500–8,000 TRY" },
-                    { service: "Websites", range: "15,000–40,000 TRY" },
+                    { service: "Logo Design", range: "From ₺2,500" },
+                    { service: "Websites", range: "From ₺15,000" },
                     { service: "Software products", range: "Request a quote" },
                   ]
               ).map((item) => (

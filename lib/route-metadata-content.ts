@@ -35,8 +35,8 @@ export const routeMetadataContent: Record<RouteMetadataKey, Record<Locale, Metad
     en: { title: "Logo Design Packages and Pricing", description: "Compare Basic, Standard and Premium logo design packages. Review concepts, revision rounds, logo variations and the files included in each package." },
   },
   pricingWeb: {
-    tr: { title: "Web Sitesi Paketleri ve Fiyatları", description: "Başlangıç, Profesyonel ve Premium web sitesi paketleri: 15.000–40.000 TL. Yönetim paneli, dil seçenekleri ve pakete göre SEO kapsamını karşılaştırın." },
-    en: { title: "Website Packages and Pricing", description: "Compare Starter, Professional and Premium website packages, from TRY 15,000 to 40,000. Review admin features, languages and SEO scope for each tier." },
+    tr: { title: "Web Sitesi Paketleri ve Fiyatları", description: "₺15.000’den başlayan fiyatlarla Başlangıç, Profesyonel ve Premium web sitesi paketleri. Yönetim paneli, dil seçenekleri ve pakete göre SEO kapsamını karşılaştırın." },
+    en: { title: "Website Packages and Pricing", description: "Compare Starter, Professional and Premium website packages, starting at TRY 15,000. Review admin features, languages and SEO scope for each tier." },
   },
   pricingSoftware: {
     tr: { title: "CRM, ERP Lite ve TableFlow İçin Teklif Alın", description: "CRM, yakında sunulacak ERP Lite ve TableFlow pilotu için teklif alın. Kurulum, veri aktarımı, eğitim ve aylık bakım kapsamını ayrı inceleyin." },
