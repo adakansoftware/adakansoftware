@@ -21,8 +21,8 @@ export function ServiceSeoPage({ slug, locale }: { slug: ServicePageSlug; locale
         description={page.description}
         primaryHref={withLocale("/contact", locale)}
         primaryLabel={locale === "tr" ? "Projeyi konuşalım" : "Discuss your project"}
-        secondaryHref={withLocale("/projects", locale)}
-        secondaryLabel={locale === "tr" ? "Projeleri incele" : "Explore projects"}
+        secondaryHref={withLocale(page.exampleLink?.href ?? "/projects", locale)}
+        secondaryLabel={page.exampleLink?.label ?? (locale === "tr" ? "Projeleri incele" : "Explore projects")}
       />
       <section className="section-shell pb-24 md:pb-32">
         <div className="section-frame grid gap-10 px-6 py-10 lg:grid-cols-[1.1fr_.9fr] lg:px-10 lg:py-14">
@@ -42,7 +42,7 @@ export function ServiceSeoPage({ slug, locale }: { slug: ServicePageSlug; locale
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {page.deliverables.map((item, index) => <div key={item} className="rounded-xl border border-border/40 bg-background/45 p-5"><span className="font-mono text-xs text-primary">0{index + 1}</span><p className="mt-3 text-sm leading-6">{item}</p></div>)}
           </div>
-          <Link className="studio-link mt-8" href={withLocale("/services", locale)}>{locale === "tr" ? "Tüm hizmetleri görün" : "View all services"}<ArrowRight size={16} /></Link>
+          <Link className="studio-link mt-8" href={withLocale(page.relatedLink.href, locale)}>{page.relatedLink.label}<ArrowRight size={16} /></Link>
         </div>
         <div className="mt-16 max-w-4xl">
           <h2 className="text-3xl font-bold tracking-tight md:text-4xl">{page.faqTitle}</h2>

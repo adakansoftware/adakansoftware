@@ -1,6 +1,7 @@
 import { stripLocalePrefix, switchLocalePath, type Locale } from "./i18n.ts"
 
 const localizedRoutePairs = [
+  { tr: "/blog/is-sureci-otomasyonu-rehberi", en: "/blog/business-process-automation-guide" },
   { tr: "/blog/ozel-yazilim-gelistirme-rehberi", en: "/blog/custom-software-development-guide" },
   { tr: "/blog/kurumsal-web-sitesi-maliyeti", en: "/blog/corporate-website-cost-and-scope" },
   { tr: "/blog/nextjs-seo-performans-rehberi", en: "/blog/nextjs-seo-performance-guide" },

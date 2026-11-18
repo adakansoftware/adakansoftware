@@ -17,6 +17,8 @@ type ServicePageCopy = {
   title: string
   accent: string
   description: string
+  relatedLink: { href: string; label: string }
+  exampleLink?: { href: string; label: string }
   overviewTitle: string
   overview: string
   capabilitiesTitle: string
@@ -31,6 +33,7 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
   "software-development": {
     tr: {
       path: "/services/software-development",
+      relatedLink: { href: "/pricing/yazilim", label: "Yazılım ürünlerinde kurulum ve bakım" },
       seo: {
         title: "Özel Yazılım Geliştirme Şirketi",
         description: "İşletmelere özel web uygulaması, yönetim paneli, API entegrasyonu ve süreç otomasyonu geliştiren İstanbul merkezli yazılım şirketi.",
@@ -47,6 +50,8 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
       deliverables: ["İhtiyaç analizi ve teknik yol haritası", "UI/UX akışları ve çalışan prototip", "Güvenli frontend ve backend geliştirme", "Test, yayın ve bakım desteği"],
       faqTitle: "Özel yazılım hakkında sık sorulanlar",
       faqs: [
+        { question: "Hazır program mı, özel yazılım mı seçmeliyim?", answer: "Standart müşteri takibi veya faturalama ihtiyacını mevcut bir ürün karşılıyorsa önce onu değerlendirin. Birbirine bağlı özel onay süreçleri, farklı kullanıcı rolleri ve birden fazla sistemle veri alışverişi gerekiyorsa özel yazılım uygun olabilir. Keşifte mevcut araçları ve eksik kalan iş akışını birlikte karşılaştırırız." },
+        { question: "Yazılım teklifi almak için ne hazırlamalıyım?", answer: "Hedef kullanıcıları, aksayan iş akışını, mevcut programları, gerekli entegrasyonları ve örnek raporları paylaşın. Anonim örnek veriler yeterlidir. İlk sürümün kabul ölçütleri, veri aktarımı, hesap ve kaynak kod teslimi ile bakım sorumlulukları teklif aşamasında yazılı netleştirilir." },
         { question: "Özel yazılım geliştirme maliyeti nasıl belirlenir?", answer: "Maliyet; kullanıcı rolleri, ekran ve entegrasyon sayısı, veri yapısı, güvenlik gereksinimleri ve yayın takvimine göre belirlenir. Keşif görüşmesinden sonra kapsamı ve bütçe aralığını yazılı olarak paylaşırız." },
         { question: "Özel yazılım projesi ne kadar sürer?", answer: "Takvim ürünün kapsamına bağlıdır. Önce temel iş akışını çalışan bir sürüme dönüştürür, ardından öncelikli özellikleri planlı teslimlere böleriz." },
         { question: "Yayın sonrası bakım ve geliştirme desteği veriyor musunuz?", answer: "Evet. Hata takibi, güvenlik güncellemeleri, performans iyileştirmeleri ve yeni özellik geliştirme için projeye uygun bakım planı sunarız." },
@@ -54,6 +59,7 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
     },
     en: {
       path: "/services/software-development",
+      relatedLink: { href: "/pricing/yazilim", label: "Software product setup and maintenance" },
       seo: {
         title: "Custom Software Development Company",
         description: "Istanbul software company building custom web applications, admin dashboards, API integrations and workflow automation for growing businesses.",
@@ -70,6 +76,8 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
       deliverables: ["Discovery and technical roadmap", "UI/UX flows and working prototype", "Secure frontend and backend development", "Testing, launch and maintenance support"],
       faqTitle: "Custom software frequently asked questions",
       faqs: [
+        { question: "Should I choose existing software or a custom application?", answer: "Start with an existing product when it covers standard customer tracking or invoicing. Custom software may fit workflows with specific approvals, different access roles and data exchange across systems. Discovery compares your current tools with the workflow they cannot support." },
+        { question: "What should I prepare for a software proposal?", answer: "Describe users, the workflow that needs fixing, current tools, integrations and sample reports. Anonymised data is enough. Acceptance criteria, migration, account and source code handover, and maintenance responsibilities are agreed in writing during scoping." },
         { question: "How is custom software development priced?", answer: "Pricing depends on user roles, screens, integrations, data structure, security requirements and delivery schedule. We provide a written scope and budget range after discovery." },
         { question: "How long does a custom software project take?", answer: "The schedule depends on scope. We first turn the core workflow into a working release, then organize priority features into planned delivery stages." },
         { question: "Do you provide maintenance after launch?", answer: "Yes. We offer project-specific maintenance for issue monitoring, security updates, performance improvements and continued feature development." },
@@ -79,6 +87,8 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
   "web-development": {
     tr: {
       path: "/services/web-development",
+      relatedLink: { href: "/pricing/web", label: "Web sitesi paketlerini ve fiyatlarını karşılaştırın" },
+      exampleLink: { href: "/projects/z-grup-insaat", label: "Z Grup web sitesi projesi" },
       seo: {
         title: "Kurumsal Web Tasarım ve Geliştirme",
         description: "Hızlı, mobil uyumlu ve SEO temeli güçlü kurumsal web siteleri tasarlıyor; içerik, arayüz ve yazılım geliştirmeyi birlikte yürütüyoruz.",
@@ -92,16 +102,20 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
       capabilitiesTitle: "Web sitesi türleri",
       capabilities: ["Kurumsal web siteleri", "Ürün ve hizmet landing page’leri", "Çok dilli web siteleri", "İçerik yönetimli pazarlama siteleri"],
       deliverablesTitle: "Teslim kapsamı",
-      deliverables: ["Sayfa mimarisi ve içerik akışı", "Responsive UI/UX tasarımı", "Performanslı frontend geliştirme", "Teknik SEO, analitik ve yayına alma"],
+      deliverables: ["Sayfa mimarisi ve içerik akışı", "Responsive UI/UX tasarımı", "Performanslı frontend geliştirme", "Pakete göre teknik SEO ve yayına alma"],
       faqTitle: "Kurumsal web sitesi hakkında sık sorulanlar",
       faqs: [
-        { question: "Kurumsal web sitesi paketine neler dahil?", answer: "Sayfa mimarisi, içerik akışı, responsive arayüz, frontend geliştirme, temel teknik SEO, analitik kurulumu ve yayına alma desteği proje kapsamına dahildir." },
-        { question: "Web sitesi SEO uyumlu hazırlanıyor mu?", answer: "Evet. Anlamsal HTML, hızlı sayfa yapısı, mobil uyumluluk, metadata, canonical, sitemap ve yapılandırılmış veri gibi teknik SEO temellerini kurarız." },
+        { question: "Web sitesi yaptırmak ne kadar tutar?", answer: "Başlangıç 15.000–20.000 TL, Profesyonel 25.000 TL, Premium 40.000 TL olarak sunulur. Paket sayfasında sayfa, panel, dil ve SEO kapsamını karşılaştırabilirsiniz. Özel entegrasyonlar kapsam dışında ayrıca teklif edilir." },
+        { question: "Ödeme ve yayın sonrası destek nasıl işler?", answer: "Ödeme yüzde 40 başlangıçta, yüzde 30 tasarım onayında, yüzde 30 yayında yapılır. İki revizyon turu ve ilk ay hata düzeltme dahildir. Yeni özellikler ve aylık bakım ayrıca değerlendirilir." },
+        { question: "Kurumsal web sitesi paketine neler dahil?", answer: "Sayfa mimarisi, responsive arayüz, geliştirme, temel SEO ve yayın desteği dahildir. Sayfa sayısı, yönetim paneli, TR/EN ve SEO kapsamı pakete göre değişir. Metin, fotoğraf, alan adı ve hosting müşteriye aittir; analitik kurulumu ayrıca kapsamlandırılır." },
+        { question: "Web sitesi SEO uyumlu hazırlanıyor mu?", answer: "Her pakette SEO vardır. Başlangıçta sayfa başlıkları, açıklamalar, sitemap ve robots; Profesyonelde anahtar kelime eşleştirmesi, başlık hiyerarşisi, iç bağlantılar ve uygun yapılandırılmış veri; Premiumda TR/EN, hreflang, canonical ve taranabilirlik kontrolü bulunur. Aylık SEO ve düzenli içerik üretimi ayrı hizmetlerdir." },
         { question: "Site içeriklerini sonradan kendimiz güncelleyebilir miyiz?", answer: "İhtiyaca göre yönetim paneli veya içerik yönetim sistemi kurabiliriz. Teslimde içerik güncelleme akışını ve yetkileri net biçimde dokümante ederiz." },
       ],
     },
     en: {
       path: "/services/web-development",
+      relatedLink: { href: "/pricing/web", label: "Compare website packages and prices" },
+      exampleLink: { href: "/projects/z-group-construction", label: "Z Grup website case study" },
       seo: {
         title: "Corporate Web Design and Development",
         description: "We design and develop fast, responsive corporate websites with a strong SEO foundation, clear content and maintainable frontend architecture.",
@@ -115,11 +129,13 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
       capabilitiesTitle: "Website types",
       capabilities: ["Corporate websites", "Product and service landing pages", "Multilingual websites", "Content-managed marketing sites"],
       deliverablesTitle: "What is included",
-      deliverables: ["Information architecture and content flow", "Responsive UI/UX design", "Performance-focused frontend development", "Technical SEO, analytics and launch"],
+      deliverables: ["Information architecture and content flow", "Responsive UI/UX design", "Performance-focused frontend development", "Package-specific technical SEO and launch"],
       faqTitle: "Corporate website frequently asked questions",
       faqs: [
-        { question: "What is included in a corporate website project?", answer: "The scope covers information architecture, content flow, responsive interface design, frontend development, technical SEO foundations, analytics setup and launch support." },
-        { question: "Will the website be SEO-ready?", answer: "Yes. We implement semantic HTML, fast page delivery, mobile compatibility, metadata, canonicals, sitemaps and relevant structured data." },
+        { question: "How much does a website cost?", answer: "Starter is TRY 15,000–20,000, Professional TRY 25,000 and Premium TRY 40,000. Compare pages, admin features, languages and SEO scope on the pricing page. Custom integrations are quoted separately." },
+        { question: "How do payment and post-launch support work?", answer: "Payment is 40% upfront, 30% on design approval and 30% at launch. Two revision rounds and first-month bug fixes are included. New features and monthly maintenance are scoped separately." },
+        { question: "What is included in a corporate website project?", answer: "Packages include page structure, responsive design, development, core SEO and launch support. Page count, admin features, languages and SEO scope vary by tier. Content, photos, domain and hosting belong to the client; analytics setup is scoped separately." },
+        { question: "Will the website be SEO-ready?", answer: "Every package includes SEO. Starter covers page titles, descriptions, sitemap and robots. Professional adds keyword mapping, heading structure, internal links and relevant structured data. Premium adds Turkish/English delivery, hreflang, canonical and crawlability checks. Ongoing SEO and content production are separate services." },
         { question: "Can our team update the website content?", answer: "We can add an admin panel or content management system when required. The delivery includes clear documentation for content workflows and access roles." },
       ],
     },
@@ -127,6 +143,7 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
   "nextjs-development": {
     tr: {
       path: "/services/nextjs-development",
+      relatedLink: { href: "/blog/nextjs-seo-performans-rehberi", label: "Next.js SEO ve performans rehberi" },
       seo: {
         title: "Next.js Geliştirme ve Frontend Hizmeti",
         description: "Next.js ve React ile hızlı, SEO uyumlu, ölçeklenebilir kurumsal siteler ve web uygulamaları geliştiren deneyimli frontend ekibi.",
@@ -150,6 +167,7 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
     },
     en: {
       path: "/services/nextjs-development",
+      relatedLink: { href: "/blog/nextjs-seo-performance-guide", label: "Next.js SEO and performance guide" },
       seo: {
         title: "Next.js Development and Frontend Services",
         description: "Experienced frontend team building fast, SEO-ready and scalable corporate websites and web applications with Next.js and React.",
@@ -175,6 +193,7 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
   "web-application-development": {
     tr: {
       path: "/services/web-application-development",
+      relatedLink: { href: "/blog/web-sitesi-ve-web-uygulamasi-farki", label: "Web sitesi mi, web uygulaması mı?" },
       seo: {
         title: "Web Uygulaması Geliştirme Şirketi",
         description: "SaaS, müşteri portalı, yönetim paneli ve operasyon araçları için güvenli, hızlı ve ölçeklenebilir web uygulamaları geliştiriyoruz.",
@@ -198,6 +217,7 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
     },
     en: {
       path: "/services/web-application-development",
+      relatedLink: { href: "/blog/website-vs-web-application", label: "Website or web application?" },
       seo: {
         title: "Web Application Development Company",
         description: "We build secure, fast and scalable web applications for SaaS products, customer portals, admin dashboards and operational tools.",
@@ -223,6 +243,7 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
   "business-automation": {
     tr: {
       path: "/services/business-automation",
+      relatedLink: { href: "/blog/is-sureci-otomasyonu-rehberi", label: "İş süreci otomasyonu rehberi" },
       seo: {
         title: "İş Süreçleri Otomasyonu Çözümleri",
         description: "Tekrarlayan operasyonları, veri aktarımını, bildirimleri ve raporlamayı özel yazılım ve API entegrasyonlarıyla otomatikleştiriyoruz.",
@@ -246,6 +267,7 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
     },
     en: {
       path: "/services/business-automation",
+      relatedLink: { href: "/blog/business-process-automation-guide", label: "Business process automation guide" },
       seo: {
         title: "Business Process Automation Services",
         description: "We automate repetitive operations, data transfers, notifications and reporting with custom software and reliable API integrations.",
@@ -271,6 +293,7 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
   "ui-ux-design": {
     tr: {
       path: "/services/ui-ux-design",
+      relatedLink: { href: "/projects", label: "Arayüz tasarımı proje örnekleri" },
       seo: {
         title: "UI/UX Tasarım ve Ürün Arayüzü",
         description: "SaaS, web uygulaması ve mobil ürünler için kullanıcı akışları, wireframe, prototip, arayüz tasarımı ve tasarım sistemi hazırlıyoruz.",
@@ -294,6 +317,7 @@ const pages: Record<ServicePageSlug, Record<Locale, ServicePageCopy>> = {
     },
     en: {
       path: "/services/ui-ux-design",
+      relatedLink: { href: "/projects", label: "Interface design project examples" },
       seo: {
         title: "UI/UX Design and Product Interfaces",
         description: "We create user flows, wireframes, prototypes, interface design and design systems for SaaS, web applications and mobile products.",
