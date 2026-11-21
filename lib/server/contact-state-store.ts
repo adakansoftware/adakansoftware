@@ -136,7 +136,7 @@ export type ContactStateStoreStatus = {
   error: string | null
 }
 
-const DATA_DIRECTORY = join(process.cwd(), ".data")
+const DATA_DIRECTORY = process.env.CONTACT_STATE_DIRECTORY?.trim() || join(process.cwd(), ".data")
 const OUTBOX_FILE_PATH = join(DATA_DIRECTORY, "contact-outbox.json")
 const IDEMPOTENCY_FILE_PATH = join(DATA_DIRECTORY, "contact-idempotency.json")
 const REPLAY_RUNTIME_FILE_PATH = join(DATA_DIRECTORY, "contact-replay-runtime.json")

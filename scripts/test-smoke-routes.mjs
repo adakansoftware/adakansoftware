@@ -317,6 +317,15 @@ const conflictingIdempotent = await postJson(
   withTestClientIp({ "Idempotency-Key": "contact-idempotency-test" }),
 )
 assert(conflictingIdempotent.status === 409, `/api/contact idempotent conflict: expected 409, received ${conflictingIdempotent.status}`)
+} else {
+  const unavailableDatabase = await postJson("/api/contact", {
+    name: "Database Unavailable",
+    email: "unavailable@example.com",
+    project: "A missing database must never produce a successful contact response.",
+  }, withTestClientIp())
+  assert(unavailableDatabase.status === 503, `/api/contact missing database: expected 503, received ${unavailableDatabase.status}`)
+  assert(unavailableDatabase.json?.ok === false, "/api/contact missing database: must report failure")
+  console.log("Contact-write integration skipped; set SMOKE_ENABLE_CONTACT_WRITES=1 and SMOKE_DATABASE_URL to use a disposable database.")
 }
 
 const wrongContentTypeResponse = await request("/api/contact", {
