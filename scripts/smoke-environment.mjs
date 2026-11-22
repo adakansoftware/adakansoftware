@@ -1,3 +1,5 @@
+import { Buffer } from "node:buffer"
+
 export function createSmokeEnvironment(environment, stateDirectory, serverMode) {
   const contactWrites = environment.SMOKE_ENABLE_CONTACT_WRITES === "1"
   if (contactWrites && serverMode !== "dev") {
@@ -35,6 +37,6 @@ export function createSmokeEnvironment(environment, stateDirectory, serverMode) 
     ADMIN_PASSWORD_HASH: "pbkdf2-sha256$100000$MDEyMzQ1Njc4OWFiY2RlZg$CQEF03iMraucElCfobodRqkaFY16F3mxFDIvP9WoJcs",
     ADMIN_SESSION_SECRET: "test-only-session-secret-at-least-32-characters",
     RATE_LIMIT_HASH_SECRET: "test-only-rate-limit-secret-at-least-32-characters",
-    CONTACT_DATA_ENCRYPTION_KEY: "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY",
+    CONTACT_DATA_ENCRYPTION_KEY: Buffer.from("0123456789abcdef".repeat(2)).toString("base64url"),
   }
 }

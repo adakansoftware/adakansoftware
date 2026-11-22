@@ -52,8 +52,9 @@ Before deployment run:
 ```sh
 npm run lint
 npm test
-npm run audit:production
+npm run audit:all
 npm run build
+npm run test:client-secrets
 npm run test:smoke:production
 npm run test:smoke:boundaries
 npm run test:smoke
@@ -87,3 +88,28 @@ admin login, 32 KiB for admin content and `CONTACT_MAX_CONTENT_LENGTH` for conta
 Local JSON state writes replace files through a temporary file in the same
 directory. Failed writes reject their caller without blocking later writes.
 This is single-process development storage, not a distributed transaction layer.
+
+## Secret leak prevention
+
+Run `git config --local core.hooksPath .githooks` once per clone to enable the
+repository pre-commit check. It scans staged content as well as tracked and
+non-ignored untracked files. A clean working copy cannot hide a secret still
+present in the index. Ignored `.dev.vars` files remain local; do not force-add
+them. Findings print file names and line numbers, never credential values.
+
+CI also scans public build assets after building and checks that client import
+graphs do not read server environment variables. `npm run audit:all` includes
+build tools, which are excluded by `audit:production`.
+
+The `glob` override pins 14.0.6 because the OpenNext adapter still requests the
+affected 13.x line. Reassess it when upstream updates its dependency range.
+Relevant advisories: https://github.com/advisories/GHSA-3g3m-2fjr-6pw4 and
+https://github.com/advisories/GHSA-g3hv-75wg-m249. OpenNext, ESLint and
+typescript-eslint were updated alongside the lockfile; production UI dependencies
+were not intentionally upgraded.
+
+Log strings and persisted delivery errors redact known environment secrets,
+credential URLs, provider token formats and quoted credential fields. Historical
+outbox errors are also sanitized before appearing in authenticated diagnostics.
+These checks reduce leak risk; they do not establish that every possible secret
+format or every external service configuration has been audited.

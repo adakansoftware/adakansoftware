@@ -73,7 +73,7 @@ git commit -m "security: strengthen transport headers"
 
 - [ ] **Step 1: Write the failing route behavior test**
 
-Extract the serializable response selection into a route-local exported helper if necessary. The test must pass an unavailable state with an internal error such as `redis://user:password@host` and assert the public body is exactly `{ ok: false, error: "Contact state is unavailable" }` with status `503`.
+Extract the serializable response selection into a route-local exported helper if necessary. The test must pass an unavailable state with an internal error such as `redis://user:test-fixture-password@host` and assert the public body is exactly `{ ok: false, error: "Contact state is unavailable" }` with status `503`.
 
 - [ ] **Step 2: Run the focused test before implementation**
 

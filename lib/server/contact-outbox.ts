@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto"
 
 import type { ContactSubmission } from "@/lib/server/contact-service"
 import { getContactStateStore, type ContactOutboxEntry } from "@/lib/server/contact-state-store"
+import { sanitizeLogString } from "@/lib/server/logger"
 
 type OutboxStatus = ContactOutboxEntry["status"]
 
@@ -191,6 +192,7 @@ export async function getContactOutboxDiagnostics() {
     oldestFailedAgeMs: oldestFailedEntry ? now - oldestFailedEntry.createdAt : null,
     recent: entries.slice(-5).reverse().map(({ submission: _submission, email, ...entry }) => ({
       ...entry,
+      lastError: entry.lastError ? sanitizeLogString(entry.lastError) : entry.lastError,
       email: maskEmail(email),
     })),
   }

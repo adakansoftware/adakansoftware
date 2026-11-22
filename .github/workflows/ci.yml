@@ -36,14 +36,17 @@ jobs:
       - name: Secret scan
         run: npm run test:secrets
 
-      - name: Audit production dependencies
-        run: npm run audit:production
+      - name: Audit all dependencies including build tools
+        run: npm run audit:all
 
       - name: Unit and security regression tests
         run: npm test
 
       - name: Build
         run: npm run build
+
+      - name: Scan public build assets for secrets
+        run: npm run test:client-secrets
 
       - name: Production security smoke tests
         run: npm run test:smoke:production

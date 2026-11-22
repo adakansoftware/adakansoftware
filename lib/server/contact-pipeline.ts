@@ -18,7 +18,7 @@ import {
   type ContactReplayLockState,
   type ContactReplayRuntimeState,
 } from "@/lib/server/contact-state-store"
-import { logServerEvent } from "@/lib/server/logger"
+import { logServerEvent, sanitizeLogString } from "@/lib/server/logger"
 
 function getStore() {
   return getContactStateStore()
@@ -241,7 +241,7 @@ export async function markContactMessageFailed(
   const deadLettered = attempts >= contactPolicy.outboxMaxAttempts
   const updatedEntry = await updateContactOutboxEntry(messageId, {
     status: deadLettered ? "dead-letter" : "failed",
-    lastError: error,
+    lastError: sanitizeLogString(error),
     nextAttemptAt: deadLettered ? undefined : (nextAttemptAt ?? Date.now() + getRetryDelayMs(attempts)),
     leaseOwner: undefined,
     leaseExpiresAt: undefined,

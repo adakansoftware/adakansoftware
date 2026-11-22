@@ -68,5 +68,5 @@ jobs:
       - name: Scan tracked files for secrets
         run: npm run test:secrets
 
-      - name: Audit production dependencies
-        run: npm run audit:production
+      - name: Audit all dependencies including build tools
+        run: npm run audit:all
