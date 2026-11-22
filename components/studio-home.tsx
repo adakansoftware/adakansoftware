@@ -11,7 +11,7 @@ import { LaptopReveal } from "@/components/laptop-reveal"
 const content = {
   tr: {
     intro: "Adakan Software · İstanbul", title: "Yazılım şirketiniz.", accent: "Sade çözümler.",
-    description: "Adakan Software; Van ve İstanbul başta olmak üzere Türkiye ve yurt dışındaki işletmelere özel yazılım, web sitesi ve iş otomasyonu geliştiren yazılım şirketidir.",
+    description: <>Adakan Software; <Link href="/van-yazilim-firmasi" className="hover:underline focus-visible:underline">Van</Link> ve <Link href="/istanbul-yazilim-sirketi" className="hover:underline focus-visible:underline">İstanbul</Link> başta olmak üzere Türkiye ve yurt dışındaki işletmelere özel yazılım, web sitesi ve iş otomasyonu geliştiren yazılım şirketidir.</>,
     start: "Projenizi konuşalım", work: "İşlerimizi keşfedin", services: "İhtiyacınız kadar. Özenle.",
     serviceIntro: "Fikirden yayına; web tasarımı, özel yazılım geliştirme ve logo tasarımı tek elden.",
     items: [["Logo tasarımı", "İşletmenizi anlatan logo. Konsept, revizyon ve teslim dosyaları seçtiğiniz pakete göre."], ["Web tasarımı", "İçeriği öne çıkaran, her ekranda rahat kullanılan web siteleri."], ["Yazılım geliştirme", "İşinize uygun, hızlı ve sürdürülebilir dijital ürünler."]],
@@ -20,7 +20,7 @@ const content = {
   },
   en: {
     intro: "Adakan Software · Istanbul", title: "Your software company.", accent: "Simple solutions.",
-    description: "Adakan Software builds custom software, websites and workflow automation for businesses in Van, Istanbul and beyond, with remote delivery in Turkish and English.",
+    description: <>Adakan Software builds custom software, websites and workflow automation for businesses in <Link href="/en/van-software-company" className="hover:underline focus-visible:underline">Van</Link>, <Link href="/en/istanbul-software-company" className="hover:underline focus-visible:underline">Istanbul</Link> and beyond, with remote delivery in Turkish and English.</>,
     start: "Let’s talk about your project", work: "Explore our work", services: "Just what you need. Done well.",
     serviceIntro: "Web design, custom software development and logo design from one provider.",
     items: [["Logo design", "A logo for your business, with concepts, revision rounds and delivery files defined by your package."], ["Web design", "Websites that put content first and feel comfortable on every screen."], ["Development", "Fast, maintainable digital products built around your business."]],

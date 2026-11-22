@@ -3,10 +3,18 @@ import type { Locale } from "./i18n.ts"
 export const vanServiceContent = {
   tr: {
     path: "/van-yazilim-firmasi",
-    seo: { title: "Van Yazılım Şirketi ve Web Tasarım", description: "Van'da yazılımcı arayan işletmelere özel yazılım, web sitesi ve otomasyon. Adakan Software ile uzaktan proje geliştirme, veri aktarımı ve bakım seçenekleri.", keywords: ["Van yazılım şirketi", "Van yazılım firması", "Van yazılımcı", "Van web tasarım", "Van özel yazılım"] },
-    title: "Van için yazılım şirketi",
+    seo: { title: "Van Yazılım Firması ve Web Tasarım", description: "Van'daki işletmelere özel yazılım, web tasarım, CRM ve iş otomasyonu. İstanbul merkezli Adakan Software ile uzaktan geliştirme, fiyat ve bakım kapsamını inceleyin.", keywords: ["Van yazılım şirketi", "Van yazılım firması", "Van yazılımcı", "Van web tasarım", "Van özel yazılım"] },
+    title: "Van yazılım hizmetleri",
     accent: "özel yazılım ve web tasarım",
     description: "Adakan Software, Van'daki işletmelere özel yazılım, web sitesi ve iş otomasyonu geliştirir. İstanbul merkezli ekibimizle müşteri takibi, teklif ve sipariş süreçlerinizi uzaktan planlayıp hayata geçirin.",
+    services: [
+      { title: "Özel yazılım geliştirme", description: "Müşteri, teklif ve sipariş kayıtlarını tek akışta yönetin. İlk sürümün ekranları ve kullanıcı yetkileri işinize göre belirlenir.", href: "/services/software-development" },
+      { title: "CRM ve yönetim panelleri", description: "Excel ve mesajlarda kalan müşteri takibini web uygulamasına taşıyın. Veri aktarımı ve raporlar teklif öncesinde kapsamlandırılır.", href: "/services/web-application-development" },
+      { title: "Van web tasarım hizmeti", description: "Hizmetlerinizi anlatan, mobil uyumlu kurumsal web sitesi. İletişim akışı, içerik ve dil seçenekleri birlikte planlanır.", href: "/services/web-development" },
+      { title: "Next.js web geliştirme", description: "Yeni bir web projesi veya mevcut uygulamanın geliştirilmesi için performans, bakım ve yayın ihtiyaçlarını değerlendirin.", href: "/services/nextjs-development" },
+      { title: "Arayüz ve kullanıcı deneyimi", description: "Müşteri formları ve personel ekranlarını kullanacak kişilere göre tasarlayın. Geliştirme öncesi önizleme üzerinden değerlendirin.", href: "/services/ui-ux-design" },
+      { title: "İş otomasyonu", description: "Tekrarlanan veri girişlerini ve durum takibini azaltacak akışlar. Dış sistem bağlantıları mevcut API olanaklarına göre planlanır.", href: "/services/business-automation" },
+    ],
     sections: [
       { heading: "Van’da yazılımcı ararken ihtiyacınızı nasıl tarif edersiniz?", paragraphs: ["Siparişler mesajlarda, müşteri bilgileri farklı dosyalarda, teklifler ayrı tablolarda kalıyorsa ilk adım tüm sistemi değiştirmek değildir. Mevcut süreci birlikte inceler; hangi bilginin kim tarafından girileceğini ve hangi rapora ihtiyaç duyulduğunu belirleriz.", "İlk sürümü müşteri takibi, teklif yönetimi veya sipariş ekranı gibi sınırlı bir akışla planlayabiliriz. Mevcut verilerin formatı, aktarım kapsamı ve dış sistem bağlantıları teklif öncesinde değerlendirilir."] },
       { heading: "Web sitesi mi, yönetim yazılımı mı?", paragraphs: ["Hizmetlerinizi tanıtmak ve talep toplamak için mobil uyumlu bir web sitesi yeterli olabilir. Teklif durumunu takip etmek, ekip üyelerine farklı yetkiler vermek veya düzenli rapor almak gerekiyorsa yönetim paneli ya da özel yazılım kapsamı belirlenir.", "Van'daki müşterilere ve şehir dışından gelen taleplere aynı siteden ulaşmak isteyen işletmeler için hizmet sayfaları ve iletişim akışı planlanır. Yurt dışına hizmet veriyorsanız TR/EN sayfa yapısı proje kapsamına eklenebilir; çeviri ve içerik sorumlulukları baştan netleştirilir."] },
@@ -28,6 +36,14 @@ export const vanServiceContent = {
     title: "Software company for Van",
     accent: "custom software and websites",
     description: "Bring customer records, quotes and daily operations into a clearer workflow. Work remotely with Istanbul-based Adakan Software from discovery through launch.",
+    services: [
+      { title: "Custom software development", description: "Manage customers, quotes and orders in one workflow. Define the first release around the screens and permissions your team needs.", href: "/services/software-development" },
+      { title: "CRM and admin panels", description: "Move customer tracking from spreadsheets and messages into a web application. Agree on migration and reporting scope before development.", href: "/services/web-application-development" },
+      { title: "Web design for Van", description: "A responsive business website explaining your services. Plan enquiry forms, content and language options together.", href: "/services/web-development" },
+      { title: "Next.js web development", description: "Review performance, maintenance and launch requirements for a new website or improvements to an existing application.", href: "/services/nextjs-development" },
+      { title: "Interface and user experience", description: "Design customer forms and staff screens around the people using them. Review previews before development begins.", href: "/services/ui-ux-design" },
+      { title: "Workflow automation", description: "Reduce repeated data entry and manual status tracking. External connections are scoped against the APIs available in your existing systems.", href: "/services/business-automation" },
+    ],
     sections: [
       { heading: "Hiring a software developer for your business in Van", paragraphs: ["If orders live in messages, customer records in separate files and quotes in spreadsheets, replacing everything is not necessarily the first step. We review who enters each record, who needs access and which reports support everyday decisions.", "A first release can focus on customer tracking, quote management or an order interface. Existing data formats, migration scope and external system connections are reviewed before a proposal is prepared."] },
       { heading: "A public website or internal business software?", paragraphs: ["A responsive website may be enough to explain your services and collect enquiries. Tracking quote status, assigning staff permissions or producing recurring reports calls for an admin panel or a separate software scope.", "For businesses serving Van and customers elsewhere, service pages and enquiry forms can support both audiences. Turkish and English pages can be included for international customers, with translation and content responsibilities agreed in advance."] },
