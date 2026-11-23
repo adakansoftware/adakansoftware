@@ -14,7 +14,9 @@
 - [x] API runtime: request-scoped cookies and Response compatibility; preserve existing route handlers and security controls. Export `handleApiRequest(request)` returning Response or null. Test anonymous boundaries, concurrent context isolation and cookie serialization.
 - [x] Worker routing/build: canonical redirects, sensitive-path denial, API burst protection, admin HTML protection, assets/RSC routing, CSP hashes and security headers, scheduled replay. Fail closed on missing assets/manifests.
 - [x] Verification: unit/security regression suite; build/secret scan; local Worker route/form/auth/SEO smoke; browser visual/navigation/theme checks; wrangler dry run.
-- [ ] Release: commit/push only scoped files; deploy existing workers without subscription changes; verify all sitemap routes, API denial paths and CPU trace samples. Update operations and publishing instructions with actual limits/results.
+- [x] Release: commit/push only scoped files; deploy existing workers without subscription changes; verify all sitemap routes, API denial paths and CPU trace samples. Update operations and publishing instructions with actual limits/results.
+
+Production verification on 2026-11-23: all 60 sitemap pages passed HTTP checks; desktop/mobile browser navigation, theme and contact checks passed. Version `4a6e9a95-970d-459a-935b-5ade8ce4c994` recorded 54 successful sampled requests, maximum 3 ms CPU and no CPU-limit failures. These samples do not guarantee unlimited capacity. Authenticated admin/session/content checks and session revocation passed; the temporary verification session was removed. No subscription or paid add-on was enabled. Publishing behavior and free quota limits are documented in `OPERATIONS.md`.
 
 ## Review
 
