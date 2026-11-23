@@ -3,7 +3,8 @@ import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import { findSecretCandidates } from "./check-secrets.mjs"
 
-if (!existsSync(".next/static")) {
+const staticBuild = process.argv.includes("--static")
+if (!existsSync(staticBuild ? ".free-worker/assets" : ".next/static")) {
   console.error("Client secret scan requires a production build: run npm run build first.")
   process.exit(1)
 }
@@ -37,6 +38,6 @@ function scan(directory) {
     }
   }
 }
-for (const directory of ["public", ".next/static", ".open-next/assets"]) scan(directory)
+for (const directory of staticBuild ? [".free-worker/assets"] : ["public", ".next/static", ".open-next/assets"]) scan(directory)
 if (findings) process.exitCode = 1
 else console.info(`Client secret scan passed for ${scanned} assets.`)

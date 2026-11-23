@@ -22,3 +22,7 @@ export default async function LocalizedPricingCategoryPage({ params }: Props) {
   if (!group) notFound()
   return <><PageJsonLd locale={locale} path={`/pricing/${group.id}`} content={group} faqs={group.faqs} /><PageHeader locale={locale} title={group.title} description={group.description} /><PricingSection locale={locale} category={group.id} /></>
 }
+
+export function generateStaticParams() {
+  return pricing.en.groups.map(group => ({ category: group.id }))
+}

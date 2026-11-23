@@ -27,10 +27,15 @@
     "ops:contact:worker": "node scripts/contact-replay-worker.mjs",
     "ops:kvkk:cleanup:dry": "node --experimental-strip-types --env-file=.dev.vars scripts/cleanup-contact-data.mjs --dry-run",
     "ops:kvkk:cleanup:apply": "node --experimental-strip-types --env-file=.dev.vars scripts/cleanup-contact-data.mjs --apply",
-    "build:cloudflare": "opennextjs-cloudflare build",
+    "build:cloudflare": "node scripts/build-free-worker.mjs",
     "deploy": "wrangler deploy && npm run verify:live",
     "verify:live": "node scripts/verify-live-site.mjs",
-    "preview:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare preview"
+    "preview:cloudflare": "npm run build:cloudflare && wrangler dev --local",
+    "test:worker": "node --test worker/*.test.mjs scripts/static-security.test.mjs scripts/public-content-snapshot.test.mjs",
+    "test:static": "node --test scripts/static-site.test.mjs",
+    "test:worker:http": "node scripts/test-free-worker-http.mjs",
+    "test:worker:browser": "node scripts/test-free-worker-browser.mjs",
+    "test:worker:preview": "node scripts/run-free-worker-tests.mjs --browser"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -78,11 +83,12 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@next/eslint-plugin-next": "16.4.5",
-    "@opennextjs/cloudflare": "1.20.18",
+    "@playwright/test": "1.65.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "esbuild": "0.28.2",
     "eslint": "^10.15.0",
     "postcss": "^8.5",
     "sharp": "^0.35.5",
@@ -91,8 +97,5 @@
     "typescript": "5.7.3",
     "typescript-eslint": "^8.73.0",
     "wrangler": "^4.158.0"
-  },
-  "overrides": {
-    "glob": "14.0.6"
   }
 }

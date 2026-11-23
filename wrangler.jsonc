@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "adakansoftware",
-  "main": "custom-worker.mjs",
+  "main": ".free-worker/worker.js",
   "triggers": { "crons": ["0 * * * *"] },
   "compatibility_date": "2026-09-21",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
@@ -9,30 +9,11 @@
     "command": "npm run build:cloudflare"
   },
   "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
-  },
-  "services": [
-    {
-      "binding": "WORKER_SELF_REFERENCE",
-      "service": "adakansoftware"
-    }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "adakan-software-website-opennext-cache"
-    }
-  ],
-  "images": { "binding": "IMAGES" },
-  "previews": {
-    "r2_buckets": [
-      {
-        "binding": "NEXT_INC_CACHE_R2_BUCKET",
-        "bucket_name": "adakan-software-website-opennext-cache"
-      }
-    ],
-    "images": { "binding": "IMAGES" }
+    "directory": ".free-worker/assets",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+    "not_found_handling": "none"
   },
   "observability": { "enabled": true },
   // Cloudflare Web Analytics beacon token. Set a real token (dashboard > Web Analytics)

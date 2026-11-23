@@ -14,8 +14,8 @@ for local development because it is not shared between production instances.
 
 ## Replay worker
 
-Cloudflare uses `custom-worker.mjs` and `wrangler.jsonc` to run replay hourly
-at minute zero (UTC). The scheduled handler reuses the OpenNext request handler
+Cloudflare uses the lightweight `worker/entry.mjs` bundle and `wrangler.jsonc` to run replay hourly
+at minute zero (UTC). The scheduled handler reuses the API dispatcher
 to send an authenticated POST to `/api/contact/replay/cron`. It skips deployments
 that do not select the Redis outbox. Redis deployments require a cron secret of
 at least 32 characters; missing credentials and HTTP failures fail the scheduled
@@ -33,8 +33,7 @@ production Redis is therefore also required for replay-protection across instanc
 
 ## API perimeter rate limiting
 
-`proxy.ts` provides an in-process burst brake only. Configure Vercel Firewall/WAF
-or an equivalent edge rule for cross-instance API rate limiting. Redis-backed
+`worker/router.ts` (Cloudflare) and `proxy.ts` (Next development) provide an in-process burst brake only. Use an edge rule for cross-instance API rate limiting. Redis-backed
 or PostgreSQL-backed route policies remain authoritative for contact submissions
 and failed admin logins, depending on the configured runtime.
 
@@ -101,15 +100,58 @@ CI also scans public build assets after building and checks that client import
 graphs do not read server environment variables. `npm run audit:all` includes
 build tools, which are excluded by `audit:production`.
 
-The `glob` override pins 14.0.6 because the OpenNext adapter still requests the
-affected 13.x line. Reassess it when upstream updates its dependency range.
-Relevant advisories: https://github.com/advisories/GHSA-3g3m-2fjr-6pw4 and
-https://github.com/advisories/GHSA-g3hv-75wg-m249. OpenNext, ESLint and
-typescript-eslint were updated alongside the lockfile; production UI dependencies
-were not intentionally upgraded.
+The former OpenNext server adapter was removed from the free deployment. ESLint
+and typescript-eslint remain on the audited versions; `audit:all` also checks
+the static build and lightweight Worker dependencies.
 
 Log strings and persisted delivery errors redact known environment secrets,
 credential URLs, provider token formats and quoted credential fields. Historical
 outbox errors are also sanitized before appearing in authenticated diagnostics.
 These checks reduce leak risk; they do not establish that every possible secret
 format or every external service configuration has been audited.
+
+## Free Cloudflare deployment and publishing
+
+Production serves prebuilt HTML, navigation payloads and images through the
+ASSETS binding. The Worker routes API requests directly to the existing handlers;
+it does not load a Next.js rendering server. No paid subscription, automatic
+recharge or paid add-on is required or enabled by this configuration. Free-plan
+CPU and daily request quotas still apply; this is not unlimited capacity.
+
+`npm run build:cloudflare` creates `.free-worker/assets` and the server-only
+`.free-worker/worker.js`. Static export uses an ignored `.static-build` workspace.
+Published project/logo data comes from `/api/public-content`; it contains only
+the same presentation fields shown on public pages. A failed snapshot stops the
+build. Server credentials are not needed in the remote build environment.
+For initial bootstrap only, `node scripts/build-free-worker.mjs --local-env`
+reads the existing ignored `.dev.vars` locally and obtains the published data
+directly. Never print that file, commit it, or upload it as an asset.
+
+Admin changes save to the database immediately but become visible on public
+pages after the next successful deployment. Run the build and deploy again after
+editing, deleting, archiving or changing publication status. The admin save
+message explains this delay. `next dev` retains its usual dynamic behavior.
+
+For isolated verification, run:
+
+```sh
+npm run test:worker
+node scripts/build-free-worker.mjs --fixtures
+npm run test:static
+npx playwright install chromium
+npm run test:worker:preview
+```
+
+Fixture builds do not read a production database. Never deploy fixture assets to
+production. Rebuild without `--fixtures` before `wrangler deploy`. The preview
+test runner uses local deterministic credentials and no external delivery services.
+
+The CSP is generated per document from exact inline hashes and external script
+integrity values, retaining `strict-dynamic`. No request nonce is reused. Admin
+HTML and navigation aliases are protected by the same session check as the API.
+Secrets remain Worker bindings; do not place them in the assets directory.
+
+Cloudflare build output and local Next output are separate. `npm run build` and
+the original Next smoke commands still verify the development implementation.
+Rollback, if necessary, uses the prior Worker version; do not remove protection
+or increase paid quotas as a workaround for a failed verification.

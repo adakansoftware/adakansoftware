@@ -9,7 +9,7 @@ export async function NonceScript({
   type?: string
   content: string
 }) {
-  const nonce = (await headers()).get(cspNonceHeaderName) ?? undefined
+  const nonce = process.env.NEXT_STATIC_EXPORT === "1" ? undefined : (await headers()).get(cspNonceHeaderName) ?? undefined
 
   return <script nonce={nonce} type={type} dangerouslySetInnerHTML={{ __html: content }} />
 }

@@ -19,3 +19,7 @@ export default async function PricingCategoryPage({ params }: Props) {
   if (!group) notFound()
   return <><PageJsonLd locale="tr" path={`/pricing/${group.id}`} content={group} faqs={group.faqs} /><PageHeader locale="tr" title={group.title} description={group.description} /><PricingSection locale="tr" category={group.id} /></>
 }
+
+export function generateStaticParams() {
+  return pricing.tr.groups.map(group => ({ category: group.id }))
+}

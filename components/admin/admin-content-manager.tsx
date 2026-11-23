@@ -21,7 +21,8 @@ const emptyRow = (kind: ContentKind): Omit<ContentRow, "id"> => ({
   color: "#0066ff", published: false, archived: false, sort_order: 0,
 })
 
-export function AdminContentManager({ email }: { email: string }) {
+export function AdminContentManager({ email, requiresPublish = false }: { email: string; requiresPublish?: boolean }) {
+  const publishNotice = requiresPublish ? " Değişiklikler sonraki yayında görünecek." : ""
   const [kind, setKind] = useState<ContentKind>("projects")
   const [rows, setRows] = useState<ContentRow[]>([])
   const [editing, setEditing] = useState<EditableRow>(emptyRow("projects"))
@@ -52,13 +53,13 @@ export function AdminContentManager({ email }: { email: string }) {
     event.preventDefault(); setBusy(true); setMessage("")
     try {
       await send("id" in editing ? "PATCH" : "POST", editing)
-      setEditing(emptyRow(kind)); setMessage("Kaydedildi."); await load()
+      setEditing(emptyRow(kind)); setMessage("Kaydedildi." + publishNotice); await load()
     } catch (error) { setMessage(error instanceof Error ? error.message : "Kayıt sırasında hata oluştu.") } finally { setBusy(false) }
   }
 
   const remove = async (id: string) => {
     if (!window.confirm("Bu kaydı silmek istiyor musun?")) return
-    try { await send("DELETE", { id }); setMessage("Silindi."); await load() } catch (error) { setMessage(error instanceof Error ? error.message : "Silinemedi.") }
+    try { await send("DELETE", { id }); setMessage("Silindi." + publishNotice); await load() } catch (error) { setMessage(error instanceof Error ? error.message : "Silinemedi.") }
   }
 
   const update = (key: keyof ContentRow, value: string | boolean | number | null) => setEditing((current) => ({ ...current, [key]: value }) as EditableRow)
@@ -73,7 +74,7 @@ export function AdminContentManager({ email }: { email: string }) {
 
   const logout = async () => { await fetch("/api/admin/logout", { method: "POST" }); window.location.href = "/admin/login" }
   const setArchived = async (row: ContentRow, archived: boolean) => {
-    try { await send("PATCH", { ...row, archived }); setMessage(archived ? "Arşive taşındı." : "Arşivden çıkarıldı."); await load() } catch (error) { setMessage(error instanceof Error ? error.message : "İşlem tamamlanamadı.") }
+    try { await send("PATCH", { ...row, archived }); setMessage((archived ? "Arşive taşındı." : "Arşivden çıkarıldı.") + publishNotice); await load() } catch (error) { setMessage(error instanceof Error ? error.message : "İşlem tamamlanamadı.") }
   }
 
   return <div className="mx-auto min-h-screen max-w-6xl px-5 py-10 sm:px-8">

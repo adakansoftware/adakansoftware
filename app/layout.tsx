@@ -95,11 +95,13 @@ const themeScript = `
 
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode
+  params?: Promise<{ locale?: string }>
 }>) {
-  const locale = await getRequestLocale()
-  const nonce = (await headers()).get(cspNonceHeaderName) ?? undefined
+  const locale = await getRequestLocale(params)
+  const nonce = process.env.NEXT_STATIC_EXPORT === "1" ? undefined : (await headers()).get(cspNonceHeaderName) ?? undefined
   const skipLinkLabel = locale === "tr" ? "İçeriğe geç" : "Skip to content"
 
   return (

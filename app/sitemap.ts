@@ -6,3 +6,4 @@ import { siteConfig } from "@/lib/site-config"
 export default function sitemap(): MetadataRoute.Sitemap {
   return buildSitemapEntries(publicRoutes, siteConfig.url)
 }
+export const dynamic = "force-static"

@@ -6,11 +6,13 @@ import { recordManagedContentSource } from "@/lib/content-source-status"
 import { getNeonSql } from "@/lib/neon"
 import { logServerEvent } from "@/lib/server/logger"
 import { getLogoWorks, getProjects } from "@/lib/site-data"
+import { buildContent } from "@/lib/build-content"
 
 type ProjectRow = { title_tr: string; title_en: string; category_tr: string; category_en: string; description_tr: string; description_en: string; year: string; href: string; color: string; cover_image: string | null }
 type LogoWorkRow = { title_tr: string; title_en: string; category_tr: string; category_en: string; description_tr: string; description_en: string; initials: string; color: string; logo_image: string | null }
 
 async function readManagedProjects(locale: Locale) {
+  if (process.env.NEXT_STATIC_EXPORT === "1" && buildContent) return buildContent.projects[locale]
   if (!process.env.DATABASE_URL) {
     recordManagedContentSource("projects", "fallback-empty")
     return getProjects(locale)
@@ -43,6 +45,7 @@ async function readManagedProjects(locale: Locale) {
 }
 
 async function readManagedLogoWorks(locale: Locale) {
+  if (process.env.NEXT_STATIC_EXPORT === "1" && buildContent) return buildContent.logos[locale]
   if (!process.env.DATABASE_URL) {
     recordManagedContentSource("logo_works", "fallback-empty")
     return getLogoWorks(locale)

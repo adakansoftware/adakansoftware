@@ -37,6 +37,8 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
+    ".static-build",
+    ".free-worker",
     ".open-next",
     ".wrangler",
     "node_modules",

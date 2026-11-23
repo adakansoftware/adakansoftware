@@ -62,3 +62,18 @@ jobs:
 
       - name: Smoke test routes
         run: npm run test:smoke
+
+      - name: Lightweight Worker security tests
+        run: npm run test:worker
+
+      - name: Build free hosting with isolated public fixtures
+        run: node scripts/build-free-worker.mjs --fixtures
+
+      - name: Verify static locale and metadata output
+        run: npm run test:static
+
+      - name: Install browser for Worker verification
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify Worker HTTP and browser behavior
+        run: npm run test:worker:preview
