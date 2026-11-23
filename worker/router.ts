@@ -42,7 +42,9 @@ export function createAssetHandler(manifest: Manifest, api: ApiHandler) {
     let path: string
     try { path = decodeURIComponent(url.pathname) } catch { return secure(new Response(null, { status: 404 }), head) }
     // Resolve once; never let the asset service reinterpret encoded separators/dot segments.
-    if (/%[0-9a-f]{2}/i.test(path) || path.includes('\\') || path.includes('\0') || path.split('/').includes('..') || isSensitiveDotPath(path)) {
+    if (/%[0-9a-f]{2}/i.test(path) || path.includes('\\') || path.includes('//') ||
+      [...path].some(character => character.charCodeAt(0) < 32 || character.charCodeAt(0) === 127) ||
+      path.split('/').includes('..') || isSensitiveDotPath(path)) {
       return secure(new Response(null, { status: 404 }), head)
     }
     if (path === '/tr' || path.startsWith('/tr/')) return secure(redirect((path.slice(3) || '/') + url.search), head)

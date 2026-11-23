@@ -9,6 +9,17 @@ new Function('require', 'module', 'exports', bundled.outputFiles[0].text)(create
 const { createAssetHandler } = testModule.exports
 const manifest = { files: ['/index.html', '/index.txt', '/admin.html', '/admin.txt', '/admin.segments/_tree.segment.rsc', '/admin/login/__next._full.txt', '/404.html', '/x.css'], pages: { '/': { file: '/index.html', csp: "script-src 'sha256-test'" }, '/admin': { file: '/admin.html', csp: "script-src 'sha256-admin'" }, '/404': { file: '/404.html', csp: "default-src 'none'" } } }
 const environment = { ASSETS: { fetch: async request => new Response(new URL(request.url).pathname, { headers: { 'Content-Type': 'text/html' } }) } }
+
+test('redirect normalization rejects external-authority and control-character paths', async () => {
+  const handle = createAssetHandler(manifest, async () => null)
+  for (const path of ['/tr//example.org', '/tr/%2fexample.org', '//example.org/', '/%2fexample.org/', '/tr/%09/example.org', '/tr/%0a/example.org']) {
+    const response = await handle(new Request('https://adakansoftware.com' + path), environment)
+    assert.equal(response.status, 404, path)
+    assert.equal(response.headers.get('location'), null, path)
+  }
+  const normal = await handle(new Request('https://adakansoftware.com/tr/hizmetler?source=test'), environment)
+  assert.equal(normal.headers.get('location'), '/hizmetler?source=test')
+})
 test('admin HTML, navigation and encoded aliases require active session', async () => {
   let assetReads = 0
   const env = { ASSETS: { fetch: async () => { assetReads++; return new Response('private') } } }

@@ -26,7 +26,7 @@ export function readAdminSession(
 
   const payload = `${encodedEmail}.${expiresAtValue}.${sessionId}`
   const expected = signature(payload, secret)
-  if (token.length !== expected.length || !timingSafeEqual(Buffer.from(token), Buffer.from(expected))) return null
+  if (!/^[0-9a-f]{64}$/u.test(token) || !timingSafeEqual(Buffer.from(token), Buffer.from(expected))) return null
 
   try {
     if (Buffer.from(encodedEmail, "base64url").toString("utf8") !== email) return null
