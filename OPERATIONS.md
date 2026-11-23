@@ -151,6 +151,11 @@ integrity values, retaining `strict-dynamic`. No request nonce is reused. Admin
 HTML and navigation aliases are protected by the same session check as the API.
 Secrets remain Worker bindings; do not place them in the assets directory.
 
+Assets use `Cache-Control: no-transform` so edge features cannot inject scripts
+or rewrite hash-protected content. This also suppresses automatic Cloudflare
+Web Analytics injection. The current analytics token is empty; any future
+analytics integration must be added explicitly to the hashed build pipeline.
+
 Cloudflare build output and local Next output are separate. `npm run build` and
 the original Next smoke commands still verify the development implementation.
 Rollback, if necessary, uses the prior Worker version; do not remove protection

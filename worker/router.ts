@@ -19,6 +19,9 @@ function secure(response: Response, head: boolean, csp?: string, privateResponse
   for (const [name, value] of Object.entries(securityHeaders)) headers.set(name, value)
   headers.set('Content-Security-Policy', csp ?? "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'")
   if (privateResponse) headers.set('Cache-Control', 'no-store')
+  // Hash/SRI protected HTML must reach the browser byte-for-byte, including
+  // authenticated pages. Prevent edge analytics/minification script injection.
+  if (csp && !headers.get('Cache-Control')?.includes('no-transform')) headers.set('Cache-Control', `${headers.get('Cache-Control') ?? 'no-store'}, no-transform`)
   if (head) void response.body?.cancel()
   return new Response(head ? null : response.body, { status: response.status, statusText: response.statusText, headers })
 }
@@ -80,7 +83,7 @@ export function createAssetHandler(manifest: Manifest, api: ApiHandler) {
     if (asset.status !== 200) return secure(new Response(null, { status: 503 }), head, undefined, true)
     const headers = new Headers(asset.headers)
     headers.delete('set-cookie')
-    headers.set('Cache-Control', admin ? 'no-store' : file.startsWith('/_next/static/') ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate')
+    headers.set('Cache-Control', admin ? 'no-store, no-transform' : file.startsWith('/_next/static/') ? 'public, max-age=31536000, immutable, no-transform' : 'public, max-age=0, must-revalidate, no-transform')
     if (file.endsWith('.txt') || file.endsWith('.rsc')) headers.set('Content-Type', file === '/robots.txt' || file === '/llms.txt' || file.startsWith('/.well-known/') ? 'text/plain; charset=utf-8' : 'text/x-component')
     headers.set('Vary', 'RSC')
     return secure(new Response(asset.body, { status, headers }), head, csp, admin)
