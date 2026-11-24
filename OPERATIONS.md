@@ -37,6 +37,17 @@ production Redis is therefore also required for replay-protection across instanc
 or PostgreSQL-backed route policies remain authoritative for contact submissions
 and failed admin logins, depending on the configured runtime.
 
+The burst brake stores at most 1,000 IP/path keys and 30 accepted timestamps per
+key. Keys over 512 characters and new keys at capacity receive 429 until space
+is reclaimed; active keys are not evicted to admit new traffic. Cleanup runs at
+most once per second. Rejected requests do not extend the burst window.
+
+The scheduled security monitor runs `scripts/verify-live-site.mjs`, which checks
+public health, published database content, and sitemap pages. A database read
+failure from `/api/public-content` now fails the monitor even when static pages
+remain available. This verifies published-content reads, not DB write access,
+backup recovery, or receipt of a failure notification.
+
 ## Failed deliveries
 
 Failed deliveries use exponential retry and become `dead-letter` entries after

@@ -19,6 +19,7 @@ async function fetchWithRetry(url) {
 
       if (response.ok) return response
       lastError = new Error(`${url} returned ${response.status}`)
+      await response.body?.cancel()
     } catch (error) {
       lastError = error
     }
@@ -33,6 +34,18 @@ const healthResponse = await fetchWithRetry(`${origin}/api/health`)
 const health = await healthResponse.json()
 if (health.ok !== true || health.status !== "ok") {
   throw new Error(`${origin}/api/health returned an unhealthy payload`)
+}
+
+// Static pages and configuration-only health can remain healthy during a DB
+// outage. This endpoint reads the published project/logo tables and fails closed.
+const contentResponse = await fetchWithRetry(`${origin}/api/public-content`)
+const content = await contentResponse.json()
+for (const kind of ["projects", "logos"]) {
+  for (const locale of ["tr", "en"]) {
+    if (!Array.isArray(content?.[kind]?.[locale])) {
+      throw new Error(`${origin}/api/public-content returned an invalid collection`)
+    }
+  }
 }
 
 const sitemapResponse = await fetchWithRetry(`${origin}/sitemap.xml`)
@@ -52,4 +65,4 @@ for (const url of urls) {
   if (!html.includes("</html>")) throw new Error(`${url} did not return a complete HTML document`)
 }
 
-console.log(`Live verification passed for ${urls.length} sitemap routes and ${origin}/api/health`)
+console.log(`Live verification passed for ${urls.length} sitemap routes, health and public database content`)

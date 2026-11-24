@@ -21,6 +21,8 @@ export type ContentPayload = {
 type ParseResult = { ok: true; data: ContentPayload } | { ok: false; message: string }
 
 const requiredTextFields = ["title_tr", "title_en", "category_tr", "category_en", "description_tr", "description_en"] as const
+// Match the public build snapshot limit before accepting persistent content.
+const maxContentFieldLength = 20_000
 
 export function parseContentKind(value: unknown): ContentKind | null {
   return value === "projects" || value === "logo_works" ? value : null
@@ -33,6 +35,10 @@ export function isUuid(value: unknown): value is string {
 export function parseContentPayload(kind: ContentKind, value: unknown): ParseResult {
   if (!value || typeof value !== "object" || Array.isArray(value)) return { ok: false, message: "Geçersiz istek gövdesi." }
   const payload = value as Record<string, unknown>
+  const contentFields = [...requiredTextFields, ...(kind === "projects" ? ["year", "href", "cover_image"] : ["initials", "logo_image"])]
+  if (contentFields.some(field => typeof payload[field] === "string" && payload[field].trim().length > maxContentFieldLength)) {
+    return { ok: false, message: "İçerik alanları en fazla 20000 karakter olabilir." }
+  }
   const text: Record<string, string> = {}
 
   for (const field of requiredTextFields) {
@@ -50,7 +56,7 @@ export function parseContentPayload(kind: ContentKind, value: unknown): ParseRes
   }
   if (typeof payload.published !== "boolean" || typeof payload.archived !== "boolean") return { ok: false, message: "Yayın durumu geçersiz." }
   const sortOrder = payload.sort_order
-  if (!Number.isInteger(sortOrder) || (sortOrder as number) < 0) return { ok: false, message: "Sıra numarası geçersiz." }
+  if (!Number.isInteger(sortOrder) || (sortOrder as number) < 0 || (sortOrder as number) > 2_147_483_647) return { ok: false, message: "Sıra numarası geçersiz." }
 
   const common = {
     title_tr: text.title_tr,
@@ -95,7 +101,8 @@ function parseImageUrl(value: unknown): string | null | undefined {
   if (typeof value !== "string") return undefined
   try {
     const url = new URL(value)
-    return url.protocol === "https:" ? url.toString() : undefined
+    const normalized = url.toString()
+    return url.protocol === "https:" && normalized.length <= maxContentFieldLength ? normalized : undefined
   } catch {
     return undefined
   }
