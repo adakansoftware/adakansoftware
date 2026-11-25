@@ -31,7 +31,7 @@
     "deploy": "wrangler deploy && npm run verify:live",
     "verify:live": "node scripts/verify-live-site.mjs",
     "preview:cloudflare": "npm run build:cloudflare && wrangler dev --local",
-    "test:worker": "node --test worker/*.test.mjs scripts/static-security.test.mjs scripts/public-content-snapshot.test.mjs scripts/verify-live-site.test.mjs",
+    "test:worker": "node --test worker/*.test.mjs scripts/static-security.test.mjs scripts/public-content-snapshot.test.mjs scripts/verify-live-site.test.mjs scripts/monitor-email.test.mjs",
     "test:static": "node --test scripts/static-site.test.mjs",
     "test:worker:http": "node scripts/test-free-worker-http.mjs",
     "test:worker:browser": "node scripts/test-free-worker-browser.mjs",

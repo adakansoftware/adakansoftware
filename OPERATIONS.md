@@ -48,6 +48,21 @@ failure from `/api/public-content` now fails the monitor even when static pages
 remain available. This verifies published-content reads, not DB write access,
 backup recovery, or receipt of a failure notification.
 
+### Email notifications
+
+The monitor's failure job sends only to `info@adakansoftware.com`. Configure the
+repository secret `ALERT_RESEND_API_KEY` with a sending-only Resend key and the
+repository variable `ALERT_FROM_EMAIL` with a verified sender address. Do not add
+these values to public files, build assets or workflow logs. No subscription or
+automatic recharge should be enabled. Without configuration the notification job
+fails explicitly; successful site checks never imply email delivery is working.
+
+After configuring a free account, manually dispatch `security-monitor.yml` with
+`test_email=true` once and confirm receipt in the target inbox. Provider acceptance
+alone is not delivery confirmation. Repeated attempts within the same run/attempt
+use the same idempotency key. The message contains only a generic failure summary
+and the workflow URL, never diagnostic payloads or application secrets.
+
 ## Failed deliveries
 
 Failed deliveries use exponential retry and become `dead-letter` entries after

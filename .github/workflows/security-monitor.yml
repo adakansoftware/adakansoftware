@@ -5,6 +5,11 @@ on:
     - cron: "17 */6 * * *"
     - cron: "17 3 * * 1"
   workflow_dispatch:
+    inputs:
+      test_email:
+        description: Send one test notification to info@adakansoftware.com
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -70,3 +75,22 @@ jobs:
 
       - name: Audit all dependencies including build tools
         run: npm run audit:all
+
+  notify-email:
+    needs: [live-health, weekly-code-audit]
+    if: ${{ always() && (needs.live-health.result == 'failure' || needs.weekly-code-audit.result == 'failure' || inputs.test_email == true) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - name: Send failure or explicit test notification
+        run: node scripts/monitor-email.mjs
+        env:
+          ALERT_RESEND_API_KEY: ${{ secrets.ALERT_RESEND_API_KEY }}
+          ALERT_FROM_EMAIL: ${{ vars.ALERT_FROM_EMAIL }}
+          ALERT_TEST_EMAIL: ${{ inputs.test_email == true && needs.live-health.result != 'failure' && needs.weekly-code-audit.result != 'failure' }}
