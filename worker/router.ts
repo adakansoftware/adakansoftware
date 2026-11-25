@@ -85,9 +85,9 @@ export function createAssetHandler(manifest: Manifest, api: ApiHandler) {
     if (asset.status !== 200) return secure(new Response(null, { status: 503 }), head, undefined, true)
     const headers = new Headers(asset.headers)
     headers.delete('set-cookie')
-    headers.set('Cache-Control', admin ? 'no-store, no-transform' : file.startsWith('/_next/static/') ? 'public, max-age=31536000, immutable, no-transform' : 'public, max-age=0, must-revalidate, no-transform')
+    headers.set('Cache-Control', admin ? 'no-store' : file.startsWith('/_next/static/') ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate')
     if (file.endsWith('.txt') || file.endsWith('.rsc')) headers.set('Content-Type', file === '/robots.txt' || file === '/llms.txt' || file.startsWith('/.well-known/') ? 'text/plain; charset=utf-8' : 'text/x-component')
     headers.set('Vary', 'RSC')
-    return secure(new Response(asset.body, { status, headers }), head, csp, admin)
+    return secure(new Response(asset.body, { status, headers }), head, file.endsWith('.html') ? csp : undefined, admin)
   }
 }

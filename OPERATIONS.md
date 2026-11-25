@@ -162,10 +162,12 @@ integrity values, retaining `strict-dynamic`. No request nonce is reused. Admin
 HTML and navigation aliases are protected by the same session check as the API.
 Secrets remain Worker bindings; do not place them in the assets directory.
 
-Assets use `Cache-Control: no-transform` so edge features cannot inject scripts
-or rewrite hash-protected content. This also suppresses automatic Cloudflare
+HTML uses `Cache-Control: no-transform` so edge features cannot inject scripts
+or rewrite hash-protected documents. This also suppresses automatic Cloudflare
 Web Analytics injection. The current analytics token is empty; any future
 analytics integration must be added explicitly to the hashed build pipeline.
+JavaScript, CSS and RSC payloads allow edge compression; script SRI still checks
+the decoded bytes. Compression does not change page markup or appearance.
 
 Cloudflare build output and local Next output are separate. `npm run build` and
 the original Next smoke commands still verify the development implementation.

@@ -47,6 +47,18 @@ test('login navigation payload stays accessible before authentication', async ()
   assert.equal(response.status, 200)
   assert.equal(await response.text(), '/admin/login/__next._full.txt')
 })
+
+test('static CSS and RSC allow compression while HTML keeps injection protection', async () => {
+  const handle = createAssetHandler(manifest, async () => null)
+  const css = await handle(new Request('https://adakansoftware.com/x.css'), environment)
+  assert.doesNotMatch(css.headers.get('cache-control'), /no-transform/)
+  const rsc = await handle(new Request('https://adakansoftware.com/', { headers: { RSC: '1' } }), environment)
+  assert.equal(rsc.headers.get('content-type'), 'text/x-component')
+  assert.doesNotMatch(rsc.headers.get('cache-control'), /no-transform/)
+  const html = await handle(new Request('https://adakansoftware.com/'), environment)
+  assert.match(html.headers.get('cache-control'), /no-transform/)
+  assert.match(html.headers.get('content-security-policy'), /sha256-test/)
+})
 test('authorized admin and HEAD responses stay private and bodyless', async () => {
   const handle = createAssetHandler(manifest, async () => new Response('{}', { status: 200 }))
   const response = await handle(new Request('https://adakansoftware.com/admin', { method: 'HEAD' }), environment)
